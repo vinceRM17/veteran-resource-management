@@ -38,6 +38,22 @@ export async function Header() {
 							</li>
 							<li>
 								<Link
+									href="/directory/businesses"
+									className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+								>
+									Businesses
+								</Link>
+							</li>
+							<li>
+								<Link
+									href="/resources/documents"
+									className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+								>
+									Documents
+								</Link>
+							</li>
+							<li>
+								<Link
 									href="/screening"
 									className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
 								>
