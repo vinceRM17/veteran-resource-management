@@ -31,6 +31,9 @@ export default function Step4Page() {
 	const [currentBenefits, setCurrentBenefits] = useState<string[]>(
 		(answers.currentBenefits as string[]) || [],
 	);
+	const [additionalInfo, setAdditionalInfo] = useState<string>(
+		(answers.additionalInfo as string) || "",
+	);
 	const [errors, setErrors] = useState<Record<string, string>>({});
 
 	const showCaregiverOption = shouldShowCaregiverSupport(answers);
@@ -49,7 +52,10 @@ export default function Step4Page() {
 		if (answers.currentBenefits) {
 			setCurrentBenefits(answers.currentBenefits as string[]);
 		}
-	}, [answers.areasOfNeed, answers.currentBenefits]);
+		if (answers.additionalInfo) {
+			setAdditionalInfo(answers.additionalInfo as string);
+		}
+	}, [answers.areasOfNeed, answers.currentBenefits, answers.additionalInfo]);
 
 	function toggleArea(value: string) {
 		setAreasOfNeed((prev) =>
@@ -73,7 +79,11 @@ export default function Step4Page() {
 	}
 
 	function handleNext() {
-		const result = step4Schema.safeParse({ areasOfNeed, currentBenefits });
+		const result = step4Schema.safeParse({
+			areasOfNeed,
+			currentBenefits,
+			additionalInfo,
+		});
 		if (!result.success) {
 			const fieldErrors: Record<string, string> = {};
 			for (const issue of result.error.issues) {
@@ -86,17 +96,18 @@ export default function Step4Page() {
 			return;
 		}
 
-		setAnswers({ areasOfNeed, currentBenefits });
+		setAnswers({ areasOfNeed, currentBenefits, additionalInfo });
 		router.push("/screening/intake/review");
 	}
 
 	function handleBack() {
-		setAnswers({ areasOfNeed, currentBenefits });
+		setAnswers({ areasOfNeed, currentBenefits, additionalInfo });
 		router.push("/screening/intake/step-3");
 	}
 
 	const areasQuestion = step4Def.questions[0];
 	const benefitsQuestion = step4Def.questions[1];
+	const additionalInfoQuestion = step4Def.questions[2];
 
 	// Filter caregiver-support option based on role
 	const areaOptions = areasQuestion.options.filter(
@@ -150,6 +161,30 @@ export default function Step4Page() {
 						</div>
 					))}
 				</fieldset>
+			</QuestionCard>
+
+			{/* Additional info textarea */}
+			<QuestionCard
+				label={additionalInfoQuestion.label}
+				helpText={additionalInfoQuestion.helpText}
+				required={additionalInfoQuestion.required}
+				error={errors.additionalInfo}
+			>
+				<textarea
+					id="additionalInfo"
+					value={additionalInfo}
+					onChange={(e) => setAdditionalInfo(e.target.value)}
+					maxLength={1000}
+					rows={4}
+					placeholder="Optional — share anything on your mind"
+					aria-describedby="additionalInfo-help"
+					className="w-full border border-gray-300 rounded-md p-3 text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+				/>
+				{additionalInfoQuestion.helpText && (
+					<p id="additionalInfo-help" className="sr-only">
+						{additionalInfoQuestion.helpText}
+					</p>
+				)}
 			</QuestionCard>
 
 			<div className="flex justify-between mt-6">

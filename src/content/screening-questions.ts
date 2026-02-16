@@ -12,7 +12,8 @@ export type QuestionType =
 	| "radio"
 	| "select"
 	| "checkbox-group"
-	| "multi-select";
+	| "multi-select"
+	| "textarea";
 
 export interface QuestionOption {
 	value: string;
@@ -270,6 +271,15 @@ const step4: StepDefinition = {
 			],
 			required: false,
 			helpText: "This helps us avoid showing programs you already have.",
+		},
+		{
+			id: "additionalInfo",
+			label: "Is there anything else you want us to know?",
+			type: "textarea",
+			options: [],
+			required: false,
+			helpText:
+				"This is optional. You can share anything that might help us find the right resources for you.",
 		},
 	],
 };

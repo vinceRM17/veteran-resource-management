@@ -174,6 +174,7 @@ export const step4Schema = z.object({
 		.array(z.string())
 		.min(1, "Please pick at least one area where you need help."),
 	currentBenefits: z.array(z.string()).default([]),
+	additionalInfo: z.string().max(1000).optional(),
 });
 
 export type Step4Data = z.infer<typeof step4Schema>;
