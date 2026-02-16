@@ -146,7 +146,7 @@ Plans:
 
 | Phase | Status | Requirements | Completion |
 |-------|--------|--------------|------------|
-| 1 - Foundation + Crisis Safety | Pending | 5 | 0% |
+| 1 - Foundation + Crisis Safety | ✓ Complete (2026-02-15) | 5 | 100% |
 | 2 - Resource Directory + Data Pipeline | Pending | 10 | 0% |
 | 3 - Core Screening + Eligibility Engine | Pending | 14 | 0% |
 | 4 - Smart Crisis Detection | Pending | 3 | 0% |
