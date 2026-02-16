@@ -2,8 +2,8 @@
 
 **Last Updated:** 2026-02-16
 **Current Phase:** 05-user-accounts-dashboard
-**Current Plan:** 03 (Plan 3 of 4 complete)
-**Status:** In Progress
+**Current Plan:** 04 (Plan 4 of 4 complete)
+**Status:** Phase Complete
 
 ## Project Reference
 
@@ -19,7 +19,7 @@ Phase 5 - User Accounts + Dashboard
 
 **Active Phase:** 05-user-accounts-dashboard
 
-**Active Plan:** 05-03 (complete)
+**Active Plan:** 05-04 (complete)
 
 **Status:** IN PROGRESS
 
@@ -29,11 +29,11 @@ Phase 1: Foundation + Crisis Safety         [████] 4/4 plans complete (1
 Phase 2: Resource Directory + Data Pipeline [████] 4/4 plans complete (100%) ✓
 Phase 3: Core Screening + Eligibility       [████] 4/4 plans complete (100%) — needs migration + testing
 Phase 4: Smart Crisis Detection             [████] 3/3 plans complete (100%) ✓
-Phase 5: User Accounts + Dashboard          [███░] 3/4 plans complete (75%)
+Phase 5: User Accounts + Dashboard          [████] 4/4 plans complete (100%) ✓
 Phase 6: Self-Service Tools                 [ Not Started ]
 Phase 7: Peer Connection + Benefits Warnings [ Not Started ]
 
-Overall: 2/7 phases complete (29%), Phase 3 code complete pending verification
+Overall: 3/7 phases complete (43%), Phase 3 code complete pending verification
 ```
 
 ---
@@ -56,10 +56,11 @@ Overall: 2/7 phases complete (29%), Phase 3 code complete pending verification
 | 05 | 01 | 4 min | 2 | 5 | Complete | 2026-02-16 |
 | 05 | 02 | 3 min | 2 | 6 | Complete | 2026-02-16 |
 | 05 | 03 | 4 min | 2 | 9 | Complete | 2026-02-16 |
+| 05 | 04 | 4 min | 1 | 2 | Complete | 2026-02-16 |
 
-**Velocity:** 14 plans completed
+**Velocity:** 15 plans completed
 
-**Plan Success Rate:** 100% (14/14)
+**Plan Success Rate:** 100% (15/15)
 
 **Blocker Rate:** 0% (0 blockers encountered)
 
@@ -119,6 +120,8 @@ Overall: 2/7 phases complete (29%), Phase 3 code complete pending verification
 | 2026-02-16 | Optimistic UI for bookmark toggle and action item checkbox | useTransition provides instant visual feedback before server confirms | Responsive UX, reverts on error for data integrity |
 | 2026-02-16 | Auth-aware BookmarkButton with inline login prompt | Shows "Log in to save resources" message instead of requiring toast library | Lightweight UX, no new dependencies |
 | 2026-02-16 | Action items grouped by program_name with progress bar | Visual progress tracking motivates completion of benefit application steps | Users see clear path forward for each program |
+| 2026-02-16 | Admin role check in layout.tsx (server-side) | No client-side role bypass possible; profiles table queried on every admin page load | Secure RBAC without exposing role logic to client |
+| 2026-02-16 | Non-admin users redirected to /dashboard (not 403) | Smoother UX for users who accidentally navigate to admin routes | No confusing error pages for regular users |
 
 ### Active TODOs
 
@@ -147,12 +150,11 @@ Phases 1, 5, 6 use standard patterns (skip research-phase).
 Veteran resource platform connecting veterans/caregivers to 90K+ organizations, with benefits screening questionnaire that matches users to programs they qualify for.
 
 **Where we are:**
-Phase 5 IN PROGRESS (3/4 plans done). Bookmark system and action item tracking complete (05-03). BookmarkButton on org and business detail pages. Saved resources page at /dashboard/bookmarks. Action items page at /dashboard/action-items with progress bar and optimistic UI.
+Phase 5 COMPLETE (4/4 plans done). Dashboard navigation wired to bookmarks/action-items pages. Admin routes protected with profiles.role RBAC check. All user account features operational: auth, dashboard, bookmarks, action items, admin protection.
 
 **What's next:**
-1. Complete Phase 5: Admin wiring (05-04)
-2. Admin role enforcement on crisis monitoring dashboard
-3. Phase 6: Self-Service Tools
+1. Phase 6: Self-Service Tools
+2. Phase 7: Peer Connection + Benefits Warnings
 
 **Critical context:**
 - Crisis safety is non-negotiable (always-visible resources in Phase 1, smart detection in Phase 4)
@@ -179,9 +181,12 @@ Phase 5 IN PROGRESS (3/4 plans done). Bookmark system and action item tracking c
 - **Bookmark system complete:** BookmarkButton on org/business detail pages, saved resources list at /dashboard/bookmarks
 - **Action items tracking complete:** /dashboard/action-items with progress bar, checkbox toggle, per-program grouping
 - **Dashboard sub-nav pattern:** Consistent Overview / Saved Resources / Action Items navigation
+- **Dashboard nav links corrected:** Overview, /dashboard/bookmarks, /dashboard/action-items
+- **Admin RBAC enforced:** layout.tsx checks profiles.role === 'admin', redirects non-admins to /dashboard
+- **Phase 5 complete:** Auth + dashboard + bookmarks + action items + admin protection all wired
 
 ---
 
 *State initialized: 2026-02-15*
-*Last plan completed: 05-03 (Bookmarks + Action Items) on 2026-02-16*
-*Next action: Execute 05-04 (Admin Wiring)*
+*Last plan completed: 05-04 (Wiring + Admin Protection) on 2026-02-16*
+*Next action: Begin Phase 6 planning (Self-Service Tools)*
