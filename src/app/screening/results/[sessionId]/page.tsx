@@ -5,7 +5,7 @@
  * Programs are grouped by confidence level with documents and next steps.
  */
 
-import { ChevronRight, FileText } from "lucide-react";
+import { ChevronRight, FileText, MapPin } from "lucide-react";
 import Link from "next/link";
 import {
 	Accordion,
@@ -19,8 +19,27 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { documentationChecklists } from "@/content/documentation-checklists";
 import type { ScreeningResult } from "@/lib/db/screening-types";
+import { searchOrganizations } from "@/lib/db/queries";
 import { createClient } from "@/lib/supabase/server";
 import { PDFDownloadButton } from "./pdf-download";
+
+// Map screening areas of need to directory service categories
+const AREA_TO_CATEGORIES: Record<string, string[]> = {
+	healthcare: ["Healthcare"],
+	"disability-compensation": ["Disability", "Benefits Assistance"],
+	"food-assistance": ["Food"],
+	housing: ["Housing", "Homelessness"],
+	employment: ["Employment"],
+	education: ["Education"],
+	"mental-health": ["Mental Health", "Substance Abuse"],
+	community: ["Veterans", "Social Services"],
+	fitness: ["Recreation", "Health"],
+	networking: ["Employment", "Education"],
+	"family-support": ["Family Support"],
+	legal: ["Legal"],
+	"financial-planning": ["Financial"],
+	"caregiver-support": ["Family Support"],
+};
 
 // ============================================================================
 // TYPES
@@ -62,6 +81,34 @@ function getProgramDescription(programId: string): string | undefined {
 		(c) => c.programId === programId,
 	);
 	return checklist?.description;
+}
+
+/**
+ * Renders text with URLs auto-linked as clickable anchor tags.
+ */
+function Linkify({ text }: { text: string }) {
+	const urlRegex = /(https?:\/\/[^\s,)]+)/g;
+	const parts = text.split(urlRegex);
+
+	return (
+		<>
+			{parts.map((part, i) =>
+				urlRegex.test(part) ? (
+					<a
+						key={`${part}-${i}`}
+						href={part}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="text-primary underline hover:text-primary/80"
+					>
+						{part.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
+					</a>
+				) : (
+					<span key={`${part}-${i}`}>{part}</span>
+				),
+			)}
+		</>
+	);
 }
 
 // ============================================================================
@@ -144,7 +191,7 @@ function ProgramCard({ result }: { result: ScreeningResult }) {
 						<ol className="list-decimal list-inside space-y-1">
 							{result.next_steps.map((step) => (
 								<li key={step} className="text-sm text-muted-foreground">
-									{step}
+									<Linkify text={step} />
 								</li>
 							))}
 						</ol>
@@ -227,6 +274,48 @@ export default async function ScreeningResultsPage({
 	const screeningResults = (results ?? []) as ScreeningResult[];
 	const grouped = groupByConfidence(screeningResults);
 
+	// Fetch local organizations based on screening answers
+	const answers = (session.answers ?? {}) as Record<string, unknown>;
+	const userState = (answers.state as string) || null;
+	const areasOfNeed = (answers.areasOfNeed as string[]) || [];
+
+	// Build search categories from areas of need
+	const categories = new Set<string>();
+	for (const area of areasOfNeed) {
+		const mapped = AREA_TO_CATEGORIES[area];
+		if (mapped) {
+			for (const cat of mapped) {
+				categories.add(cat);
+			}
+		}
+	}
+
+	// Fetch a few relevant organizations for each category (up to 6 total)
+	let localOrgs: Array<{
+		id: string;
+		name: string;
+		city: string | null;
+		state: string | null;
+	}> = [];
+
+	if (userState) {
+		try {
+			const { results: orgResults } = await searchOrganizations({
+				state: userState,
+				pageSize: 8,
+			});
+
+			localOrgs = orgResults.map((o) => ({
+				id: o.id,
+				name: o.org_name,
+				city: o.city,
+				state: o.state,
+			}));
+		} catch {
+			// Non-critical: if directory query fails, just skip this section
+		}
+	}
+
 	// Prepare data for PDF component
 	const pdfResults = screeningResults.map((r) => ({
 		programName: r.program_name,
@@ -277,6 +366,51 @@ export default async function ScreeningResultsPage({
 						results={grouped.low}
 						colorClass="bg-gray-50 text-gray-700 border border-gray-200"
 					/>
+
+					{/* Local Resources */}
+					{localOrgs.length > 0 && (
+						<>
+							<Separator className="my-8" />
+							<section className="mb-8">
+								<div className="rounded-lg p-4 mb-4 bg-blue-50 text-blue-900 border border-blue-200">
+									<h3 className="text-lg font-semibold flex items-center gap-2">
+										<MapPin className="h-5 w-5" />
+										Organizations Near You
+									</h3>
+									<p className="text-sm opacity-80">
+										Local organizations that can help with your needs.
+									</p>
+								</div>
+								<div className="grid gap-3">
+									{localOrgs.map((org) => (
+										<Link
+											key={org.id}
+											href={`/directory/${org.id}`}
+											className="block"
+										>
+											<Card className="hover:border-primary transition-colors">
+												<CardContent className="py-3 px-4">
+													<p className="font-medium text-sm">{org.name}</p>
+													{(org.city || org.state) && (
+														<p className="text-xs text-muted-foreground">
+															{[org.city, org.state]
+																.filter(Boolean)
+																.join(", ")}
+														</p>
+													)}
+												</CardContent>
+											</Card>
+										</Link>
+									))}
+								</div>
+								<Button variant="outline" asChild className="w-full mt-3">
+									<Link href={`/directory?state=${userState || ""}`}>
+										Browse All Organizations in Your Area
+									</Link>
+								</Button>
+							</section>
+						</>
+					)}
 
 					<Separator className="my-8" />
 

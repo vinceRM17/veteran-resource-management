@@ -85,9 +85,9 @@ const kentuckyRules: SeedRule[] = [
 			"Service treatment records",
 		],
 		next_steps: [
-			"File VA Form 21-526EZ online at VA.gov",
+			"File VA Form 21-526EZ online at https://www.va.gov/disability/how-to-file-claim/",
 			"Gather your medical records",
-			"Contact a VSO for free help with your claim",
+			"Find a VSO for free help at https://www.va.gov/vso/",
 		],
 		rule_definition: {
 			conditions: {
@@ -124,8 +124,8 @@ const kentuckyRules: SeedRule[] = [
 		required_docs: ["DD Form 214", "VA Form 21-526EZ", "Medical records"],
 		next_steps: [
 			"Talk to your doctor about possible service-connected conditions",
-			"Contact a VSO to see if your conditions may qualify",
-			"File online at VA.gov or call 1-800-827-1000",
+			"Find a VSO near you at https://www.va.gov/vso/",
+			"File online at https://www.va.gov/disability/how-to-file-claim/ or call 1-800-827-1000",
 		],
 		rule_definition: {
 			conditions: {
@@ -161,8 +161,8 @@ const kentuckyRules: SeedRule[] = [
 			"Full healthcare coverage through the VA system, including doctor visits, prescriptions, and mental health care.",
 		required_docs: ["DD Form 214", "VA Form 10-10EZ", "Proof of income"],
 		next_steps: [
-			"Apply online at VA.gov/health-care",
-			"Find your nearest VA medical center",
+			"Apply online at https://www.va.gov/health-care/apply/application/introduction",
+			"Find your nearest VA medical center at https://www.va.gov/find-locations/",
 			"Bring your DD-214 to your first appointment",
 		],
 		rule_definition: {
@@ -194,9 +194,9 @@ const kentuckyRules: SeedRule[] = [
 			"Social Security card",
 		],
 		next_steps: [
-			"Apply at kynect.ky.gov",
+			"Apply online at https://kynect.ky.gov/",
 			"Call 1-855-459-6328 for help",
-			"Visit your local DCBS office",
+			"Find your local DCBS office at https://prd.webapps.chfs.ky.gov/Office_Phone/",
 		],
 		rule_definition: {
 			conditions: {
@@ -234,7 +234,7 @@ const kentuckyRules: SeedRule[] = [
 			"Social Security card",
 		],
 		next_steps: [
-			"Apply at kynect.ky.gov to see if you qualify",
+			"Apply online at https://kynect.ky.gov/ to see if you qualify",
 			"Your income is near the limit, so applying is worth a try",
 		],
 		rule_definition: {
@@ -274,8 +274,8 @@ const kentuckyRules: SeedRule[] = [
 			"Bank statements",
 		],
 		next_steps: [
-			"Apply at kynect.ky.gov",
-			"Visit your local DCBS office",
+			"Apply online at https://kynect.ky.gov/",
+			"Find your local DCBS office at https://prd.webapps.chfs.ky.gov/Office_Phone/",
 			"Gather proof of income for the last 30 days",
 		],
 		rule_definition: {
@@ -314,7 +314,7 @@ const kentuckyRules: SeedRule[] = [
 			"Social Security numbers for household",
 		],
 		next_steps: [
-			"Apply at kynect.ky.gov to check if you qualify",
+			"Apply online at https://kynect.ky.gov/ to check if you qualify",
 			"Your income is near the limit. Household size matters, so it is worth applying.",
 		],
 		rule_definition: {
@@ -354,8 +354,8 @@ const kentuckyRules: SeedRule[] = [
 			"Bank account information",
 		],
 		next_steps: [
-			"Apply at ssa.gov/benefits/ssi",
-			"Call 1-800-772-1213",
+			"Apply online at https://www.ssa.gov/benefits/ssi/",
+			"Call Social Security at 1-800-772-1213",
 			"Gather medical records from your doctors",
 		],
 		rule_definition: {
@@ -402,7 +402,7 @@ const kentuckyRules: SeedRule[] = [
 			"Proof of income",
 		],
 		next_steps: [
-			"Apply at ssa.gov/benefits/ssi to check if you qualify",
+			"Apply online at https://www.ssa.gov/benefits/ssi/ to check if you qualify",
 			"Income limits depend on your living situation",
 		],
 		rule_definition: {
@@ -444,8 +444,8 @@ const kentuckyRules: SeedRule[] = [
 			"Work history and earnings",
 		],
 		next_steps: [
-			"Apply at ssa.gov/benefits/disability",
-			"Call 1-800-772-1213",
+			"Apply online at https://www.ssa.gov/benefits/disability/",
+			"Call Social Security at 1-800-772-1213",
 			"Veterans may get faster processing",
 		],
 		rule_definition: {
@@ -484,7 +484,7 @@ const kentuckyRules: SeedRule[] = [
 		required_docs: ["Social Security card", "Medical records", "Work history"],
 		next_steps: [
 			"Talk to your doctor about whether your condition qualifies",
-			"Apply at ssa.gov/benefits/disability",
+			"Apply online at https://www.ssa.gov/benefits/disability/",
 			"You need work credits from past jobs to qualify",
 		],
 		rule_definition: {
@@ -522,8 +522,8 @@ const kentuckyRules: SeedRule[] = [
 			"Proof of Kentucky residency",
 		],
 		next_steps: [
-			"Apply for Medicaid at kynect.ky.gov (required first)",
-			"Contact your local Area Development District",
+			"Apply for Medicaid first at https://kynect.ky.gov/",
+			"Find your local Area Development District at https://www.kyareadev.org/",
 			"Ask your doctor for a level of care assessment",
 		],
 		rule_definition: {
@@ -563,8 +563,8 @@ const kentuckyRules: SeedRule[] = [
 		],
 		next_steps: [
 			"Talk to your doctor about whether you qualify",
-			"Apply for Medicaid first at kynect.ky.gov",
-			"Contact your local Area Development District for information",
+			"Apply for Medicaid first at https://kynect.ky.gov/",
+			"Find your local Area Development District at https://www.kyareadev.org/",
 		],
 		rule_definition: {
 			conditions: {
@@ -602,9 +602,9 @@ const kentuckyRules: SeedRule[] = [
 			"Net worth statement",
 		],
 		next_steps: [
-			"Apply at VA.gov/pension",
+			"Apply online at https://www.va.gov/pension/how-to-apply/",
 			"Gather income and asset documents",
-			"Contact a VSO for free help",
+			"Find a VSO for free help at https://www.va.gov/vso/",
 		],
 		rule_definition: {
 			conditions: {
@@ -638,9 +638,9 @@ const kentuckyRules: SeedRule[] = [
 			"Tax-free monthly payment for wartime veterans age 65 or older with low income.",
 		required_docs: ["DD Form 214", "VA Form 21P-527EZ", "Income documentation"],
 		next_steps: [
-			"Check if your income is below the limit at VA.gov/pension",
+			"Check if your income is below the limit at https://www.va.gov/pension/eligibility/",
 			"Medical expenses can reduce your countable income",
-			"Contact a VSO for free help with your claim",
+			"Find a VSO for free help at https://www.va.gov/vso/",
 		],
 		rule_definition: {
 			conditions: {

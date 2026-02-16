@@ -87,10 +87,11 @@ export default function ReviewPage() {
 
 	useEffect(() => {
 		goToStep(5);
-		if (!answers.role) {
+		// Only redirect if not submitting — reset() clears answers.role during submission
+		if (!answers.role && !isSubmitting) {
 			router.replace("/screening/intake/step-1");
 		}
-	}, [goToStep, answers.role, router]);
+	}, [goToStep, answers.role, router, isSubmitting]);
 
 	// Build review sections based on what's visible
 	const step1Items = [

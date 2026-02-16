@@ -154,7 +154,7 @@ export default function Step1Page() {
 			)}
 
 			<div className="flex justify-end">
-				<Button onClick={handleNext} disabled={!selectedRole}>
+				<Button onClick={handleNext}>
 					Next
 				</Button>
 			</div>

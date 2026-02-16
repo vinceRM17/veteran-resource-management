@@ -79,7 +79,12 @@ export default function Step3Page() {
 			role,
 			formState.hasServiceConnectedDisability,
 		);
-		const result = schema.safeParse(formState);
+		// Strip empty strings to undefined so .optional() fields pass validation
+		const cleaned: Record<string, string | undefined> = {};
+		for (const [k, v] of Object.entries(formState)) {
+			cleaned[k] = v === "" ? undefined : v;
+		}
+		const result = schema.safeParse(cleaned);
 
 		if (!result.success) {
 			const fieldErrors: Record<string, string> = {};
