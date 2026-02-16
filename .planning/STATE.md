@@ -2,7 +2,7 @@
 
 **Last Updated:** 2026-02-16
 **Current Phase:** 05-user-accounts-dashboard
-**Current Plan:** 01 (Plan 1 of 4 complete)
+**Current Plan:** 03 (Plan 3 of 4 complete)
 **Status:** In Progress
 
 ## Project Reference
@@ -19,7 +19,7 @@ Phase 5 - User Accounts + Dashboard
 
 **Active Phase:** 05-user-accounts-dashboard
 
-**Active Plan:** 05-01 (complete)
+**Active Plan:** 05-02 (complete)
 
 **Status:** IN PROGRESS
 
@@ -29,7 +29,7 @@ Phase 1: Foundation + Crisis Safety         [████] 4/4 plans complete (1
 Phase 2: Resource Directory + Data Pipeline [████] 4/4 plans complete (100%) ✓
 Phase 3: Core Screening + Eligibility       [████] 4/4 plans complete (100%) — needs migration + testing
 Phase 4: Smart Crisis Detection             [████] 3/3 plans complete (100%) ✓
-Phase 5: User Accounts + Dashboard          [█░░░] 1/4 plans complete (25%)
+Phase 5: User Accounts + Dashboard          [██░░] 2/4 plans complete (50%)
 Phase 6: Self-Service Tools                 [ Not Started ]
 Phase 7: Peer Connection + Benefits Warnings [ Not Started ]
 
@@ -54,14 +54,15 @@ Overall: 2/7 phases complete (29%), Phase 3 code complete pending verification
 | 03 | 04 | 8 min | 4 | 8 | Complete | 2026-02-16 |
 | 04 | 01 | 2 min | 2 | 5 | Complete | 2026-02-16 |
 | 05 | 01 | 4 min | 2 | 5 | Complete | 2026-02-16 |
+| 05 | 02 | 3 min | 2 | 6 | Complete | 2026-02-16 |
 
-**Velocity:** 12 plans completed
+**Velocity:** 13 plans completed
 
-**Plan Success Rate:** 100% (12/12)
+**Plan Success Rate:** 100% (13/13)
 
 **Blocker Rate:** 0% (0 blockers encountered)
 
-**Average Plan Duration:** 6.2 minutes
+**Average Plan Duration:** 5.9 minutes
 
 ---
 | Phase 04 P01 | 2 | 2 tasks | 5 files |
@@ -112,6 +113,8 @@ Overall: 2/7 phases complete (29%), Phase 3 code complete pending verification
 | 2026-02-16 | Admin RLS uses EXISTS subquery on profiles.role | Explicit policy clarity over function call indirection | Self-contained, transparent security policies |
 | 2026-02-16 | Session claiming with double-check pattern | SELECT validates then UPDATE with IS NULL guard prevents race conditions | Safe concurrent session claiming |
 | 2026-02-16 | Action items from screening next_steps | One action item per step preserves granular tracking | Users can check off individual next steps on their dashboard |
+| 2026-02-16 | Parallel fetch for dashboard data via Promise.all | 3 independent queries (screenings, bookmarks, action items) can run concurrently | Faster dashboard page load |
+| 2026-02-16 | SaveResultsCTA 3-state pattern (guest/logged-in/already-claimed) | Single component handles all user states on results page | Clean UX flow from guest to authenticated user |
 
 ### Active TODOs
 
@@ -140,12 +143,12 @@ Phases 1, 5, 6 use standard patterns (skip research-phase).
 Veteran resource platform connecting veterans/caregivers to 90K+ organizations, with benefits screening questionnaire that matches users to programs they qualify for.
 
 **Where we are:**
-Phase 5 IN PROGRESS (1/4 plans done). Database foundation complete (05-01): bookmarks and action_items tables, admin-only crisis log RLS, session claiming logic, and auth flow updates.
+Phase 5 IN PROGRESS (2/4 plans done). Dashboard page with screening history and quick stats complete (05-02). SaveResultsCTA on results page for guest-to-user conversion. Header navigation updated with Dashboard link.
 
 **What's next:**
-1. Continue Phase 5: Dashboard UI (05-02), bookmark/action-item features (05-03), admin wiring (05-04)
-2. Build user dashboard page with screening history
-3. Implement bookmark and action item management UI
+1. Continue Phase 5: Bookmark/action-item management UI (05-03), admin wiring (05-04)
+2. Build saved resources sub-page at /dashboard/saved
+3. Build action items sub-page at /dashboard/actions
 
 **Critical context:**
 - Crisis safety is non-negotiable (always-visible resources in Phase 1, smart detection in Phase 4)
@@ -165,9 +168,13 @@ Phase 5 IN PROGRESS (1/4 plans done). Database foundation complete (05-01): book
 - **Phase 5 database foundation ready:** bookmarks, action_items tables with RLS, is_admin() helper
 - **Session claiming ready:** claimGuestSession() server action for guest-to-user flow
 - **Auth flow updated:** SignupForm supports redirectTo and sessionId props for post-signup redirect
+- **Dashboard page ready:** /dashboard with screening history, quick stats, auth-guarded layout
+- **SaveResultsCTA on results page:** Guest/logged-in/already-claimed states for session claiming
+- **Header updated:** Dashboard link shows for authenticated users only
+- **Dashboard sub-pages needed:** /dashboard/saved and /dashboard/actions (stub links exist)
 
 ---
 
 *State initialized: 2026-02-15*
-*Last plan completed: 05-01 (Database Foundation for User Accounts) on 2026-02-16*
-*Next action: Execute 05-02 (Dashboard UI)*
+*Last plan completed: 05-02 (Dashboard + Save Results CTA + Header Nav) on 2026-02-16*
+*Next action: Execute 05-03 (Bookmark and Action Item Management)*
