@@ -12,8 +12,8 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { clearDependentFields } from "@/lib/screening/conditional-logic";
 import { TOTAL_STEPS } from "@/content/screening-questions";
+import { clearDependentFields } from "@/lib/screening/conditional-logic";
 
 // ============================================================================
 // TYPES
@@ -63,11 +63,7 @@ export const useScreeningStore = create<ScreeningState>()(
 
 					// Clear dependent fields when trigger fields change
 					if (TRIGGER_FIELDS.has(key)) {
-						updatedAnswers = clearDependentFields(
-							key,
-							value,
-							updatedAnswers,
-						);
+						updatedAnswers = clearDependentFields(key, value, updatedAnswers);
 					}
 
 					return { answers: updatedAnswers };
@@ -80,11 +76,7 @@ export const useScreeningStore = create<ScreeningState>()(
 					// Check each updated field for dependent cleanup
 					for (const [key, value] of Object.entries(updates)) {
 						if (TRIGGER_FIELDS.has(key)) {
-							updatedAnswers = clearDependentFields(
-								key,
-								value,
-								updatedAnswers,
-							);
+							updatedAnswers = clearDependentFields(key, value, updatedAnswers);
 						}
 					}
 

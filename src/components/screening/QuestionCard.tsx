@@ -37,9 +37,7 @@ export function QuestionCard({
 				</h3>
 
 				{helpText && (
-					<p className="text-sm text-muted-foreground mb-3">
-						{helpText}
-					</p>
+					<p className="text-sm text-muted-foreground mb-3">{helpText}</p>
 				)}
 
 				<div className="mt-2">{children}</div>

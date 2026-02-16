@@ -9,8 +9,8 @@
  */
 
 import type { ReactNode } from "react";
-import { useScreeningStore } from "@/lib/screening/store";
 import { shouldShowField } from "@/lib/screening/conditional-logic";
+import { useScreeningStore } from "@/lib/screening/store";
 
 interface ConditionalFieldProps {
 	fieldId: string;
