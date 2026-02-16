@@ -164,7 +164,7 @@ export default async function DashboardPage() {
 					</li>
 					<li>
 						<Link
-							href="/dashboard/saved"
+							href="/dashboard/bookmarks"
 							className="text-sm text-muted-foreground hover:text-foreground pb-2"
 						>
 							Saved Resources
@@ -172,7 +172,7 @@ export default async function DashboardPage() {
 					</li>
 					<li>
 						<Link
-							href="/dashboard/actions"
+							href="/dashboard/action-items"
 							className="text-sm text-muted-foreground hover:text-foreground pb-2"
 						>
 							Action Items
