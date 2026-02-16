@@ -12,7 +12,9 @@
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"migration:instructions": "npx tsx scripts/apply-directory-migration.ts",
-		"import:orgs": "npx tsx scripts/import-organizations.ts"
+		"import:orgs": "npx tsx scripts/import-organizations.ts",
+		"import:businesses": "npx tsx scripts/import-businesses.ts",
+		"import:all": "npm run import:orgs && npm run import:businesses"
 	},
 	"dependencies": {
 		"@radix-ui/react-slot": "^1.2.4",
@@ -36,10 +38,13 @@
 		"@testing-library/jest-dom": "^6.9.1",
 		"@testing-library/react": "^16.3.2",
 		"@testing-library/user-event": "^14.6.1",
+		"@types/better-sqlite3": "^7.6.13",
 		"@types/node": "^20",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
 		"@vitejs/plugin-react": "^5.1.4",
+		"better-sqlite3": "^12.6.2",
+		"dotenv": "^17.3.1",
 		"jsdom": "^28.1.0",
 		"pg": "^8.18.0",
 		"postcss": "^8",
