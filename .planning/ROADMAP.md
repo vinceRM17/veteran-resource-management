@@ -147,6 +147,12 @@ Plans:
 
 **Requirements:** SELF-01, SELF-02, SELF-03
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — Mental health exercise content + transition checklist content + tools landing page + exercise browse/detail pages (SELF-01, SELF-03)
+- [ ] 06-02-PLAN.md — Transition checklist pages with progress tracking + header navigation update (SELF-02, SELF-03)
+
 **Success Criteria:**
 1. User can browse mental health exercises and guides organized by topic (PTSD, anxiety, sleep, anger management)
 2. User can access transition planning checklists for separating service members (180 days, 90 days, 30 days milestones)
@@ -157,16 +163,24 @@ Plans:
 
 ### Phase 7: Peer Connection + Benefits Interaction Warnings
 
-**Goal:** Veterans discover peer support near them and understand when applying for one benefit might affect another.
+**Goal:** Veterans discover verified support groups, events, and opportunities near them, and understand when applying for one benefit might affect another.
 
-**Dependencies:** Phase 2 (peer connection listings stored in directory), Phase 3 (benefits interaction warnings appear in screening results)
+**Dependencies:** Phase 2 (organization directory provides verified nonprofit data), Phase 3 (benefits interaction warnings appear in screening results)
 
 **Requirements:** PEER-01, PEER-02, PEER-03, BINT-01, BINT-02, BINT-03
 
+**Verification Model:**
+- Registered 501(c)(3) nonprofits are considered verified by default (EIN, IRS data already in directory)
+- VA-accredited organizations and government programs are verified by default
+- Organizations with public negative indicators (revoked tax-exempt status, Charity Navigator warnings, state AG actions) are flagged or excluded
+- Individual peer mentors are NOT listed unless verified through an established program (e.g., VA Peer Support Specialists, certified team leaders from recognized veteran organizations)
+- No user-submitted profiles or self-registration as mentors
+- Every listing must trace back to a verified organization
+
 **Success Criteria:**
-1. User can search for support groups and veteran communities by location (ZIP code or city)
-2. User can find peer mentors matched by branch, era (Vietnam, Gulf War, Iraq/Afghanistan), and location
-3. Peer connection listings show safety information (e.g., "Vetted by VSO", "Meets monthly", "Open to all eras")
+1. User can search for verified support groups, veteran communities, and events by location (ZIP code or city)
+2. User can discover opportunities (employment programs, volunteer roles, community activities) from verified organizations filtered by branch and era
+3. All listings show verification source (e.g., "Registered 501(c)(3)", "VA Accredited", "Listed by DAV") and organizational backing
 4. When screening results include programs with known interactions, user sees warning banner (e.g., "Applying for SSI may affect SNAP eligibility")
 5. Warning includes plain-language explanation of the interaction and link to benefits counselor
 6. All interaction rules are validated by subject matter expert before going live
@@ -181,8 +195,8 @@ Plans:
 | 2 - Resource Directory + Data Pipeline | Complete (2026-02-16) | 10 | 100% |
 | 3 - Core Screening + Eligibility Engine | Complete (2026-02-16) | 14 | 100% |
 | 4 - Smart Crisis Detection | Complete (2026-02-16) | 3 | 100% |
-| 5 - User Accounts + Personalized Dashboard | Pending | 4 | 0% |
-| 6 - Self-Service Tools | Pending | 3 | 0% |
+| 5 - User Accounts + Personalized Dashboard | Complete (2026-02-16) | 4 | 100% |
+| 6 - Self-Service Tools | Planning Complete | 3 | 0% |
 | 7 - Peer Connection + Benefits Interaction | Pending | 6 | 0% |
 
 **Total:** 7 phases, 45 requirements
@@ -190,4 +204,4 @@ Plans:
 ---
 
 *Last updated: 2026-02-16*
-*Next: `/gsd:plan-phase 5`*
+*Next: `/gsd:execute-phase 6`*
