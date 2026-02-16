@@ -3,12 +3,13 @@
 /**
  * Step 5: Review Answers
  * Displays all answers organized by step with edit links.
- * Submit button placeholder (will be wired to server action in Plan 03-04).
+ * Submits screening to eligibility engine via server action.
  */
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { submitScreening } from "@/app/screening/actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -80,6 +81,9 @@ export default function ReviewPage() {
 	const router = useRouter();
 	const answers = useScreeningStore((s) => s.answers);
 	const goToStep = useScreeningStore((s) => s.goToStep);
+	const reset = useScreeningStore((s) => s.reset);
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [submitError, setSubmitError] = useState<string | null>(null);
 
 	useEffect(() => {
 		goToStep(5);
@@ -178,11 +182,22 @@ export default function ReviewPage() {
 		});
 	}
 
-	function handleSubmit() {
-		// Placeholder: will be wired to eligibility engine in Plan 03-04
-		alert(
-			"Your answers have been recorded. The eligibility check will be connected in the next update.",
-		);
+	async function handleSubmit() {
+		setIsSubmitting(true);
+		setSubmitError(null);
+
+		const result = await submitScreening(answers as Record<string, unknown>);
+
+		if (result.error) {
+			setSubmitError(result.error);
+			setIsSubmitting(false);
+			return;
+		}
+
+		if (result.sessionId) {
+			reset();
+			router.push(`/screening/results/${result.sessionId}`);
+		}
 	}
 
 	function handleBack() {
@@ -219,11 +234,22 @@ export default function ReviewPage() {
 
 			<Separator className="my-6" />
 
+			{submitError && (
+				<div
+					role="alert"
+					className="mb-4 rounded-md border border-destructive bg-destructive/10 p-3 text-sm text-destructive"
+				>
+					{submitError}
+				</div>
+			)}
+
 			<div className="flex justify-between">
-				<Button variant="outline" onClick={handleBack}>
+				<Button variant="outline" onClick={handleBack} disabled={isSubmitting}>
 					Back
 				</Button>
-				<Button onClick={handleSubmit}>Submit</Button>
+				<Button onClick={handleSubmit} disabled={isSubmitting}>
+					{isSubmitting ? "Processing your answers..." : "Submit"}
+				</Button>
 			</div>
 		</div>
 	);

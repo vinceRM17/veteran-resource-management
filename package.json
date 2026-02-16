@@ -15,7 +15,8 @@
 		"import:orgs": "npx tsx scripts/import-organizations.ts",
 		"import:businesses": "npx tsx scripts/import-businesses.ts",
 		"import:all": "npm run import:orgs && npm run import:businesses",
-		"seed:rules": "npx tsx scripts/seed-eligibility-rules.ts"
+		"seed:rules": "npx tsx scripts/seed-eligibility-rules.ts",
+		"check:readability": "npx tsx scripts/check-readability.ts"
 	},
 	"dependencies": {
 		"@radix-ui/react-accordion": "^1.2.12",
@@ -25,6 +26,7 @@
 		"@radix-ui/react-select": "^2.2.6",
 		"@radix-ui/react-separator": "^1.1.8",
 		"@radix-ui/react-slot": "^1.2.4",
+		"@react-pdf/renderer": "^4.3.2",
 		"@supabase/ssr": "^0.8.0",
 		"@supabase/supabase-js": "^2.95.3",
 		"class-variance-authority": "^0.7.1",

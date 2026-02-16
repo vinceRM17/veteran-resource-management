@@ -1,0 +1,242 @@
+/**
+ * PDF Document Component for Screening Results
+ *
+ * Uses @react-pdf/renderer to generate a downloadable PDF
+ * of the user's screening results with program matches.
+ */
+
+import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
+
+// ============================================================================
+// TYPES
+// ============================================================================
+
+export interface ScreeningResultsPDFProps {
+	generatedDate: string;
+	results: Array<{
+		programName: string;
+		confidence: string;
+		confidenceLabel: string;
+		description?: string;
+		requiredDocs: string[];
+		nextSteps: string[];
+	}>;
+}
+
+// ============================================================================
+// STYLES
+// ============================================================================
+
+const styles = StyleSheet.create({
+	page: {
+		padding: 30,
+		fontFamily: "Helvetica",
+		fontSize: 11,
+		color: "#1a1a1a",
+	},
+	header: {
+		marginBottom: 20,
+		borderBottomWidth: 2,
+		borderBottomColor: "#2563eb",
+		paddingBottom: 12,
+	},
+	title: {
+		fontSize: 20,
+		fontFamily: "Helvetica-Bold",
+		color: "#1e3a5f",
+		marginBottom: 4,
+	},
+	subtitle: {
+		fontSize: 10,
+		color: "#6b7280",
+	},
+	sectionHeader: {
+		fontSize: 14,
+		fontFamily: "Helvetica-Bold",
+		marginTop: 16,
+		marginBottom: 8,
+		paddingVertical: 6,
+		paddingHorizontal: 8,
+		borderRadius: 4,
+	},
+	highHeader: {
+		backgroundColor: "#dcfce7",
+		color: "#166534",
+	},
+	mediumHeader: {
+		backgroundColor: "#fef9c3",
+		color: "#854d0e",
+	},
+	lowHeader: {
+		backgroundColor: "#f3f4f6",
+		color: "#374151",
+	},
+	programCard: {
+		marginBottom: 12,
+		paddingLeft: 8,
+		borderLeftWidth: 2,
+		borderLeftColor: "#e5e7eb",
+	},
+	programName: {
+		fontSize: 13,
+		fontFamily: "Helvetica-Bold",
+		marginBottom: 3,
+	},
+	programDescription: {
+		fontSize: 10,
+		color: "#4b5563",
+		marginBottom: 6,
+	},
+	subHeading: {
+		fontSize: 10,
+		fontFamily: "Helvetica-Bold",
+		marginTop: 6,
+		marginBottom: 3,
+		color: "#374151",
+	},
+	listItem: {
+		fontSize: 10,
+		color: "#4b5563",
+		marginBottom: 2,
+		paddingLeft: 8,
+	},
+	footer: {
+		position: "absolute",
+		bottom: 30,
+		left: 30,
+		right: 30,
+		borderTopWidth: 1,
+		borderTopColor: "#e5e7eb",
+		paddingTop: 8,
+	},
+	footerText: {
+		fontSize: 9,
+		color: "#9ca3af",
+	},
+	disclaimer: {
+		fontSize: 9,
+		color: "#6b7280",
+		marginTop: 20,
+		padding: 10,
+		backgroundColor: "#f9fafb",
+		borderRadius: 4,
+	},
+});
+
+// ============================================================================
+// COMPONENT
+// ============================================================================
+
+export function ScreeningResultsPDF({
+	generatedDate,
+	results,
+}: ScreeningResultsPDFProps) {
+	const highResults = results.filter((r) => r.confidence === "high");
+	const mediumResults = results.filter((r) => r.confidence === "medium");
+	const lowResults = results.filter((r) => r.confidence === "low");
+
+	return (
+		<Document>
+			<Page size="LETTER" style={styles.page}>
+				{/* Header */}
+				<View style={styles.header}>
+					<Text style={styles.title}>Your Screening Results</Text>
+					<Text style={styles.subtitle}>
+						Generated {generatedDate} — Veteran Resource Management
+					</Text>
+				</View>
+
+				{/* High confidence */}
+				{highResults.length > 0 && (
+					<View>
+						<Text style={[styles.sectionHeader, styles.highHeader]}>
+							Likely Eligible ({highResults.length}{" "}
+							{highResults.length === 1 ? "program" : "programs"})
+						</Text>
+						{highResults.map((result) => (
+							<ProgramEntry key={result.programName} result={result} />
+						))}
+					</View>
+				)}
+
+				{/* Medium confidence */}
+				{mediumResults.length > 0 && (
+					<View>
+						<Text style={[styles.sectionHeader, styles.mediumHeader]}>
+							Possibly Eligible ({mediumResults.length}{" "}
+							{mediumResults.length === 1 ? "program" : "programs"})
+						</Text>
+						{mediumResults.map((result) => (
+							<ProgramEntry key={result.programName} result={result} />
+						))}
+					</View>
+				)}
+
+				{/* Low confidence */}
+				{lowResults.length > 0 && (
+					<View>
+						<Text style={[styles.sectionHeader, styles.lowHeader]}>
+							Worth Exploring ({lowResults.length}{" "}
+							{lowResults.length === 1 ? "program" : "programs"})
+						</Text>
+						{lowResults.map((result) => (
+							<ProgramEntry key={result.programName} result={result} />
+						))}
+					</View>
+				)}
+
+				{/* Disclaimer */}
+				<Text style={styles.disclaimer}>
+					These results are estimates based on the information you provided.
+					They are not a guarantee of eligibility. Contact a Veterans Service
+					Organization or benefits counselor to confirm your eligibility and get
+					help applying.
+				</Text>
+
+				{/* Footer */}
+				<View style={styles.footer} fixed>
+					<Text style={styles.footerText}>
+						Generated by Veteran Resource Management — {generatedDate}
+					</Text>
+				</View>
+			</Page>
+		</Document>
+	);
+}
+
+function ProgramEntry({
+	result,
+}: {
+	result: ScreeningResultsPDFProps["results"][number];
+}) {
+	return (
+		<View style={styles.programCard}>
+			<Text style={styles.programName}>{result.programName}</Text>
+			{result.description && (
+				<Text style={styles.programDescription}>{result.description}</Text>
+			)}
+
+			{result.requiredDocs.length > 0 && (
+				<View>
+					<Text style={styles.subHeading}>Documents You'll Need:</Text>
+					{result.requiredDocs.map((doc) => (
+						<Text key={doc} style={styles.listItem}>
+							• {doc}
+						</Text>
+					))}
+				</View>
+			)}
+
+			{result.nextSteps.length > 0 && (
+				<View>
+					<Text style={styles.subHeading}>Next Steps:</Text>
+					{result.nextSteps.map((step, i) => (
+						<Text key={step} style={styles.listItem}>
+							{i + 1}. {step}
+						</Text>
+					))}
+				</View>
+			)}
+		</View>
+	);
+}
