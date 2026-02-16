@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { submitScreening } from "@/app/screening/actions";
+import { CrisisIntercept } from "@/components/crisis/CrisisIntercept";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -84,6 +85,8 @@ export default function ReviewPage() {
 	const reset = useScreeningStore((s) => s.reset);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [submitError, setSubmitError] = useState<string | null>(null);
+	const [showCrisisIntercept, setShowCrisisIntercept] = useState(false);
+	const [pendingSessionId, setPendingSessionId] = useState<string | null>(null);
 
 	useEffect(() => {
 		goToStep(5);
@@ -183,6 +186,25 @@ export default function ReviewPage() {
 		});
 	}
 
+	if (
+		answers.additionalInfo &&
+		typeof answers.additionalInfo === "string" &&
+		answers.additionalInfo.trim()
+	) {
+		step4Items.push({
+			label: "Additional information",
+			value: answers.additionalInfo as string,
+		});
+	}
+
+	function handleCrisisDismiss() {
+		setShowCrisisIntercept(false);
+		if (pendingSessionId) {
+			reset();
+			router.push(`/screening/results/${pendingSessionId}`);
+		}
+	}
+
 	async function handleSubmit() {
 		setIsSubmitting(true);
 		setSubmitError(null);
@@ -195,7 +217,13 @@ export default function ReviewPage() {
 			return;
 		}
 
-		if (result.sessionId) {
+		if (result.crisisDetected && result.sessionId) {
+			// Crisis detected: show intercept modal
+			setPendingSessionId(result.sessionId);
+			setShowCrisisIntercept(true);
+			setIsSubmitting(false);
+		} else if (result.sessionId) {
+			// No crisis: proceed normally
 			reset();
 			router.push(`/screening/results/${result.sessionId}`);
 		}
@@ -206,8 +234,16 @@ export default function ReviewPage() {
 	}
 
 	return (
-		<div>
-			<h2 className="text-2xl font-bold mb-2">Review Your Answers</h2>
+		<>
+			{showCrisisIntercept && (
+				<CrisisIntercept
+					onDismiss={handleCrisisDismiss}
+					sessionId={pendingSessionId ?? undefined}
+				/>
+			)}
+
+			<div>
+				<h2 className="text-2xl font-bold mb-2">Review Your Answers</h2>
 			<p className="text-muted-foreground mb-6">
 				Please check your answers below. You can go back to change anything.
 			</p>
@@ -253,5 +289,6 @@ export default function ReviewPage() {
 				</Button>
 			</div>
 		</div>
+		</>
 	);
 }

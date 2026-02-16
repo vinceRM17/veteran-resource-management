@@ -11,6 +11,8 @@ import {
 	type DocumentationChecklist,
 	documentationChecklists,
 } from "@/content/documentation-checklists";
+import { detectCrisis, extractTextFromAnswers } from "@/lib/crisis/detector";
+import { logCrisisDetection } from "@/lib/crisis/logger";
 import type { ProgramMatch } from "@/lib/db/screening-types";
 import {
 	deduplicateMatches,
@@ -30,7 +32,12 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function submitScreening(
 	answers: Record<string, unknown>,
-): Promise<{ sessionId?: string; error?: string }> {
+): Promise<{
+	sessionId?: string;
+	error?: string;
+	crisisDetected?: boolean;
+	crisisLogId?: string | null;
+}> {
 	try {
 		// Validate required fields
 		if (!answers.role) {
@@ -41,6 +48,15 @@ export async function submitScreening(
 		}
 
 		const supabase = await createClient();
+
+		// CRISIS DETECTION — runs before eligibility evaluation
+		const textContent = extractTextFromAnswers(answers);
+		const crisisResult = await detectCrisis(textContent);
+
+		let crisisLogId: string | null = null;
+		if (crisisResult) {
+			crisisLogId = await logCrisisDetection({ result: crisisResult });
+		}
 
 		// Determine jurisdiction from state
 		const jurisdiction = answers.state === "KY" ? "kentucky" : "kentucky"; // Default to Kentucky for now
@@ -84,6 +100,14 @@ export async function submitScreening(
 			};
 		}
 
+		// Link crisis log to screening session if crisis was detected
+		if (crisisResult && crisisLogId) {
+			await supabase
+				.from("crisis_detection_logs")
+				.update({ screening_session_id: session.id })
+				.eq("id", crisisLogId);
+		}
+
 		// Insert screening results (one row per matched program)
 		if (matches.length > 0) {
 			const { error: resultsError } = await supabase
@@ -108,7 +132,11 @@ export async function submitScreening(
 			}
 		}
 
-		return { sessionId: session.id };
+		return {
+			sessionId: session.id,
+			crisisDetected: crisisResult !== null,
+			crisisLogId,
+		};
 	} catch (error) {
 		console.error("Screening submission error:", error);
 		return { error: "Unable to process your screening. Please try again." };
