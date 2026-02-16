@@ -2,7 +2,7 @@
 
 **Last Updated:** 2026-02-16
 **Current Phase:** 03-core-screening-eligibility-engine
-**Current Plan:** 01 (Plan 1 of 4 complete)
+**Current Plan:** 03 (Plan 3 of 4 complete)
 **Status:** Executing Phase 3
 
 ## Project Reference
@@ -19,15 +19,15 @@ Phase 3 - Core Screening + Eligibility Engine
 
 **Active Phase:** 03-core-screening-eligibility-engine
 
-**Active Plan:** 03-02 (next)
+**Active Plan:** 03-04 (next)
 
 **Status:** EXECUTING
 
 **Progress:**
-```
+[█████████░] 90%
 Phase 1: Foundation + Crisis Safety         [████] 4/4 plans complete (100%) ✓
 Phase 2: Resource Directory + Data Pipeline [████] 4/4 plans complete (100%) ✓
-Phase 3: Core Screening + Eligibility       [█___] 1/4 plans complete (25%)
+Phase 3: Core Screening + Eligibility       [███_] 3/4 plans complete (75%)
 Phase 4: Smart Crisis Detection             [ Not Started ]
 Phase 5: User Accounts + Dashboard          [ Not Started ]
 Phase 6: Self-Service Tools                 [ Not Started ]
@@ -49,14 +49,16 @@ Overall: 2/7 phases complete (29%)
 | 02 | 03 | 5 min | 2 | 17 | Complete | 2026-02-16 |
 | 02 | 04 | 8 min | 2 | 11 | Complete | 2026-02-16 |
 | 03 | 01 | 6 min | 2 | 8 | Complete | 2026-02-16 |
+| 03 | 02 | 6 min | 2 | 15 | Complete | 2026-02-16 |
+| 03 | 03 | 6 min | 2 | 4 | Complete | 2026-02-16 |
 
-**Velocity:** 7 plans completed
+**Velocity:** 9 plans completed
 
-**Plan Success Rate:** 100% (7/7)
+**Plan Success Rate:** 100% (9/9)
 
 **Blocker Rate:** 0% (0 blockers encountered)
 
-**Average Plan Duration:** 6.6 minutes
+**Average Plan Duration:** 6.4 minutes
 
 ---
 
@@ -90,6 +92,9 @@ Overall: 2/7 phases complete (29%)
 | 2026-02-16 | Pure functions for conditional logic (no React deps) | Enables easy unit testing without component rendering | shouldShowField() and clearDependentFields() fully testable |
 | 2026-02-16 | 15 rules with dual high/medium confidence tiers | Binary yes/no matching is too rigid for benefits screening | Nuanced "Likely Eligible" vs "Possibly Eligible" recommendations |
 | 2026-02-16 | json-rules-engine v7 with built-in TypeScript types | No separate @types package needed; rules stored as JSON in database | Non-developers can update eligibility criteria without code changes |
+| 2026-02-16 | Cast DB conditions type to json-rules-engine TopLevelCondition | DB schema has both all/any optional; engine expects discriminated union with exactly one | Safe cast bridges two valid representations of same data |
+| 2026-02-16 | allowUndefinedFacts: true on eligibility engine | Incomplete screening answers should not crash evaluation | Missing facts simply don't match rules, returning no results for those rules |
+| 2026-02-16 | Confidence labels: Likely/Possibly/Worth Exploring | Clear language matching 6th-grade reading level target | Users understand what confidence levels mean without jargon |
 
 ### Active TODOs
 
@@ -118,10 +123,10 @@ Phases 1, 5, 6 use standard patterns (skip research-phase).
 Veteran resource platform connecting veterans/caregivers to 90K+ organizations, with benefits screening questionnaire that matches users to programs they qualify for.
 
 **Where we are:**
-Phase 3 in progress (1/4 plans complete). Phase 1 and 2 fully complete. Plan 03-01 established the data foundation: eligibility database schema (2 tables), TypeScript types, 5-step screening questions, per-step Zod validation, conditional logic, and 15 Kentucky eligibility rules in json-rules-engine format.
+Phase 3 in progress (3/4 plans complete). Phase 1 and 2 fully complete. Plans 03-01 through 03-03 complete: eligibility database schema, TypeScript types, 5-step screening questions with Zod validation, screening form UI with Zustand store, and eligibility engine with json-rules-engine wrapper, confidence scoring, and 25 passing tests.
 
 **What's next:**
-Execute Plan 03-02: Screening Form UI. Build the multi-step form components using the questions, schemas, and conditional logic created in Plan 03-01.
+Execute Plan 03-04: Results Page + API Wiring. Connect the screening form to the eligibility engine and build the results display page.
 
 **Critical context:**
 - Crisis safety is non-negotiable (always-visible resources in Phase 1, smart detection in Phase 4)
@@ -129,9 +134,10 @@ Execute Plan 03-02: Screening Form UI. Build the multi-step form components usin
 - Screening is core value (Phase 3 is most complex, benefits from Phases 1-2 complete)
 - Research identified 4 pitfalls to avoid: data quality death spiral, crisis detection theater, false promise overmatching, black hole referral
 - **Migration must be applied manually** before data import can run (see scripts/README.md)
+- Eligibility engine ready: evaluateEligibility() takes answers + rules, returns ranked ProgramMatch[]
 
 ---
 
 *State initialized: 2026-02-15*
-*Last plan completed: 03-01 (Eligibility Schema & Screening Data) on 2026-02-16*
-*Next action: Execute 03-02-PLAN.md (Screening Form UI)*
+*Last plan completed: 03-03 (Eligibility Engine) on 2026-02-16*
+*Next action: Execute 03-04-PLAN.md (Results Page + API Wiring)*
