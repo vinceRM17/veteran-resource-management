@@ -171,8 +171,8 @@ Plans:
 |-------|--------|--------------|------------|
 | 1 - Foundation + Crisis Safety | Complete (2026-02-15) | 5 | 100% |
 | 2 - Resource Directory + Data Pipeline | Complete (2026-02-16) | 10 | 100% |
-| 3 - Core Screening + Eligibility Engine | Planned | 14 | 0% |
-| 4 - Smart Crisis Detection | Pending | 3 | 0% |
+| 3 - Core Screening + Eligibility Engine | Complete (2026-02-16) | 14 | 100% |
+| 4 - Smart Crisis Detection | Complete (2026-02-16) | 3 | 100% |
 | 5 - User Accounts + Personalized Dashboard | Pending | 4 | 0% |
 | 6 - Self-Service Tools | Pending | 3 | 0% |
 | 7 - Peer Connection + Benefits Interaction | Pending | 6 | 0% |
@@ -182,4 +182,4 @@ Plans:
 ---
 
 *Last updated: 2026-02-16*
-*Next: `/gsd:execute-phase 3`*
+*Next: `/gsd:plan-phase 5`*
