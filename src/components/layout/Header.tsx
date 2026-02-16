@@ -62,6 +62,14 @@ export async function Header() {
 							</li>
 							{user ? (
 								<>
+									<li>
+										<Link
+											href="/dashboard"
+											className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+										>
+											Dashboard
+										</Link>
+									</li>
 									<li className="text-sm text-gray-600">{user.email}</li>
 									<li>
 										<LogoutButton />

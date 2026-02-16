@@ -21,6 +21,7 @@ import { documentationChecklists } from "@/content/documentation-checklists";
 import type { ScreeningResult } from "@/lib/db/screening-types";
 import { searchOrganizations } from "@/lib/db/queries";
 import { createClient } from "@/lib/supabase/server";
+import { SaveResultsCTA } from "@/components/screening/SaveResultsCTA";
 import { PDFDownloadButton } from "./pdf-download";
 
 // Map screening areas of need to directory service categories
@@ -242,6 +243,11 @@ export default async function ScreeningResultsPage({
 	const { sessionId } = await params;
 	const supabase = await createClient();
 
+	// Get current user auth status
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+
 	// Fetch screening session
 	const { data: session } = await supabase
 		.from("screening_sessions")
@@ -411,6 +417,13 @@ export default async function ScreeningResultsPage({
 							</section>
 						</>
 					)}
+
+					{/* Save Results CTA */}
+					<SaveResultsCTA
+						sessionId={sessionId}
+						isLoggedIn={!!user}
+						isAlreadyClaimed={session.user_id !== null}
+					/>
 
 					<Separator className="my-8" />
 
