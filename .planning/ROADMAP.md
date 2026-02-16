@@ -42,6 +42,14 @@ Plans:
 
 **Requirements:** DIR-01, DIR-02, DIR-03, DIR-04, DIR-05, DIR-06, DATA-01, DATA-02, DATA-03, DATA-04
 
+**Plans:** 4 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Database schema (organizations + businesses tables, FTS indexes, RLS) + Organization ETL import (DATA-01, DATA-03, DATA-04)
+- [ ] 02-02-PLAN.md — Business ETL import from SQLite (DATA-02, DATA-03)
+- [ ] 02-03-PLAN.md — Organization search UI with filters, pagination, and detail pages (DIR-01, DIR-02, DIR-03, DIR-05)
+- [ ] 02-04-PLAN.md — Business search UI, documentation checklists, site navigation (DIR-04, DIR-06)
+
 **Success Criteria:**
 1. User can search across 85K+ veteran organizations using full-text search (finds "mental health" in descriptions, services, tags)
 2. User can filter directory by benefit type, state, veteran-focused status, and service category (multiple filters combine with AND logic)
