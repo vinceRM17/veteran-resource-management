@@ -2,7 +2,7 @@
 
 **Last Updated:** 2026-02-16
 **Current Phase:** 01-foundation-crisis-safety
-**Current Plan:** 01 (Plan 1 of 4 complete)
+**Current Plan:** 02 (Plan 2 of 4 complete)
 **Status:** Executing Phase 1
 
 ## Project Reference
@@ -17,15 +17,15 @@ Phase 1 - Foundation + Crisis Safety
 
 ## Current Position
 
-**Active Phase:** 01-foundation-crisis-safety (Plan 1 of 4 complete)
+**Active Phase:** 01-foundation-crisis-safety (Plan 2 of 4 complete)
 
-**Active Plan:** 01-01-PLAN.md (COMPLETE)
+**Active Plan:** 01-02-PLAN.md (COMPLETE)
 
 **Status:** IN_PROGRESS
 
 **Progress:**
 ```
-Phase 1: Foundation + Crisis Safety         [█░░░] 1/4 plans complete (25%)
+Phase 1: Foundation + Crisis Safety         [██░░] 2/4 plans complete (50%)
 Phase 2: Resource Directory + Data Pipeline [ Not Started ]
 Phase 3: Core Screening + Eligibility       [ Not Started ]
 Phase 4: Smart Crisis Detection             [ Not Started ]
@@ -34,7 +34,7 @@ Phase 6: Self-Service Tools                 [ Not Started ]
 Phase 7: Peer Connection + Benefits Warnings [ Not Started ]
 
 Overall: 0/7 phases complete (0%)
-Current Phase Progress: 1/4 plans (25%)
+Current Phase Progress: 2/4 plans (50%)
 ```
 
 ---
@@ -44,14 +44,15 @@ Current Phase Progress: 1/4 plans (25%)
 | Phase | Plan | Duration | Tasks | Files | Status | Date |
 |-------|------|----------|-------|-------|--------|------|
 | 01 | 01 | 6 min | 2 | 15 | Complete | 2026-02-16 |
+| 01 | 02 | 7 min | 3 | 14 | Complete | 2026-02-16 |
 
-**Velocity:** 1 plan completed
+**Velocity:** 2 plans completed
 
-**Plan Success Rate:** 100% (1/1)
+**Plan Success Rate:** 100% (2/2)
 
 **Blocker Rate:** 0% (0 blockers encountered)
 
-**Average Plan Duration:** 6 minutes
+**Average Plan Duration:** 6.5 minutes
 
 ---
 
@@ -68,6 +69,10 @@ Current Phase Progress: 1/4 plans (25%)
 | 2026-02-16 | Tailwind CSS 4 requires @tailwindcss/postcss plugin | Tailwind v4 separated PostCSS plugin from core package | Updated PostCSS config and CSS syntax (@import instead of @tailwind) |
 | 2026-02-16 | CrisisBanner uses <aside> instead of div with role="banner" | Biome linter enforces semantic HTML over ARIA roles on generic elements | Improved accessibility with proper semantic elements |
 | 2026-02-16 | System fonts only (no external font loading) | Minimize initial bundle size and improve Core Web Vitals | Faster page loads, better performance baseline |
+| 2026-02-16 | Three Supabase client variants (browser, server, middleware) | @supabase/ssr pattern required for Next.js 15 App Router | Proper SSR support with session refresh on every request |
+| 2026-02-16 | Middleware uses getUser() instead of getSession() | getUser() validates with Supabase auth server; getSession() only reads cookies (can be tampered) | More secure session validation |
+| 2026-02-16 | RLS policies use auth.uid() not auth.jwt() | auth.uid() is standard Supabase pattern, more secure and simpler | Consistent with Supabase best practices |
+| 2026-02-16 | Guest mode screening with NULL user_id | Core value: screening without account creation | Screening sessions table allows anonymous users |
 
 ### Active TODOs
 
@@ -96,10 +101,10 @@ Phases 1, 5, 6 use standard patterns (skip research-phase).
 Veteran resource platform connecting veterans/caregivers to 90K+ organizations, with benefits screening questionnaire that matches users to programs they qualify for.
 
 **Where we are:**
-Phase 1 in progress. Plan 01 complete: Next.js 16 foundation established with accessible layout shell and crisis resource banner on every page. 1 of 4 Phase 1 plans complete.
+Phase 1 in progress. Plan 01 complete: Next.js 16 foundation with accessible layout shell and crisis banner. Plan 02 complete: Supabase authentication with email/password, Google OAuth infrastructure, RLS policies, and auth-aware UI. 2 of 4 Phase 1 plans complete.
 
 **What's next:**
-Execute Plan 02 of Phase 1 (Testing Infrastructure & Accessibility Verification).
+Execute Plan 03 of Phase 1 (next plan in phase) or continue to subsequent phases if Phase 1 complete.
 
 **Critical context:**
 - Crisis safety is non-negotiable (always-visible resources in Phase 1, smart detection in Phase 4)
@@ -110,5 +115,5 @@ Execute Plan 02 of Phase 1 (Testing Infrastructure & Accessibility Verification)
 ---
 
 *State initialized: 2026-02-15*
-*Last plan completed: 01-01 (Foundation & Accessible Layout) on 2026-02-16*
-*Next action: Execute 01-02-PLAN.md (Testing Infrastructure)*
+*Last plan completed: 01-02 (Supabase Authentication) on 2026-02-16*
+*Next action: Execute 01-03-PLAN.md or next available plan*
