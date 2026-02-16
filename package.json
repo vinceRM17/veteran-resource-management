@@ -14,7 +14,8 @@
 		"migration:instructions": "npx tsx scripts/apply-directory-migration.ts",
 		"import:orgs": "npx tsx scripts/import-organizations.ts",
 		"import:businesses": "npx tsx scripts/import-businesses.ts",
-		"import:all": "npm run import:orgs && npm run import:businesses"
+		"import:all": "npm run import:orgs && npm run import:businesses",
+		"seed:rules": "npx tsx scripts/seed-eligibility-rules.ts"
 	},
 	"dependencies": {
 		"@radix-ui/react-accordion": "^1.2.12",
@@ -27,6 +28,7 @@
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"csv-parse": "^6.1.0",
+		"json-rules-engine": "^7.3.1",
 		"lucide-react": "^0.564.0",
 		"next": "^16.0.0",
 		"nuqs": "^2.8.8",
