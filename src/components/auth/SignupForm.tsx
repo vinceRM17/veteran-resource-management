@@ -1,12 +1,17 @@
 "use client";
 
-import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase/client";
 
-export function SignupForm() {
+interface SignupFormProps {
+	redirectTo?: string;
+	sessionId?: string;
+}
+
+export function SignupForm({ redirectTo, sessionId }: SignupFormProps) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
@@ -37,11 +42,14 @@ export function SignupForm() {
 		}
 
 		const { origin } = window.location;
+		const callbackUrl = redirectTo
+			? `${origin}/auth/callback?next=${encodeURIComponent(redirectTo)}`
+			: `${origin}/auth/callback`;
 		const { error: signUpError } = await supabase.auth.signUp({
 			email,
 			password,
 			options: {
-				emailRedirectTo: `${origin}/auth/callback`,
+				emailRedirectTo: callbackUrl,
 			},
 		});
 
@@ -70,6 +78,12 @@ export function SignupForm() {
 					Check your email for a confirmation link to complete your
 					registration.
 				</p>
+				{sessionId && (
+					<p className="text-sm text-green-700 mt-2">
+						Your screening results will be saved to your account once you
+						confirm your email.
+					</p>
+				)}
 			</div>
 		);
 	}

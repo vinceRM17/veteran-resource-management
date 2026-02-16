@@ -142,3 +142,140 @@ export async function submitScreening(
 		return { error: "Unable to process your screening. Please try again." };
 	}
 }
+
+// ============================================================================
+// CLAIM GUEST SESSION
+// ============================================================================
+
+/**
+ * Claims a guest screening session (user_id IS NULL) for the current user.
+ * Used after a guest completes screening and then creates an account.
+ */
+export async function claimGuestSession(
+	sessionId: string,
+): Promise<{ success: boolean; error?: string }> {
+	const supabase = await createClient();
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+
+	if (!user) {
+		return {
+			success: false,
+			error: "You must be logged in to save screening results.",
+		};
+	}
+
+	// Verify session exists and check ownership
+	const { data: session } = await supabase
+		.from("screening_sessions")
+		.select("id, user_id")
+		.eq("id", sessionId)
+		.single();
+
+	if (!session) {
+		return { success: false, error: "Screening session not found." };
+	}
+
+	if (session.user_id !== null) {
+		// Already claimed -- could be by this user or another
+		if (session.user_id === user.id) {
+			return { success: true }; // Already theirs
+		}
+		return {
+			success: false,
+			error: "This screening session has already been saved to an account.",
+		};
+	}
+
+	// Claim the session by setting user_id
+	const { error: updateError } = await supabase
+		.from("screening_sessions")
+		.update({ user_id: user.id })
+		.eq("id", sessionId)
+		.is("user_id", null); // Double-check still unclaimed (race condition guard)
+
+	if (updateError) {
+		console.error("Failed to claim session:", updateError);
+		return {
+			success: false,
+			error: "Unable to save screening results. Please try again.",
+		};
+	}
+
+	return { success: true };
+}
+
+// ============================================================================
+// CREATE ACTION ITEMS FROM SCREENING RESULTS
+// ============================================================================
+
+/**
+ * Creates action items from screening results' next_steps for the current user.
+ * Each next_step becomes an individual action item the user can track.
+ */
+export async function createActionItemsFromResults(
+	sessionId: string,
+): Promise<{ success: boolean; count: number; error?: string }> {
+	const supabase = await createClient();
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+
+	if (!user) {
+		return { success: false, count: 0, error: "You must be logged in." };
+	}
+
+	// Fetch results for this session
+	const { data: results } = await supabase
+		.from("screening_results")
+		.select("program_id, program_name, next_steps")
+		.eq("session_id", sessionId);
+
+	if (!results || results.length === 0) {
+		return { success: true, count: 0 };
+	}
+
+	// Build action items from next_steps
+	const actionItems: {
+		user_id: string;
+		session_id: string;
+		program_id: string;
+		program_name: string;
+		title: string;
+		sort_order: number;
+	}[] = [];
+	let sortOrder = 0;
+
+	for (const result of results) {
+		for (const step of result.next_steps || []) {
+			actionItems.push({
+				user_id: user.id,
+				session_id: sessionId,
+				program_id: result.program_id,
+				program_name: result.program_name,
+				title: step,
+				sort_order: sortOrder++,
+			});
+		}
+	}
+
+	if (actionItems.length === 0) {
+		return { success: true, count: 0 };
+	}
+
+	const { error: insertError } = await supabase
+		.from("action_items")
+		.insert(actionItems);
+
+	if (insertError) {
+		console.error("Failed to create action items:", insertError);
+		return {
+			success: false,
+			count: 0,
+			error: "Unable to create action items.",
+		};
+	}
+
+	return { success: true, count: actionItems.length };
+}

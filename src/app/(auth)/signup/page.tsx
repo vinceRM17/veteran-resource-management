@@ -1,6 +1,6 @@
-import { SignupForm } from "@/components/auth/SignupForm";
-import { OAuthButton } from "@/components/auth/OAuthButton";
 import type { Metadata } from "next";
+import { OAuthButton } from "@/components/auth/OAuthButton";
+import { SignupForm } from "@/components/auth/SignupForm";
 
 export const metadata: Metadata = {
 	title: "Sign Up - Veteran Resource Management",
@@ -10,12 +10,18 @@ export const metadata: Metadata = {
 // Force dynamic rendering for auth pages
 export const dynamic = "force-dynamic";
 
-export default function SignupPage() {
+interface SignupPageProps {
+	searchParams: Promise<{ next?: string; sessionId?: string }>;
+}
+
+export default async function SignupPage({ searchParams }: SignupPageProps) {
+	const params = await searchParams;
+
 	return (
 		<div className="bg-white rounded-lg shadow-md p-8">
 			<h1 className="text-2xl font-bold text-gray-900 mb-6">Sign Up</h1>
 
-			<SignupForm />
+			<SignupForm redirectTo={params.next} sessionId={params.sessionId} />
 
 			<div className="relative my-6">
 				<div className="absolute inset-0 flex items-center">
