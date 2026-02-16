@@ -1,9 +1,9 @@
 # Project State: Veteran Resource Management
 
 **Last Updated:** 2026-02-16
-**Current Phase:** 03-core-screening-eligibility-engine
-**Current Plan:** 04 (Plan 4 of 4 complete)
-**Status:** Phase 3 Code Complete — Awaiting Human Verification
+**Current Phase:** 04-smart-crisis-detection
+**Current Plan:** 01 (Plan 1 of 3 complete)
+**Status:** Phase 4 In Progress
 
 ## Project Reference
 
@@ -11,24 +11,24 @@
 A veteran in crisis or need can put in their information and immediately feel connected — to programs they qualify for, to people who can help, and to peers who understand what they're going through. Isolation is the enemy; connection is the mission.
 
 **Current Focus:**
-Phase 3 - Core Screening + Eligibility Engine
+Phase 4 - Smart Crisis Detection
 
 ---
 
 ## Current Position
 
-**Active Phase:** 03-core-screening-eligibility-engine
+**Active Phase:** 04-smart-crisis-detection
 
-**Active Plan:** 03-04 (complete, awaiting human verification)
+**Active Plan:** 04-01 (complete)
 
-**Status:** AWAITING VERIFICATION
+**Status:** IN PROGRESS
 
 **Progress:**
-[█████████░] 95%
+[█████████░] 85%
 Phase 1: Foundation + Crisis Safety         [████] 4/4 plans complete (100%) ✓
 Phase 2: Resource Directory + Data Pipeline [████] 4/4 plans complete (100%) ✓
 Phase 3: Core Screening + Eligibility       [████] 4/4 plans complete (100%) — needs migration + testing
-Phase 4: Smart Crisis Detection             [ Not Started ]
+Phase 4: Smart Crisis Detection             [█░░░] 1/3 plans complete (33%)
 Phase 5: User Accounts + Dashboard          [ Not Started ]
 Phase 6: Self-Service Tools                 [ Not Started ]
 Phase 7: Peer Connection + Benefits Warnings [ Not Started ]
@@ -52,16 +52,18 @@ Overall: 2/7 phases complete (29%), Phase 3 code complete pending verification
 | 03 | 02 | 6 min | 2 | 15 | Complete | 2026-02-16 |
 | 03 | 03 | 6 min | 2 | 4 | Complete | 2026-02-16 |
 | 03 | 04 | 8 min | 4 | 8 | Complete | 2026-02-16 |
+| 04 | 01 | 2 min | 2 | 5 | Complete | 2026-02-16 |
 
-**Velocity:** 10 plans completed
+**Velocity:** 11 plans completed
 
-**Plan Success Rate:** 100% (10/10)
+**Plan Success Rate:** 100% (11/11)
 
 **Blocker Rate:** 0% (0 blockers encountered)
 
-**Average Plan Duration:** 6.6 minutes
+**Average Plan Duration:** 6.2 minutes
 
 ---
+| Phase 04 P01 | 2 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -99,6 +101,9 @@ Overall: 2/7 phases complete (29%), Phase 3 code complete pending verification
 | 2026-02-16 | Local form state synced to Zustand store on Next click | Avoids re-rendering entire store on every keystroke | Better form performance, cleaner separation of local vs persisted state |
 | 2026-02-16 | Intra-step conditionals use local state instead of ConditionalField | ConditionalField reads from store which doesn't have values until Next click | Disability rating field shows immediately when disability answer changes |
 | 2026-02-16 | Semantic fieldset elements instead of div role=group | Biome a11y linter enforces semantic HTML over ARIA roles on generic elements | Proper accessibility with native HTML semantics |
+| 2026-02-16 | Phrase matching for crisis keywords (not word matching) | Prevents false positives like "kill time" triggering "kill myself" detection | More accurate crisis detection with fewer false alarms |
+| 2026-02-16 | Store SHA-256 hash instead of raw text in crisis logs | Avoid storing PHI, maintain HIPAA compliance | Cannot review original text, but preserves privacy |
+| 2026-02-16 | Allow anonymous crisis log insertion | Crisis events must be captured even from anonymous users; logs contain no PHI | Any connection can insert crisis logs for safety |
 
 ### Active TODOs
 
@@ -127,13 +132,12 @@ Phases 1, 5, 6 use standard patterns (skip research-phase).
 Veteran resource platform connecting veterans/caregivers to 90K+ organizations, with benefits screening questionnaire that matches users to programs they qualify for.
 
 **Where we are:**
-Phase 3 code complete (4/4 plans done). All code written: 5-step screening form, eligibility engine, server action, results page, PDF export. Awaiting human verification — user must apply migrations 00004 + 00005 and run seed:rules before testing end-to-end flow.
+Phase 4 in progress (1/3 plans done). Crisis detection foundation complete: database schema, keyword list, detector function, audit logger. Next: integrate crisis detection into screening flow (Plan 04-02).
 
 **What's next:**
-1. User applies migrations and seeds rules
-2. Human verification of end-to-end screening flow
-3. Mark Phase 3 complete
-4. Plan Phase 4: Smart Crisis Detection
+1. Plan 04-02: Add optional free-text field to screening and run crisis detection on submission
+2. Plan 04-03: Build monitoring dashboard for admin review of detected crisis events
+3. Mark Phase 4 complete
 
 **Critical context:**
 - Crisis safety is non-negotiable (always-visible resources in Phase 1, smart detection in Phase 4)
@@ -145,9 +149,11 @@ Phase 3 code complete (4/4 plans done). All code written: 5-step screening form,
 - **End-to-end flow wired:** form submission → eligibility evaluation → results display → PDF download
 - **Migrations 00004 + 00005 must be applied** before screening works end-to-end
 - **Run `npm run seed:rules`** after migrations to populate eligibility rules
+- **Crisis detection foundation ready:** 27 ASQ-derived keywords, phrase-matching detector, audit logger
+- **Migration 00006 must be applied** before crisis detection can log to database
 
 ---
 
 *State initialized: 2026-02-15*
-*Last plan completed: 03-04 (Results Page + API Wiring) on 2026-02-16*
-*Next action: Apply migrations, seed rules, verify end-to-end flow, then plan Phase 4*
+*Last plan completed: 04-01 (Crisis Detection Foundation) on 2026-02-16*
+*Next action: Execute Plan 04-02 (integrate crisis detection into screening flow)*
