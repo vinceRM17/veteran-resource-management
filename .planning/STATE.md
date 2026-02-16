@@ -19,7 +19,7 @@ Phase 5 - User Accounts + Dashboard
 
 **Active Phase:** 05-user-accounts-dashboard
 
-**Active Plan:** 05-02 (complete)
+**Active Plan:** 05-03 (complete)
 
 **Status:** IN PROGRESS
 
@@ -29,7 +29,7 @@ Phase 1: Foundation + Crisis Safety         [████] 4/4 plans complete (1
 Phase 2: Resource Directory + Data Pipeline [████] 4/4 plans complete (100%) ✓
 Phase 3: Core Screening + Eligibility       [████] 4/4 plans complete (100%) — needs migration + testing
 Phase 4: Smart Crisis Detection             [████] 3/3 plans complete (100%) ✓
-Phase 5: User Accounts + Dashboard          [██░░] 2/4 plans complete (50%)
+Phase 5: User Accounts + Dashboard          [███░] 3/4 plans complete (75%)
 Phase 6: Self-Service Tools                 [ Not Started ]
 Phase 7: Peer Connection + Benefits Warnings [ Not Started ]
 
@@ -55,10 +55,11 @@ Overall: 2/7 phases complete (29%), Phase 3 code complete pending verification
 | 04 | 01 | 2 min | 2 | 5 | Complete | 2026-02-16 |
 | 05 | 01 | 4 min | 2 | 5 | Complete | 2026-02-16 |
 | 05 | 02 | 3 min | 2 | 6 | Complete | 2026-02-16 |
+| 05 | 03 | 4 min | 2 | 9 | Complete | 2026-02-16 |
 
-**Velocity:** 13 plans completed
+**Velocity:** 14 plans completed
 
-**Plan Success Rate:** 100% (13/13)
+**Plan Success Rate:** 100% (14/14)
 
 **Blocker Rate:** 0% (0 blockers encountered)
 
@@ -115,6 +116,9 @@ Overall: 2/7 phases complete (29%), Phase 3 code complete pending verification
 | 2026-02-16 | Action items from screening next_steps | One action item per step preserves granular tracking | Users can check off individual next steps on their dashboard |
 | 2026-02-16 | Parallel fetch for dashboard data via Promise.all | 3 independent queries (screenings, bookmarks, action items) can run concurrently | Faster dashboard page load |
 | 2026-02-16 | SaveResultsCTA 3-state pattern (guest/logged-in/already-claimed) | Single component handles all user states on results page | Clean UX flow from guest to authenticated user |
+| 2026-02-16 | Optimistic UI for bookmark toggle and action item checkbox | useTransition provides instant visual feedback before server confirms | Responsive UX, reverts on error for data integrity |
+| 2026-02-16 | Auth-aware BookmarkButton with inline login prompt | Shows "Log in to save resources" message instead of requiring toast library | Lightweight UX, no new dependencies |
+| 2026-02-16 | Action items grouped by program_name with progress bar | Visual progress tracking motivates completion of benefit application steps | Users see clear path forward for each program |
 
 ### Active TODOs
 
@@ -143,12 +147,12 @@ Phases 1, 5, 6 use standard patterns (skip research-phase).
 Veteran resource platform connecting veterans/caregivers to 90K+ organizations, with benefits screening questionnaire that matches users to programs they qualify for.
 
 **Where we are:**
-Phase 5 IN PROGRESS (2/4 plans done). Dashboard page with screening history and quick stats complete (05-02). SaveResultsCTA on results page for guest-to-user conversion. Header navigation updated with Dashboard link.
+Phase 5 IN PROGRESS (3/4 plans done). Bookmark system and action item tracking complete (05-03). BookmarkButton on org and business detail pages. Saved resources page at /dashboard/bookmarks. Action items page at /dashboard/action-items with progress bar and optimistic UI.
 
 **What's next:**
-1. Continue Phase 5: Bookmark/action-item management UI (05-03), admin wiring (05-04)
-2. Build saved resources sub-page at /dashboard/saved
-3. Build action items sub-page at /dashboard/actions
+1. Complete Phase 5: Admin wiring (05-04)
+2. Admin role enforcement on crisis monitoring dashboard
+3. Phase 6: Self-Service Tools
 
 **Critical context:**
 - Crisis safety is non-negotiable (always-visible resources in Phase 1, smart detection in Phase 4)
@@ -172,9 +176,12 @@ Phase 5 IN PROGRESS (2/4 plans done). Dashboard page with screening history and 
 - **SaveResultsCTA on results page:** Guest/logged-in/already-claimed states for session claiming
 - **Header updated:** Dashboard link shows for authenticated users only
 - **Dashboard sub-pages needed:** /dashboard/saved and /dashboard/actions (stub links exist)
+- **Bookmark system complete:** BookmarkButton on org/business detail pages, saved resources list at /dashboard/bookmarks
+- **Action items tracking complete:** /dashboard/action-items with progress bar, checkbox toggle, per-program grouping
+- **Dashboard sub-nav pattern:** Consistent Overview / Saved Resources / Action Items navigation
 
 ---
 
 *State initialized: 2026-02-15*
-*Last plan completed: 05-02 (Dashboard + Save Results CTA + Header Nav) on 2026-02-16*
-*Next action: Execute 05-03 (Bookmark and Action Item Management)*
+*Last plan completed: 05-03 (Bookmarks + Action Items) on 2026-02-16*
+*Next action: Execute 05-04 (Admin Wiring)*
