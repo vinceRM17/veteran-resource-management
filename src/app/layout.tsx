@@ -1,4 +1,9 @@
 import type { Metadata } from "next";
+import { Toaster } from "sonner";
+import { CrisisBanner } from "@/components/crisis/CrisisBanner";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
+import { SkipLink } from "@/components/layout/SkipLink";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,7 +19,16 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body>{children}</body>
+			<body className="flex flex-col min-h-screen">
+				<SkipLink />
+				<CrisisBanner />
+				<Header />
+				<main id="main-content" tabIndex={-1} className="flex-1">
+					{children}
+				</main>
+				<Footer />
+				<Toaster />
+			</body>
 		</html>
 	);
 }
