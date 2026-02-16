@@ -1,0 +1,180 @@
+# Requirements: Veteran Resource Management
+
+**Defined:** 2026-02-15
+**Core Value:** A veteran in crisis or need can put in their information and immediately feel connected — to programs they qualify for, to people who can help, and to peers who understand what they're going through.
+
+## v1 Requirements
+
+Requirements for initial release. Each maps to roadmap phases.
+
+### Foundation
+
+- [ ] **FOUND-01**: App renders with accessible layout (header, footer, main content area) that meets WCAG 2.1 AA
+- [ ] **FOUND-02**: User can authenticate with email/password or Google OAuth
+- [ ] **FOUND-03**: All sensitive veteran data is protected by Row-Level Security at the database level
+- [ ] **FOUND-04**: App performs under 500KB initial load and works on Slow 3G connections
+
+### Crisis Intervention
+
+- [ ] **CRISIS-01**: Crisis resources (988 Lifeline, Crisis Text Line, VA Crisis Line) are visible on every page via sticky banner
+- [ ] **CRISIS-02**: Server-side crisis detection monitors screening answers for keywords and patterns indicating crisis
+- [ ] **CRISIS-03**: When crisis is detected, a full-page CrisisIntercept component renders with immediate access to help
+- [ ] **CRISIS-04**: All crisis detection events are logged with audit trail for review
+
+### Screening
+
+- [ ] **SCREEN-01**: User can complete a multi-step screening questionnaire (5-7 questions for quick results)
+- [ ] **SCREEN-02**: User selects role ("I am a veteran" vs "I am supporting a veteran") and flow adapts accordingly
+- [ ] **SCREEN-03**: Screening questions use conditional logic (show/hide based on previous answers)
+- [ ] **SCREEN-04**: User can complete screening without creating an account (guest mode)
+- [ ] **SCREEN-05**: Screening results display matched programs with confidence scoring ("Likely Eligible" vs "Possibly Eligible")
+- [ ] **SCREEN-06**: User can export screening results as printable PDF with matched programs and next steps
+- [ ] **SCREEN-07**: Caregiver-specific resources surface when caregiver role is selected
+- [ ] **SCREEN-08**: Screening content uses plain language at 6th-8th grade reading level
+- [ ] **SCREEN-09**: Screening session persists across page refresh (can resume where left off)
+
+### Eligibility Engine
+
+- [ ] **ELIG-01**: Eligibility rules are stored as JSON in database (not hardcoded in application code)
+- [ ] **ELIG-02**: Rules engine evaluates veteran's screening answers against all active programs and returns ranked matches
+- [ ] **ELIG-03**: Each match includes confidence score, required documentation, and next steps
+- [ ] **ELIG-04**: State/jurisdiction is a first-class entity — adding a new state requires configuration, not code changes
+- [ ] **ELIG-05**: Rules cover 10-15 core veteran benefit programs (VA disability, healthcare, education, housing, employment)
+
+### Resource Directory
+
+- [ ] **DIR-01**: User can search across 85K+ veteran organizations with full-text search
+- [ ] **DIR-02**: User can filter directory by benefit type, state, veteran-focused, and service category
+- [ ] **DIR-03**: User can view organization detail page with contact info, services, and verification status
+- [ ] **DIR-04**: User can search 5,500+ veteran-owned businesses by industry and location
+- [ ] **DIR-05**: Each organization record shows last verified date and data confidence score
+- [ ] **DIR-06**: Documentation checklists are available per program showing required documents for application
+
+### Data Pipeline
+
+- [ ] **DATA-01**: ETL pipeline imports organization data from vet_org_directory (85K+ records)
+- [ ] **DATA-02**: ETL pipeline imports business data from veteran-business-db (5,500+ records)
+- [ ] **DATA-03**: Data validation rejects records that fail schema validation before import
+- [ ] **DATA-04**: Database schema includes freshness tracking (last_verified_date, verification_method, confidence_score)
+
+### User Accounts
+
+- [ ] **ACCT-01**: User can create an optional account after completing screening to save results
+- [ ] **ACCT-02**: User can view personalized dashboard with screening history and saved resources
+- [ ] **ACCT-03**: User can bookmark organizations and programs for later reference
+- [ ] **ACCT-04**: User can track progress on action steps (checkboxes for documentation gathering, applications)
+
+### Self-Service Tools
+
+- [ ] **SELF-01**: User can access mental health exercises and guides (evidence-based, VA PTSD Coach-style)
+- [ ] **SELF-02**: User can access transition planning checklists for separating service members
+- [ ] **SELF-03**: Self-service content is organized by topic (PTSD, anxiety, sleep, anger management, transition)
+
+### Peer Connection
+
+- [ ] **PEER-01**: User can discover support groups and veteran communities near their location
+- [ ] **PEER-02**: User can find peer mentors matched by branch, era, and location
+- [ ] **PEER-03**: Peer connection listings include safety information and vetting status
+
+### Benefits Interaction
+
+- [ ] **BINT-01**: Rules engine flags when applying for one program might affect eligibility for another
+- [ ] **BINT-02**: User sees clear warnings with explanation when benefit interactions are detected
+- [ ] **BINT-03**: Interaction rules are validated by subject matter expert before launch
+
+## v2 Requirements
+
+Deferred to future release. Tracked but not in current roadmap.
+
+### Warm Handoff
+
+- **WARM-01**: User can request warm handoff referral to a partner organization
+- **WARM-02**: Referral system tracks state (sent → accepted → contacted → completed)
+- **WARM-03**: Automated SMS check-ins to veteran at 3 and 7 days after referral
+- **WARM-04**: Referral analytics track completion rate by organization
+
+### Expanded Engagement
+
+- **ENG-01**: Email/SMS reminders for pending action steps and application deadlines
+- **ENG-02**: Predictive eligibility ("You may also qualify for...") based on screening patterns
+- **ENG-03**: Multi-language support (Spanish first)
+
+### Advanced Features
+
+- **ADV-01**: Offline mode / Progressive Web App for rural veterans with limited connectivity
+- **ADV-02**: Organization data verification automation (phone checks, website crawling)
+- **ADV-03**: B2B analytics dashboard for veteran service organizations
+
+## Out of Scope
+
+| Feature | Reason |
+|---------|--------|
+| Application submission to agencies | Each agency has own systems/auth; maintaining 50+ integrations has high failure rate |
+| Real-time benefits dollar calculation | Rules too complex (dependents, bilateral factors, state variations); high error rate damages trust |
+| AI chatbot for benefits questions | AI hallucinates on complex rules; users want human expertise for high-stakes decisions |
+| Forum / community platform | Massive moderation burden, liability for crisis situations and misinformation |
+| VA system integration (VBMS) | Requires accreditation; complex legal requirements |
+| Native mobile app | Web-first; responsive design covers mobile use; defer until validated |
+| Veteran identity verification | Creates barriers for caregivers; non-veterans have no incentive to misuse |
+| Comprehensive claims tracking | VA.gov does this well; link to it, don't duplicate |
+
+## Traceability
+
+Which phases cover which requirements. Updated during roadmap creation.
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| FOUND-01 | Phase 1 | Pending |
+| FOUND-02 | Phase 1 | Pending |
+| FOUND-03 | Phase 1 | Pending |
+| FOUND-04 | Phase 1 | Pending |
+| CRISIS-01 | Phase 1 | Pending |
+| CRISIS-02 | Phase 4 | Pending |
+| CRISIS-03 | Phase 4 | Pending |
+| CRISIS-04 | Phase 4 | Pending |
+| SCREEN-01 | Phase 3 | Pending |
+| SCREEN-02 | Phase 3 | Pending |
+| SCREEN-03 | Phase 3 | Pending |
+| SCREEN-04 | Phase 3 | Pending |
+| SCREEN-05 | Phase 3 | Pending |
+| SCREEN-06 | Phase 3 | Pending |
+| SCREEN-07 | Phase 3 | Pending |
+| SCREEN-08 | Phase 3 | Pending |
+| SCREEN-09 | Phase 3 | Pending |
+| ELIG-01 | Phase 3 | Pending |
+| ELIG-02 | Phase 3 | Pending |
+| ELIG-03 | Phase 3 | Pending |
+| ELIG-04 | Phase 3 | Pending |
+| ELIG-05 | Phase 3 | Pending |
+| DIR-01 | Phase 2 | Pending |
+| DIR-02 | Phase 2 | Pending |
+| DIR-03 | Phase 2 | Pending |
+| DIR-04 | Phase 2 | Pending |
+| DIR-05 | Phase 2 | Pending |
+| DIR-06 | Phase 2 | Pending |
+| DATA-01 | Phase 2 | Pending |
+| DATA-02 | Phase 2 | Pending |
+| DATA-03 | Phase 2 | Pending |
+| DATA-04 | Phase 2 | Pending |
+| ACCT-01 | Phase 5 | Pending |
+| ACCT-02 | Phase 5 | Pending |
+| ACCT-03 | Phase 5 | Pending |
+| ACCT-04 | Phase 5 | Pending |
+| SELF-01 | Phase 6 | Pending |
+| SELF-02 | Phase 6 | Pending |
+| SELF-03 | Phase 6 | Pending |
+| PEER-01 | Phase 7 | Pending |
+| PEER-02 | Phase 7 | Pending |
+| PEER-03 | Phase 7 | Pending |
+| BINT-01 | Phase 7 | Pending |
+| BINT-02 | Phase 7 | Pending |
+| BINT-03 | Phase 7 | Pending |
+
+**Coverage:**
+- v1 requirements: 43 total
+- Mapped to phases: 43
+- Unmapped: 0 ✓
+
+---
+*Requirements defined: 2026-02-15*
+*Last updated: 2026-02-15 after initial definition*
