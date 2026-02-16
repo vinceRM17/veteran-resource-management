@@ -99,6 +99,13 @@ Plans:
 
 **Requirements:** CRISIS-02, CRISIS-03, CRISIS-04
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Database schema (crisis_detection_logs) + crisis keywords + detector + audit logger (CRISIS-02, CRISIS-04)
+- [ ] 04-02-PLAN.md — CrisisIntercept component + free-text field + server action integration + end-to-end wiring (CRISIS-02, CRISIS-03)
+- [ ] 04-03-PLAN.md — Real-time crisis monitoring dashboard + human review workflow (CRISIS-04)
+
 **Success Criteria:**
 1. Server monitors every screening answer for crisis keywords and patterns (e.g., "hopeless", "end it", "no reason to live")
 2. When crisis detected, screening flow interrupts with full-page CrisisIntercept component showing 988 Lifeline, Crisis Text Line, and VA Crisis Line with one-click call/text
