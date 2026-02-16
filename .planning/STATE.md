@@ -1,8 +1,8 @@
 # Project State: Veteran Resource Management
 
 **Last Updated:** 2026-02-16
-**Current Phase:** 05-user-accounts-dashboard
-**Current Plan:** 04 (Plan 4 of 4 complete)
+**Current Phase:** 06-self-service-tools
+**Current Plan:** 02 (Plan 2 of 2 complete)
 **Status:** Phase Complete
 
 ## Project Reference
@@ -11,29 +11,29 @@
 A veteran in crisis or need can put in their information and immediately feel connected — to programs they qualify for, to people who can help, and to peers who understand what they're going through. Isolation is the enemy; connection is the mission.
 
 **Current Focus:**
-Phase 5 - User Accounts + Dashboard
+Phase 6 - Self-Service Tools
 
 ---
 
 ## Current Position
 
-**Active Phase:** 05-user-accounts-dashboard
+**Active Phase:** 06-self-service-tools
 
-**Active Plan:** 05-04 (complete)
+**Active Plan:** 06-02 (complete)
 
 **Status:** IN PROGRESS
 
 **Progress:**
-[█████████░] 92%
+[█████████░] 100%
 Phase 1: Foundation + Crisis Safety         [████] 4/4 plans complete (100%) ✓
 Phase 2: Resource Directory + Data Pipeline [████] 4/4 plans complete (100%) ✓
 Phase 3: Core Screening + Eligibility       [████] 4/4 plans complete (100%) — needs migration + testing
 Phase 4: Smart Crisis Detection             [████] 3/3 plans complete (100%) ✓
 Phase 5: User Accounts + Dashboard          [████] 4/4 plans complete (100%) ✓
-Phase 6: Self-Service Tools                 [ Not Started ]
+Phase 6: Self-Service Tools                 [████] 2/2 plans complete (100%) ✓
 Phase 7: Peer Connection + Benefits Warnings [ Not Started ]
 
-Overall: 3/7 phases complete (43%), Phase 3 code complete pending verification
+Overall: 6/7 phases complete (86%)
 ```
 
 ---
@@ -57,14 +57,16 @@ Overall: 3/7 phases complete (43%), Phase 3 code complete pending verification
 | 05 | 02 | 3 min | 2 | 6 | Complete | 2026-02-16 |
 | 05 | 03 | 4 min | 2 | 9 | Complete | 2026-02-16 |
 | 05 | 04 | 4 min | 1 | 2 | Complete | 2026-02-16 |
+| 06 | 01 | 8 min | 2 | 5 | Complete | 2026-02-16 |
+| 06 | 02 | 2 min | 2 | 5 | Complete | 2026-02-16 |
 
-**Velocity:** 15 plans completed
+**Velocity:** 17 plans completed
 
-**Plan Success Rate:** 100% (15/15)
+**Plan Success Rate:** 100% (17/17)
 
 **Blocker Rate:** 0% (0 blockers encountered)
 
-**Average Plan Duration:** 5.9 minutes
+**Average Plan Duration:** 5.5 minutes
 
 ---
 | Phase 04 P01 | 2 | 2 tasks | 5 files |
@@ -122,6 +124,9 @@ Overall: 3/7 phases complete (43%), Phase 3 code complete pending verification
 | 2026-02-16 | Action items grouped by program_name with progress bar | Visual progress tracking motivates completion of benefit application steps | Users see clear path forward for each program |
 | 2026-02-16 | Admin role check in layout.tsx (server-side) | No client-side role bypass possible; profiles table queried on every admin page load | Secure RBAC without exposing role logic to client |
 | 2026-02-16 | Non-admin users redirected to /dashboard (not 403) | Smoother UX for users who accidentally navigate to admin routes | No confusing error pages for regular users |
+| 2026-02-16 | Transition checklist progress via action_items with program_name prefix | Reuse action_items table with "transition-{milestone-slug}" prefix instead of new table | Leverages existing infrastructure, keeps all progress tracking in one place |
+| 2026-02-16 | ChecklistItemRow optimistic UI pattern | Client-side useState for immediate feedback before server confirmation | Matches ActionItemsList pattern, responsive UX with error reversion |
+| 2026-02-16 | Progress bar visibility conditional on auth + progress | Only show when authenticated AND at least one item checked | Avoids empty/confusing display for guests or users who haven't started |
 
 ### Active TODOs
 
@@ -150,11 +155,10 @@ Phases 1, 5, 6 use standard patterns (skip research-phase).
 Veteran resource platform connecting veterans/caregivers to 90K+ organizations, with benefits screening questionnaire that matches users to programs they qualify for.
 
 **Where we are:**
-Phase 5 COMPLETE (4/4 plans done). Dashboard navigation wired to bookmarks/action-items pages. Admin routes protected with profiles.role RBAC check. All user account features operational: auth, dashboard, bookmarks, action items, admin protection.
+Phase 6 COMPLETE (2/2 plans done). Self-service tools section fully implemented: mental health exercises (4 topics, 16 exercises), transition checklists (3 milestones, 23 items), progress tracking via action_items table. Tools link in main navigation. All self-service content accessible from /tools.
 
 **What's next:**
-1. Phase 6: Self-Service Tools
-2. Phase 7: Peer Connection + Benefits Warnings
+1. Phase 7: Peer Connection + Benefits Warnings (final phase)
 
 **Critical context:**
 - Crisis safety is non-negotiable (always-visible resources in Phase 1, smart detection in Phase 4)
@@ -184,9 +188,17 @@ Phase 5 COMPLETE (4/4 plans done). Dashboard navigation wired to bookmarks/actio
 - **Dashboard nav links corrected:** Overview, /dashboard/bookmarks, /dashboard/action-items
 - **Admin RBAC enforced:** layout.tsx checks profiles.role === 'admin', redirects non-admins to /dashboard
 - **Phase 5 complete:** Auth + dashboard + bookmarks + action items + admin protection all wired
+- **Self-service tools content data:** 16 mental health exercises across 4 topics, 23 transition checklist items across 3 milestones
+- **/tools landing page:** Feature cards linking to exercises and transition sections
+- **Exercise pages:** /tools/exercises browse, /tools/exercises/[topic] with accordion UI
+- **Transition checklist pages:** /tools/transition overview, /tools/transition/[milestone] detail pages
+- **Checklist progress tracking:** action_items table with program_name = "transition-{slug}" prefix
+- **ChecklistItemRow component:** Optimistic UI checkbox toggle for authenticated users
+- **Tools navigation link:** Added to header between Screening and auth section
+- **Phase 6 complete:** Self-service tools fully implemented and accessible
 
 ---
 
 *State initialized: 2026-02-15*
-*Last plan completed: 05-04 (Wiring + Admin Protection) on 2026-02-16*
-*Next action: Begin Phase 6 planning (Self-Service Tools)*
+*Last plan completed: 06-02 (Transition Checklists + Progress Tracking) on 2026-02-16*
+*Next action: Begin Phase 7 planning (Peer Connection + Benefits Warnings)*
