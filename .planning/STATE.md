@@ -1,9 +1,9 @@
 # Project State: Veteran Resource Management
 
 **Last Updated:** 2026-02-16
-**Current Phase:** 04-smart-crisis-detection
-**Current Plan:** 03 (Plan 3 of 3 complete)
-**Status:** Phase 4 Complete
+**Current Phase:** 05-user-accounts-dashboard
+**Current Plan:** 01 (Plan 1 of 4 complete)
+**Status:** In Progress
 
 ## Project Reference
 
@@ -11,17 +11,17 @@
 A veteran in crisis or need can put in their information and immediately feel connected — to programs they qualify for, to people who can help, and to peers who understand what they're going through. Isolation is the enemy; connection is the mission.
 
 **Current Focus:**
-Phase 4 - Smart Crisis Detection
+Phase 5 - User Accounts + Dashboard
 
 ---
 
 ## Current Position
 
-**Active Phase:** 04-smart-crisis-detection
+**Active Phase:** 05-user-accounts-dashboard
 
-**Active Plan:** 04-03 (complete)
+**Active Plan:** 05-01 (complete)
 
-**Status:** COMPLETE
+**Status:** IN PROGRESS
 
 **Progress:**
 [█████████░] 92%
@@ -29,7 +29,7 @@ Phase 1: Foundation + Crisis Safety         [████] 4/4 plans complete (1
 Phase 2: Resource Directory + Data Pipeline [████] 4/4 plans complete (100%) ✓
 Phase 3: Core Screening + Eligibility       [████] 4/4 plans complete (100%) — needs migration + testing
 Phase 4: Smart Crisis Detection             [████] 3/3 plans complete (100%) ✓
-Phase 5: User Accounts + Dashboard          [ Not Started ]
+Phase 5: User Accounts + Dashboard          [█░░░] 1/4 plans complete (25%)
 Phase 6: Self-Service Tools                 [ Not Started ]
 Phase 7: Peer Connection + Benefits Warnings [ Not Started ]
 
@@ -53,10 +53,11 @@ Overall: 2/7 phases complete (29%), Phase 3 code complete pending verification
 | 03 | 03 | 6 min | 2 | 4 | Complete | 2026-02-16 |
 | 03 | 04 | 8 min | 4 | 8 | Complete | 2026-02-16 |
 | 04 | 01 | 2 min | 2 | 5 | Complete | 2026-02-16 |
+| 05 | 01 | 4 min | 2 | 5 | Complete | 2026-02-16 |
 
-**Velocity:** 11 plans completed
+**Velocity:** 12 plans completed
 
-**Plan Success Rate:** 100% (11/11)
+**Plan Success Rate:** 100% (12/12)
 
 **Blocker Rate:** 0% (0 blockers encountered)
 
@@ -108,6 +109,9 @@ Overall: 2/7 phases complete (29%), Phase 3 code complete pending verification
 | 2026-02-16 | Admin auth protection deferred to Phase 5 | User roles and permissions don't exist yet | Admin routes accessible to any authenticated user until Phase 5 |
 | 2026-02-16 | Real-time dashboard updates via Supabase Realtime INSERT and UPDATE subscriptions | Monitoring team needs immediate visibility into new detections and review status changes | Dashboard shows live updates without page refresh |
 | 2026-02-16 | False positive tracking enables keyword refinement | Tracking which keywords trigger false alarms allows future optimization | is_false_positive flag enables data-driven keyword list improvements |
+| 2026-02-16 | Admin RLS uses EXISTS subquery on profiles.role | Explicit policy clarity over function call indirection | Self-contained, transparent security policies |
+| 2026-02-16 | Session claiming with double-check pattern | SELECT validates then UPDATE with IS NULL guard prevents race conditions | Safe concurrent session claiming |
+| 2026-02-16 | Action items from screening next_steps | One action item per step preserves granular tracking | Users can check off individual next steps on their dashboard |
 
 ### Active TODOs
 
@@ -136,12 +140,12 @@ Phases 1, 5, 6 use standard patterns (skip research-phase).
 Veteran resource platform connecting veterans/caregivers to 90K+ organizations, with benefits screening questionnaire that matches users to programs they qualify for.
 
 **Where we are:**
-Phase 4 COMPLETE (3/3 plans done). Crisis detection foundation built (04-01), integrated into screening flow (04-02), and monitoring dashboard created (04-03). Ready for Phase 5: User Accounts + Dashboard.
+Phase 5 IN PROGRESS (1/4 plans done). Database foundation complete (05-01): bookmarks and action_items tables, admin-only crisis log RLS, session claiming logic, and auth flow updates.
 
 **What's next:**
-1. Begin Phase 5: User Accounts + Dashboard
-2. Add authentication and user roles
-3. Protect admin routes with role-based access control
+1. Continue Phase 5: Dashboard UI (05-02), bookmark/action-item features (05-03), admin wiring (05-04)
+2. Build user dashboard page with screening history
+3. Implement bookmark and action item management UI
 
 **Critical context:**
 - Crisis safety is non-negotiable (always-visible resources in Phase 1, smart detection in Phase 4)
@@ -157,9 +161,13 @@ Phase 4 COMPLETE (3/3 plans done). Crisis detection foundation built (04-01), in
 - **Migration 00006 must be applied** before crisis detection can log to database
 - **Crisis detection complete:** Free-text field in screening, real-time detection, monitoring dashboard with human review
 - **Phase 4 complete:** Smart crisis detection fully implemented and ready for 24/7 monitoring team
+- **Migration 00007 must be applied** before bookmarks, action items, or session claiming work
+- **Phase 5 database foundation ready:** bookmarks, action_items tables with RLS, is_admin() helper
+- **Session claiming ready:** claimGuestSession() server action for guest-to-user flow
+- **Auth flow updated:** SignupForm supports redirectTo and sessionId props for post-signup redirect
 
 ---
 
 *State initialized: 2026-02-15*
-*Last plan completed: 04-03 (Crisis Detection Monitoring Dashboard) on 2026-02-16*
-*Next action: Begin Phase 5 planning (User Accounts + Dashboard)*
+*Last plan completed: 05-01 (Database Foundation for User Accounts) on 2026-02-16*
+*Next action: Execute 05-02 (Dashboard UI)*
