@@ -5,7 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { VerificationBadge } from "@/components/directory/verification-badge";
+import { BookmarkButton } from "@/components/directory/BookmarkButton";
 import { getBusinessById } from "@/lib/db/queries";
+import { createClient } from "@/lib/supabase/server";
+import { isBookmarked } from "@/lib/db/bookmark-actions";
 import {
 	MapPin,
 	Phone,
@@ -51,6 +54,11 @@ export default async function BusinessDetailPage(
 	if (!business) {
 		notFound();
 	}
+
+	// Check auth and bookmark status
+	const supabase = await createClient();
+	const { data: { user } } = await supabase.auth.getUser();
+	const bookmarked = user ? await isBookmarked('business', params.id) : false;
 
 	const hasDBA =
 		business.dba_name &&
@@ -320,6 +328,19 @@ export default async function BusinessDetailPage(
 							</CardContent>
 						</Card>
 					)}
+
+					{/* Save Resource */}
+					<Card>
+						<CardContent className="pt-6">
+							<BookmarkButton
+								resourceType="business"
+								resourceId={params.id}
+								resourceName={business.legal_business_name}
+								initialBookmarked={bookmarked}
+								isLoggedIn={!!user}
+							/>
+						</CardContent>
+					</Card>
 				</div>
 			</div>
 		</div>

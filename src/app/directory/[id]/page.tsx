@@ -1,6 +1,9 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getOrganizationById } from '@/lib/db/queries';
+import { createClient } from '@/lib/supabase/server';
+import { isBookmarked } from '@/lib/db/bookmark-actions';
+import { BookmarkButton } from '@/components/directory/BookmarkButton';
 import { VerificationBadge } from '@/components/directory/verification-badge';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -38,6 +41,11 @@ export default async function OrgDetailPage({ params }: OrgDetailPageProps) {
   if (!org) {
     notFound();
   }
+
+  // Check auth and bookmark status
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const bookmarked = user ? await isBookmarked('organization', id) : false;
 
   // Format address
   const address = [
@@ -349,6 +357,15 @@ export default async function OrgDetailPage({ params }: OrgDetailPageProps) {
               {!org.phone && !org.email && !org.website && !address && (
                 <p className="text-sm text-muted-foreground">No contact information available</p>
               )}
+
+              <Separator className="my-4" />
+              <BookmarkButton
+                resourceType="organization"
+                resourceId={id}
+                resourceName={org.org_name}
+                initialBookmarked={bookmarked}
+                isLoggedIn={!!user}
+              />
             </CardContent>
           </Card>
         </aside>
