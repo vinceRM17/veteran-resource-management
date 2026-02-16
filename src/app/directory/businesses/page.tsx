@@ -20,6 +20,7 @@ interface SearchParams {
 	q?: string;
 	state?: string;
 	type?: string;
+	location?: string;
 	page?: string;
 }
 
@@ -32,6 +33,7 @@ async function BusinessSearchResults({ searchParams }: BusinessSearchPageProps) 
 	const query = params.q;
 	const state = params.state;
 	const businessType = params.type;
+	const location = params.location;
 	const page = Number(params.page) || 1;
 
 	const [searchResult, states, businessTypes] = await Promise.all([
@@ -39,6 +41,7 @@ async function BusinessSearchResults({ searchParams }: BusinessSearchPageProps) 
 			query,
 			state,
 			businessType,
+			location,
 			page,
 			pageSize: 20,
 		}),

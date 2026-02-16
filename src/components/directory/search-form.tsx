@@ -45,6 +45,12 @@ export function SearchForm({ states, serviceCategories }: SearchFormProps) {
     serialize: (value) => value || '',
   });
 
+  const [location, setLocation] = useQueryState('location', {
+    defaultValue: '',
+    parse: (value) => value || '',
+    serialize: (value) => value || '',
+  });
+
   const [, setPage] = useQueryState('page', {
     defaultValue: '1',
     parse: (value) => value || '1',
@@ -53,11 +59,16 @@ export function SearchForm({ states, serviceCategories }: SearchFormProps) {
 
   // Local state for immediate input feedback
   const [searchInput, setSearchInput] = useState(query || '');
+  const [locationInput, setLocationInput] = useState(location || '');
 
   // Update local state when URL changes (e.g., browser back/forward)
   useEffect(() => {
     setSearchInput(query || '');
   }, [query]);
+
+  useEffect(() => {
+    setLocationInput(location || '');
+  }, [location]);
 
   // Debounced search update (300ms delay)
   const debouncedSetQuery = useDebouncedCallback((value: string) => {
@@ -65,9 +76,19 @@ export function SearchForm({ states, serviceCategories }: SearchFormProps) {
     setPage('1'); // Reset to first page on search
   }, 300);
 
+  const debouncedSetLocation = useDebouncedCallback((value: string) => {
+    setLocation(value || null);
+    setPage('1');
+  }, 300);
+
   const handleSearchChange = (value: string) => {
     setSearchInput(value);
     debouncedSetQuery(value);
+  };
+
+  const handleLocationChange = (value: string) => {
+    setLocationInput(value);
+    debouncedSetLocation(value);
   };
 
   const handleFilterChange = (setter: (value: string | null) => void) => (value: string) => {
@@ -77,14 +98,16 @@ export function SearchForm({ states, serviceCategories }: SearchFormProps) {
 
   const clearFilters = () => {
     setSearchInput('');
+    setLocationInput('');
     setQuery(null);
+    setLocation(null);
     setState(null);
     setCategory(null);
     setVaAccredited(null);
     setPage('1');
   };
 
-  const hasActiveFilters = Boolean(query || state || category || vaAccredited);
+  const hasActiveFilters = Boolean(query || state || category || vaAccredited || location);
 
   return (
     <div className="bg-white rounded-lg border p-6 space-y-6">
@@ -105,6 +128,21 @@ export function SearchForm({ states, serviceCategories }: SearchFormProps) {
             aria-label="Search organizations"
           />
         </div>
+      </div>
+
+      {/* Location input */}
+      <div className="space-y-2">
+        <Label htmlFor="location" className="text-sm font-medium">
+          City or Zip Code
+        </Label>
+        <Input
+          id="location"
+          type="text"
+          placeholder="Enter city name or zip code..."
+          value={locationInput}
+          onChange={(e) => handleLocationChange(e.target.value)}
+          aria-label="Filter by city or zip code"
+        />
       </div>
 
       {/* Filters */}

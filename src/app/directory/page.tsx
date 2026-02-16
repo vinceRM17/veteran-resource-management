@@ -11,6 +11,7 @@ interface DirectoryPageProps {
     state?: string;
     category?: string;
     va?: string;
+    location?: string;
     page?: string;
   }>;
 }
@@ -24,6 +25,7 @@ async function DirectoryResults({ searchParams }: DirectoryPageProps) {
   const serviceCategory = params.category || undefined;
   const vaAccredited =
     params.va === 'true' ? true : params.va === 'false' ? false : undefined;
+  const location = params.location || undefined;
   const page = params.page ? Number.parseInt(params.page, 10) : 1;
 
   // Fetch search results
@@ -32,6 +34,7 @@ async function DirectoryResults({ searchParams }: DirectoryPageProps) {
     state,
     serviceCategory,
     vaAccredited,
+    location,
     page,
   });
 

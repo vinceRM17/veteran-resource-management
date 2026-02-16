@@ -15,6 +15,7 @@ export interface SearchOrganizationsParams {
   state?: string;
   serviceCategory?: string;
   vaAccredited?: boolean;
+  location?: string;
   page?: number;
   pageSize?: number;
 }
@@ -43,6 +44,7 @@ export async function searchOrganizations(params: SearchOrganizationsParams): Pr
     filter_service_category: params.serviceCategory || null,
     filter_va_accredited: params.vaAccredited ?? null,
     filter_confidence_grade: null,
+    filter_location: params.location || null,
     page_number: page,
     page_size: pageSize,
   });
@@ -142,6 +144,7 @@ export interface SearchBusinessesParams {
   query?: string;
   state?: string;
   businessType?: string;
+  location?: string;
   page?: number;
   pageSize?: number;
 }
@@ -168,6 +171,7 @@ export async function searchBusinesses(params: SearchBusinessesParams): Promise<
     query_text: params.query || null,
     filter_state: params.state || null,
     filter_business_type: params.businessType || null,
+    filter_location: params.location || null,
     page_number: page,
     page_size: pageSize,
   });
