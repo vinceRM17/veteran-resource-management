@@ -122,6 +122,14 @@ Plans:
 
 **Requirements:** ACCT-01, ACCT-02, ACCT-03, ACCT-04
 
+**Plans:** 4 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Database migration (bookmarks, action_items, admin RLS) + session claiming + auth flow updates (ACCT-01)
+- [ ] 05-02-PLAN.md — Dashboard page with screening history + Save Results CTA + Header nav update (ACCT-02)
+- [ ] 05-03-PLAN.md — Bookmark system (button, server actions, list page) + Action items page with progress tracking (ACCT-03, ACCT-04)
+- [ ] 05-04-PLAN.md — Dashboard integration wiring + admin route protection + end-to-end verification
+
 **Success Criteria:**
 1. User can create account after completing screening (optional, not forced)
 2. User sees personalized dashboard with screening history (past screenings with dates and matched programs)
