@@ -69,6 +69,14 @@ Plans:
 
 **Requirements:** SCREEN-01, SCREEN-02, SCREEN-03, SCREEN-04, SCREEN-05, SCREEN-06, SCREEN-07, SCREEN-08, SCREEN-09, ELIG-01, ELIG-02, ELIG-03, ELIG-04, ELIG-05
 
+**Plans:** 4 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Database schema (eligibility_rules + screening_results tables) + screening content + Zod schemas + seed data
+- [ ] 03-02-PLAN.md — Zustand screening store + 5-step multi-step form UI with conditional logic and persistence
+- [ ] 03-03-PLAN.md — Eligibility rules engine (json-rules-engine) + confidence scoring + unit tests
+- [ ] 03-04-PLAN.md — Submission server action + results page + PDF export + RLS updates + end-to-end verification
+
 **Success Criteria:**
 1. User can complete 5-7 question screening without creating an account (guest mode)
 2. User selects "I am a veteran" or "I am supporting a veteran" and sees role-appropriate questions
@@ -154,9 +162,9 @@ Plans:
 
 | Phase | Status | Requirements | Completion |
 |-------|--------|--------------|------------|
-| 1 - Foundation + Crisis Safety | ✓ Complete (2026-02-15) | 5 | 100% |
-| 2 - Resource Directory + Data Pipeline | ✓ Complete (2026-02-16) | 10 | 100% |
-| 3 - Core Screening + Eligibility Engine | Pending | 14 | 0% |
+| 1 - Foundation + Crisis Safety | Complete (2026-02-15) | 5 | 100% |
+| 2 - Resource Directory + Data Pipeline | Complete (2026-02-16) | 10 | 100% |
+| 3 - Core Screening + Eligibility Engine | Planned | 14 | 0% |
 | 4 - Smart Crisis Detection | Pending | 3 | 0% |
 | 5 - User Accounts + Personalized Dashboard | Pending | 4 | 0% |
 | 6 - Self-Service Tools | Pending | 3 | 0% |
@@ -166,5 +174,5 @@ Plans:
 
 ---
 
-*Last updated: 2026-02-15*
-*Next: `/gsd:plan-phase 1`*
+*Last updated: 2026-02-16*
+*Next: `/gsd:execute-phase 3`*
