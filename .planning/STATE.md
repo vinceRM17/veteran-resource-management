@@ -1,9 +1,9 @@
 # Project State: Veteran Resource Management
 
 **Last Updated:** 2026-02-16
-**Current Phase:** 02-resource-directory-data-pipeline
-**Current Plan:** 03 (Plan 3 of 4 complete)
-**Status:** Executing Phase 2
+**Current Phase:** 03-core-screening-eligibility-engine
+**Current Plan:** 01 (Plan 1 of 4 complete)
+**Status:** Executing Phase 3
 
 ## Project Reference
 
@@ -11,23 +11,23 @@
 A veteran in crisis or need can put in their information and immediately feel connected — to programs they qualify for, to people who can help, and to peers who understand what they're going through. Isolation is the enemy; connection is the mission.
 
 **Current Focus:**
-Phase 2 - Resource Directory + Data Pipeline
+Phase 3 - Core Screening + Eligibility Engine
 
 ---
 
 ## Current Position
 
-**Active Phase:** 03-core-screening-eligibility (Not yet planned)
+**Active Phase:** 03-core-screening-eligibility-engine
 
-**Active Plan:** None
+**Active Plan:** 03-02 (next)
 
-**Status:** PHASE_COMPLETE
+**Status:** EXECUTING
 
 **Progress:**
 ```
 Phase 1: Foundation + Crisis Safety         [████] 4/4 plans complete (100%) ✓
 Phase 2: Resource Directory + Data Pipeline [████] 4/4 plans complete (100%) ✓
-Phase 3: Core Screening + Eligibility       [ Not Started ]
+Phase 3: Core Screening + Eligibility       [█___] 1/4 plans complete (25%)
 Phase 4: Smart Crisis Detection             [ Not Started ]
 Phase 5: User Accounts + Dashboard          [ Not Started ]
 Phase 6: Self-Service Tools                 [ Not Started ]
@@ -48,14 +48,15 @@ Overall: 2/7 phases complete (29%)
 | 02 | 02 | 6 min | 1 | 7 | Complete | 2026-02-16 |
 | 02 | 03 | 5 min | 2 | 17 | Complete | 2026-02-16 |
 | 02 | 04 | 8 min | 2 | 11 | Complete | 2026-02-16 |
+| 03 | 01 | 6 min | 2 | 8 | Complete | 2026-02-16 |
 
-**Velocity:** 6 plans completed
+**Velocity:** 7 plans completed
 
-**Plan Success Rate:** 100% (6/6)
+**Plan Success Rate:** 100% (7/7)
 
 **Blocker Rate:** 0% (0 blockers encountered)
 
-**Average Plan Duration:** 6.7 minutes
+**Average Plan Duration:** 6.6 minutes
 
 ---
 
@@ -85,6 +86,10 @@ Overall: 2/7 phases complete (29%)
 | 2026-02-16 | nuqs for URL state management | Bookmarkable search URLs are core requirement; nuqs provides type-safe URL state with Next.js App Router support | All search filters (query, state, category, VA, page) persist in URL and work with browser back/forward |
 | 2026-02-16 | 300ms debounce for search input | Balance between immediate feedback and reducing unnecessary server requests | Smooth typing experience, less database load |
 | 2026-02-16 | Server Components for directory pages | Fetch data server-side for better SEO and initial page load performance | Search results pre-rendered, faster perceived performance |
+| 2026-02-16 | Separate Zod schemas per conditional variant | Zod 4 .extend() causes type inference issues when overriding optional with required | Cleaner type safety, no runtime schema mutation |
+| 2026-02-16 | Pure functions for conditional logic (no React deps) | Enables easy unit testing without component rendering | shouldShowField() and clearDependentFields() fully testable |
+| 2026-02-16 | 15 rules with dual high/medium confidence tiers | Binary yes/no matching is too rigid for benefits screening | Nuanced "Likely Eligible" vs "Possibly Eligible" recommendations |
+| 2026-02-16 | json-rules-engine v7 with built-in TypeScript types | No separate @types package needed; rules stored as JSON in database | Non-developers can update eligibility criteria without code changes |
 
 ### Active TODOs
 
@@ -113,10 +118,10 @@ Phases 1, 5, 6 use standard patterns (skip research-phase).
 Veteran resource platform connecting veterans/caregivers to 90K+ organizations, with benefits screening questionnaire that matches users to programs they qualify for.
 
 **Where we are:**
-Phase 2 complete (4/4 plans). Phase 1 complete (4/4 plans). Full resource directory operational: 85K+ organizations and 5.5K+ businesses searchable with FTS, state/category/location filters, detail pages, freshness badges, and documentation checklists for 8 benefit programs.
+Phase 3 in progress (1/4 plans complete). Phase 1 and 2 fully complete. Plan 03-01 established the data foundation: eligibility database schema (2 tables), TypeScript types, 5-step screening questions, per-step Zod validation, conditional logic, and 15 Kentucky eligibility rules in json-rules-engine format.
 
 **What's next:**
-Plan and execute Phase 3: Core Screening + Eligibility Engine. This is the core value — veterans answer screening questions and get matched to programs they qualify for.
+Execute Plan 03-02: Screening Form UI. Build the multi-step form components using the questions, schemas, and conditional logic created in Plan 03-01.
 
 **Critical context:**
 - Crisis safety is non-negotiable (always-visible resources in Phase 1, smart detection in Phase 4)
@@ -128,5 +133,5 @@ Plan and execute Phase 3: Core Screening + Eligibility Engine. This is the core 
 ---
 
 *State initialized: 2026-02-15*
-*Last plan completed: 02-04 (Business Search UI + Documentation Checklists) on 2026-02-16*
-*Next action: /gsd:plan-phase 3 (Core Screening + Eligibility Engine)*
+*Last plan completed: 03-01 (Eligibility Schema & Screening Data) on 2026-02-16*
+*Next action: Execute 03-02-PLAN.md (Screening Form UI)*
