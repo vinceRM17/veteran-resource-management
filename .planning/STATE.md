@@ -2,7 +2,7 @@
 
 **Last Updated:** 2026-02-16
 **Current Phase:** 02-resource-directory-data-pipeline
-**Current Plan:** 02 (Plan 2 of 4 complete)
+**Current Plan:** 03 (Plan 3 of 4 complete)
 **Status:** Executing Phase 2
 
 ## Project Reference
@@ -17,16 +17,16 @@ Phase 2 - Resource Directory + Data Pipeline
 
 ## Current Position
 
-**Active Phase:** 02-resource-directory-data-pipeline (Plan 2 of 4 complete)
+**Active Phase:** 02-resource-directory-data-pipeline (Plan 3 of 4 complete)
 
-**Active Plan:** 02-02-PLAN.md (COMPLETE)
+**Active Plan:** 02-03-PLAN.md (COMPLETE)
 
 **Status:** IN_PROGRESS
 
 **Progress:**
 ```
 Phase 1: Foundation + Crisis Safety         [████] 4/4 plans complete (100%) ✓
-Phase 2: Resource Directory + Data Pipeline [██░░] 2/4 plans complete (50%)
+Phase 2: Resource Directory + Data Pipeline [███░] 3/4 plans complete (75%)
 Phase 3: Core Screening + Eligibility       [ Not Started ]
 Phase 4: Smart Crisis Detection             [ Not Started ]
 Phase 5: User Accounts + Dashboard          [ Not Started ]
@@ -34,7 +34,7 @@ Phase 6: Self-Service Tools                 [ Not Started ]
 Phase 7: Peer Connection + Benefits Warnings [ Not Started ]
 
 Overall: 0/7 phases complete (0%)
-Current Phase Progress: 2/4 plans (50%)
+Current Phase Progress: 3/4 plans (75%)
 ```
 
 ---
@@ -47,14 +47,15 @@ Current Phase Progress: 2/4 plans (50%)
 | 01 | 02 | 7 min | 3 | 14 | Complete | 2026-02-16 |
 | 02 | 01 | 8 min | 2 | 9 | Complete | 2026-02-16 |
 | 02 | 02 | 6 min | 1 | 7 | Complete | 2026-02-16 |
+| 02 | 03 | 5 min | 2 | 17 | Complete | 2026-02-16 |
 
-**Velocity:** 4 plans completed
+**Velocity:** 5 plans completed
 
-**Plan Success Rate:** 100% (4/4)
+**Plan Success Rate:** 100% (5/5)
 
 **Blocker Rate:** 0% (0 blockers encountered)
 
-**Average Plan Duration:** 6.8 minutes
+**Average Plan Duration:** 6.4 minutes
 
 ---
 
@@ -81,6 +82,9 @@ Current Phase Progress: 2/4 plans (50%)
 | 2026-02-16 | Use better-sqlite3 for synchronous SQLite reading | Simple iteration pattern for 5,567 rows, no streaming complexity needed | Cleaner code than async SQLite libraries, entire dataset read into memory |
 | 2026-02-16 | Batch size of 500 for business imports | Smaller dataset than organizations (5.5K vs 85K) | Faster import, better progress logging granularity |
 | 2026-02-16 | Use dotenv for .env.local loading in scripts | tsx doesn't auto-load Next.js env files | Scripts work standalone without Next.js environment |
+| 2026-02-16 | nuqs for URL state management | Bookmarkable search URLs are core requirement; nuqs provides type-safe URL state with Next.js App Router support | All search filters (query, state, category, VA, page) persist in URL and work with browser back/forward |
+| 2026-02-16 | 300ms debounce for search input | Balance between immediate feedback and reducing unnecessary server requests | Smooth typing experience, less database load |
+| 2026-02-16 | Server Components for directory pages | Fetch data server-side for better SEO and initial page load performance | Search results pre-rendered, faster perceived performance |
 
 ### Active TODOs
 
@@ -109,10 +113,10 @@ Phases 1, 5, 6 use standard patterns (skip research-phase).
 Veteran resource platform connecting veterans/caregivers to 90K+ organizations, with benefits screening questionnaire that matches users to programs they qualify for.
 
 **Where we are:**
-Phase 2 in progress. Phase 1 complete (4/4 plans): Next.js 16 foundation, accessible layout, crisis banner, Supabase auth. Phase 2 Plans 01-02 complete: Directory database schema with FTS (85K+ organizations, 5.5K+ businesses), ETL pipelines with Zod validation for both CSV and SQLite imports, combined import script (import:all). 2 of 4 Phase 2 plans complete.
+Phase 2 in progress. Phase 1 complete (4/4 plans): Next.js 16 foundation, accessible layout, crisis banner, Supabase auth. Phase 2 Plans 01-03 complete: Directory database schema with FTS (85K+ organizations, 5.5K+ businesses), ETL pipelines with Zod validation for both CSV and SQLite imports, combined import script (import:all), full directory UI with search/filters/pagination/detail pages. 3 of 4 Phase 2 plans complete.
 
 **What's next:**
-Execute Plan 03 of Phase 2 (directory UI) or continue to Plan 04.
+Execute Plan 04 of Phase 2 (business directory UI) or begin Phase 3 planning.
 
 **Critical context:**
 - Crisis safety is non-negotiable (always-visible resources in Phase 1, smart detection in Phase 4)
@@ -124,5 +128,5 @@ Execute Plan 03 of Phase 2 (directory UI) or continue to Plan 04.
 ---
 
 *State initialized: 2026-02-15*
-*Last plan completed: 02-02 (Business ETL Pipeline) on 2026-02-16*
-*Next action: Execute 02-03-PLAN.md (Directory UI) or 02-04-PLAN.md*
+*Last plan completed: 02-03 (Directory Search UI) on 2026-02-16*
+*Next action: Execute 02-04-PLAN.md (Business Directory UI)*
