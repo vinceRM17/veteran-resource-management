@@ -2,7 +2,7 @@
 
 **Last Updated:** 2026-02-16
 **Current Phase:** 02-resource-directory-data-pipeline
-**Current Plan:** 01 (Plan 1 of 3 complete)
+**Current Plan:** 02 (Plan 2 of 4 complete)
 **Status:** Executing Phase 2
 
 ## Project Reference
@@ -17,16 +17,16 @@ Phase 2 - Resource Directory + Data Pipeline
 
 ## Current Position
 
-**Active Phase:** 02-resource-directory-data-pipeline (Plan 1 of 3 complete)
+**Active Phase:** 02-resource-directory-data-pipeline (Plan 2 of 4 complete)
 
-**Active Plan:** 02-01-PLAN.md (COMPLETE)
+**Active Plan:** 02-02-PLAN.md (COMPLETE)
 
 **Status:** IN_PROGRESS
 
 **Progress:**
 ```
 Phase 1: Foundation + Crisis Safety         [████] 4/4 plans complete (100%) ✓
-Phase 2: Resource Directory + Data Pipeline [█░░░] 1/3 plans complete (33%)
+Phase 2: Resource Directory + Data Pipeline [██░░] 2/4 plans complete (50%)
 Phase 3: Core Screening + Eligibility       [ Not Started ]
 Phase 4: Smart Crisis Detection             [ Not Started ]
 Phase 5: User Accounts + Dashboard          [ Not Started ]
@@ -34,7 +34,7 @@ Phase 6: Self-Service Tools                 [ Not Started ]
 Phase 7: Peer Connection + Benefits Warnings [ Not Started ]
 
 Overall: 0/7 phases complete (0%)
-Current Phase Progress: 1/3 plans (33%)
+Current Phase Progress: 2/4 plans (50%)
 ```
 
 ---
@@ -46,14 +46,15 @@ Current Phase Progress: 1/3 plans (33%)
 | 01 | 01 | 6 min | 2 | 15 | Complete | 2026-02-16 |
 | 01 | 02 | 7 min | 3 | 14 | Complete | 2026-02-16 |
 | 02 | 01 | 8 min | 2 | 9 | Complete | 2026-02-16 |
+| 02 | 02 | 6 min | 1 | 7 | Complete | 2026-02-16 |
 
-**Velocity:** 3 plans completed
+**Velocity:** 4 plans completed
 
-**Plan Success Rate:** 100% (3/3)
+**Plan Success Rate:** 100% (4/4)
 
 **Blocker Rate:** 0% (0 blockers encountered)
 
-**Average Plan Duration:** 7.0 minutes
+**Average Plan Duration:** 6.8 minutes
 
 ---
 
@@ -77,6 +78,9 @@ Current Phase Progress: 1/3 plans (33%)
 | 2026-02-16 | Manual migration application via Supabase SQL Editor | Supabase CLI not installed; Management API requires additional auth; manual is documented best practice | One-time manual step with clear instructions in scripts/README.md |
 | 2026-02-16 | Service role client for ETL bypasses RLS | Bulk import needs to bypass Row Level Security for performance | ETL scripts use SUPABASE_SERVICE_ROLE_KEY instead of anon key |
 | 2026-02-16 | 10% error rate threshold for CSV import | CSV data has expected quality variations; 10% balances normal issues vs systemic problems | Import fails if > 10% validation errors, indicating data quality issue |
+| 2026-02-16 | Use better-sqlite3 for synchronous SQLite reading | Simple iteration pattern for 5,567 rows, no streaming complexity needed | Cleaner code than async SQLite libraries, entire dataset read into memory |
+| 2026-02-16 | Batch size of 500 for business imports | Smaller dataset than organizations (5.5K vs 85K) | Faster import, better progress logging granularity |
+| 2026-02-16 | Use dotenv for .env.local loading in scripts | tsx doesn't auto-load Next.js env files | Scripts work standalone without Next.js environment |
 
 ### Active TODOs
 
@@ -105,10 +109,10 @@ Phases 1, 5, 6 use standard patterns (skip research-phase).
 Veteran resource platform connecting veterans/caregivers to 90K+ organizations, with benefits screening questionnaire that matches users to programs they qualify for.
 
 **Where we are:**
-Phase 2 in progress. Phase 1 complete (4/4 plans): Next.js 16 foundation, accessible layout, crisis banner, Supabase auth. Phase 2 Plan 01 complete: Directory database schema with FTS, ETL pipeline with Zod validation, streaming CSV import ready for 85K+ organizations. 1 of 3 Phase 2 plans complete.
+Phase 2 in progress. Phase 1 complete (4/4 plans): Next.js 16 foundation, accessible layout, crisis banner, Supabase auth. Phase 2 Plans 01-02 complete: Directory database schema with FTS (85K+ organizations, 5.5K+ businesses), ETL pipelines with Zod validation for both CSV and SQLite imports, combined import script (import:all). 2 of 4 Phase 2 plans complete.
 
 **What's next:**
-Execute Plan 02 of Phase 2 (businesses ETL import) or continue to Plan 03 (directory UI).
+Execute Plan 03 of Phase 2 (directory UI) or continue to Plan 04.
 
 **Critical context:**
 - Crisis safety is non-negotiable (always-visible resources in Phase 1, smart detection in Phase 4)
@@ -120,5 +124,5 @@ Execute Plan 02 of Phase 2 (businesses ETL import) or continue to Plan 03 (direc
 ---
 
 *State initialized: 2026-02-15*
-*Last plan completed: 02-01 (Directory Schema & ETL Pipeline) on 2026-02-16*
-*Next action: Execute 02-02-PLAN.md (Businesses ETL) or 02-03-PLAN.md (Directory UI)*
+*Last plan completed: 02-02 (Business ETL Pipeline) on 2026-02-16*
+*Next action: Execute 02-03-PLAN.md (Directory UI) or 02-04-PLAN.md*
