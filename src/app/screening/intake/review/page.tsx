@@ -87,14 +87,15 @@ export default function ReviewPage() {
 	const [submitError, setSubmitError] = useState<string | null>(null);
 	const [showCrisisIntercept, setShowCrisisIntercept] = useState(false);
 	const [pendingSessionId, setPendingSessionId] = useState<string | null>(null);
+	const [isNavigating, setIsNavigating] = useState(false);
 
 	useEffect(() => {
 		goToStep(5);
-		// Only redirect if not submitting — reset() clears answers.role during submission
-		if (!answers.role && !isSubmitting) {
+		// Only redirect if not submitting/navigating — reset() clears answers.role during submission
+		if (!answers.role && !isSubmitting && !isNavigating) {
 			router.replace("/screening/intake/step-1");
 		}
-	}, [goToStep, answers.role, router, isSubmitting]);
+	}, [goToStep, answers.role, router, isSubmitting, isNavigating]);
 
 	// Build review sections based on what's visible
 	const step1Items = [
@@ -200,6 +201,7 @@ export default function ReviewPage() {
 	function handleCrisisDismiss() {
 		setShowCrisisIntercept(false);
 		if (pendingSessionId) {
+			setIsNavigating(true);
 			reset();
 			router.push(`/screening/results/${pendingSessionId}`);
 		}
@@ -224,6 +226,7 @@ export default function ReviewPage() {
 			setIsSubmitting(false);
 		} else if (result.sessionId) {
 			// No crisis: proceed normally
+			setIsNavigating(true);
 			reset();
 			router.push(`/screening/results/${result.sessionId}`);
 		}

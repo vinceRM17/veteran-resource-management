@@ -18,6 +18,7 @@ export type QuestionType =
 export interface QuestionOption {
 	value: string;
 	label: string;
+	group?: string;
 }
 
 export interface ConditionalRule {
@@ -235,23 +236,20 @@ const step4: StepDefinition = {
 			label: "Which areas do you need help with? (Pick all that apply)",
 			type: "checkbox-group",
 			options: [
-				{ value: "healthcare", label: "Healthcare" },
-				{
-					value: "disability-compensation",
-					label: "Disability compensation",
-				},
-				{ value: "food-assistance", label: "Food assistance" },
-				{ value: "housing", label: "Housing" },
-				{ value: "employment", label: "Employment" },
-				{ value: "education", label: "Education or training" },
-				{ value: "mental-health", label: "Mental health" },
-				{ value: "community", label: "Community and camaraderie" },
-				{ value: "fitness", label: "Physical activity or fitness" },
-				{ value: "networking", label: "Networking and career connections" },
-				{ value: "family-support", label: "Family support" },
-				{ value: "legal", label: "Legal help" },
-				{ value: "financial-planning", label: "Financial planning" },
-				{ value: "caregiver-support", label: "Caregiver support" },
+				{ value: "healthcare", label: "Healthcare", group: "Benefits & Basics" },
+				{ value: "disability-compensation", label: "Disability compensation", group: "Benefits & Basics" },
+				{ value: "food-assistance", label: "Food assistance", group: "Benefits & Basics" },
+				{ value: "housing", label: "Housing", group: "Benefits & Basics" },
+				{ value: "employment", label: "Employment", group: "Work & Education" },
+				{ value: "education", label: "Education or training", group: "Work & Education" },
+				{ value: "networking", label: "Networking and career connections", group: "Work & Education" },
+				{ value: "mental-health", label: "Mental health", group: "Wellness & Community" },
+				{ value: "community", label: "Community and camaraderie", group: "Wellness & Community" },
+				{ value: "fitness", label: "Physical activity or fitness", group: "Wellness & Community" },
+				{ value: "family-support", label: "Family support", group: "Wellness & Community" },
+				{ value: "caregiver-support", label: "Caregiver support", group: "Wellness & Community" },
+				{ value: "legal", label: "Legal help", group: "Other Support" },
+				{ value: "financial-planning", label: "Financial planning", group: "Other Support" },
 			],
 			required: true,
 			helpText: "You can pick more than one.",

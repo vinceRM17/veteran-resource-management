@@ -114,28 +114,45 @@ export default function Step4Page() {
 		(opt) => opt.value !== "caregiver-support" || showCaregiverOption,
 	);
 
+	// Group options by category
+	const groupedAreas = new Map<string, typeof areaOptions>();
+	for (const opt of areaOptions) {
+		const group = opt.group || "Other";
+		if (!groupedAreas.has(group)) {
+			groupedAreas.set(group, []);
+		}
+		groupedAreas.get(group)!.push(opt);
+	}
+
 	return (
 		<div>
 			<h2 className="text-2xl font-bold mb-2">{step4Def.title}</h2>
 			<p className="text-muted-foreground mb-6">{step4Def.description}</p>
 
-			{/* Areas of need */}
+			{/* Areas of need — grouped */}
 			<QuestionCard
 				label={areasQuestion.label}
 				helpText={areasQuestion.helpText}
 				required={areasQuestion.required}
 				error={errors.areasOfNeed}
 			>
-				<fieldset className="space-y-3 border-0 p-0 m-0">
+				<fieldset className="space-y-5 border-0 p-0 m-0">
 					<legend className="sr-only">{areasQuestion.label}</legend>
-					{areaOptions.map((opt) => (
-						<div key={opt.value} className="flex items-center gap-2">
-							<Checkbox
-								id={`area-${opt.value}`}
-								checked={areasOfNeed.includes(opt.value)}
-								onCheckedChange={() => toggleArea(opt.value)}
-							/>
-							<Label htmlFor={`area-${opt.value}`}>{opt.label}</Label>
+					{Array.from(groupedAreas.entries()).map(([groupName, options]) => (
+						<div key={groupName}>
+							<p className="text-sm font-semibold text-muted-foreground mb-2">{groupName}</p>
+							<div className="space-y-3 pl-1">
+								{options.map((opt) => (
+									<div key={opt.value} className="flex items-center gap-2">
+										<Checkbox
+											id={`area-${opt.value}`}
+											checked={areasOfNeed.includes(opt.value)}
+											onCheckedChange={() => toggleArea(opt.value)}
+										/>
+										<Label htmlFor={`area-${opt.value}`}>{opt.label}</Label>
+									</div>
+								))}
+							</div>
 						</div>
 					))}
 				</fieldset>
