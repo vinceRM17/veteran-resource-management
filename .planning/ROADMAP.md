@@ -19,6 +19,12 @@ This roadmap delivers a comprehensive veteran resource platform that connects ve
 
 **Requirements:** FOUND-01, FOUND-02, FOUND-03, FOUND-04, CRISIS-01
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Project scaffold + accessible layout shell + crisis banner (FOUND-01, FOUND-04, CRISIS-01)
+- [ ] 01-02-PLAN.md — Supabase auth + database schema + RLS policies (FOUND-02, FOUND-03)
+
 **Success Criteria:**
 1. User can load the homepage on Slow 3G connection (<500KB initial load, <3 seconds)
 2. User can navigate entire site with keyboard only (Tab, Enter, Escape) without mouse
