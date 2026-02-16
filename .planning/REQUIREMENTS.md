@@ -171,10 +171,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BINT-03 | Phase 7 | Pending |
 
 **Coverage:**
-- v1 requirements: 43 total
-- Mapped to phases: 43
+- v1 requirements: 45 total
+- Mapped to phases: 45
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-02-15*
-*Last updated: 2026-02-15 after initial definition*
+*Last updated: 2026-02-15 after roadmap creation*
