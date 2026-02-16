@@ -177,6 +177,13 @@ Plans:
 - No user-submitted profiles or self-registration as mentors
 - Every listing must trace back to a verified organization
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 07-01-PLAN.md — Database migration + peer connection types + landing page (PEER-01 foundation)
+- [ ] 07-02-PLAN.md — Support groups, events, opportunities search pages + verification badges + header nav (PEER-01, PEER-02, PEER-03)
+- [ ] 07-03-PLAN.md — Benefits interaction detection engine + warning UI on screening results (BINT-01, BINT-02, BINT-03)
+
 **Success Criteria:**
 1. User can search for verified support groups, veteran communities, and events by location (ZIP code or city)
 2. User can discover opportunities (employment programs, volunteer roles, community activities) from verified organizations filtered by branch and era
@@ -197,11 +204,11 @@ Plans:
 | 4 - Smart Crisis Detection | Complete (2026-02-16) | 3 | 100% |
 | 5 - User Accounts + Personalized Dashboard | Complete (2026-02-16) | 4 | 100% |
 | 6 - Self-Service Tools | Planning Complete | 3 | 0% |
-| 7 - Peer Connection + Benefits Interaction | Pending | 6 | 0% |
+| 7 - Peer Connection + Benefits Interaction | Planning Complete | 6 | 0% |
 
 **Total:** 7 phases, 45 requirements
 
 ---
 
 *Last updated: 2026-02-16*
-*Next: `/gsd:execute-phase 6`*
+*Next: `/gsd:execute-phase 07-peer-connection-benefits-interaction-warnings`*
