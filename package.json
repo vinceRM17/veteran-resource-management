@@ -11,6 +11,7 @@
 		"format": "biome format --write .",
 		"test": "vitest run",
 		"test:watch": "vitest",
+		"migration:instructions": "npx tsx scripts/apply-directory-migration.ts",
 		"import:orgs": "npx tsx scripts/import-organizations.ts"
 	},
 	"dependencies": {
@@ -40,6 +41,7 @@
 		"@types/react-dom": "^19",
 		"@vitejs/plugin-react": "^5.1.4",
 		"jsdom": "^28.1.0",
+		"pg": "^8.18.0",
 		"postcss": "^8",
 		"tailwindcss": "^4.0.0",
 		"tsx": "^4.21.0",

@@ -1,9 +1,9 @@
 # Project State: Veteran Resource Management
 
 **Last Updated:** 2026-02-16
-**Current Phase:** 01-foundation-crisis-safety
-**Current Plan:** 02 (Plan 2 of 4 complete)
-**Status:** Executing Phase 1
+**Current Phase:** 02-resource-directory-data-pipeline
+**Current Plan:** 01 (Plan 1 of 3 complete)
+**Status:** Executing Phase 2
 
 ## Project Reference
 
@@ -11,22 +11,22 @@
 A veteran in crisis or need can put in their information and immediately feel connected — to programs they qualify for, to people who can help, and to peers who understand what they're going through. Isolation is the enemy; connection is the mission.
 
 **Current Focus:**
-Phase 1 - Foundation + Crisis Safety
+Phase 2 - Resource Directory + Data Pipeline
 
 ---
 
 ## Current Position
 
-**Active Phase:** 01-foundation-crisis-safety (Plan 2 of 4 complete)
+**Active Phase:** 02-resource-directory-data-pipeline (Plan 1 of 3 complete)
 
-**Active Plan:** 01-02-PLAN.md (COMPLETE)
+**Active Plan:** 02-01-PLAN.md (COMPLETE)
 
 **Status:** IN_PROGRESS
 
 **Progress:**
 ```
-Phase 1: Foundation + Crisis Safety         [██░░] 2/4 plans complete (50%)
-Phase 2: Resource Directory + Data Pipeline [ Not Started ]
+Phase 1: Foundation + Crisis Safety         [████] 4/4 plans complete (100%) ✓
+Phase 2: Resource Directory + Data Pipeline [█░░░] 1/3 plans complete (33%)
 Phase 3: Core Screening + Eligibility       [ Not Started ]
 Phase 4: Smart Crisis Detection             [ Not Started ]
 Phase 5: User Accounts + Dashboard          [ Not Started ]
@@ -34,7 +34,7 @@ Phase 6: Self-Service Tools                 [ Not Started ]
 Phase 7: Peer Connection + Benefits Warnings [ Not Started ]
 
 Overall: 0/7 phases complete (0%)
-Current Phase Progress: 2/4 plans (50%)
+Current Phase Progress: 1/3 plans (33%)
 ```
 
 ---
@@ -45,14 +45,15 @@ Current Phase Progress: 2/4 plans (50%)
 |-------|------|----------|-------|-------|--------|------|
 | 01 | 01 | 6 min | 2 | 15 | Complete | 2026-02-16 |
 | 01 | 02 | 7 min | 3 | 14 | Complete | 2026-02-16 |
+| 02 | 01 | 8 min | 2 | 9 | Complete | 2026-02-16 |
 
-**Velocity:** 2 plans completed
+**Velocity:** 3 plans completed
 
-**Plan Success Rate:** 100% (2/2)
+**Plan Success Rate:** 100% (3/3)
 
 **Blocker Rate:** 0% (0 blockers encountered)
 
-**Average Plan Duration:** 6.5 minutes
+**Average Plan Duration:** 7.0 minutes
 
 ---
 
@@ -73,6 +74,9 @@ Current Phase Progress: 2/4 plans (50%)
 | 2026-02-16 | Middleware uses getUser() instead of getSession() | getUser() validates with Supabase auth server; getSession() only reads cookies (can be tampered) | More secure session validation |
 | 2026-02-16 | RLS policies use auth.uid() not auth.jwt() | auth.uid() is standard Supabase pattern, more secure and simpler | Consistent with Supabase best practices |
 | 2026-02-16 | Guest mode screening with NULL user_id | Core value: screening without account creation | Screening sessions table allows anonymous users |
+| 2026-02-16 | Manual migration application via Supabase SQL Editor | Supabase CLI not installed; Management API requires additional auth; manual is documented best practice | One-time manual step with clear instructions in scripts/README.md |
+| 2026-02-16 | Service role client for ETL bypasses RLS | Bulk import needs to bypass Row Level Security for performance | ETL scripts use SUPABASE_SERVICE_ROLE_KEY instead of anon key |
+| 2026-02-16 | 10% error rate threshold for CSV import | CSV data has expected quality variations; 10% balances normal issues vs systemic problems | Import fails if > 10% validation errors, indicating data quality issue |
 
 ### Active TODOs
 
@@ -101,19 +105,20 @@ Phases 1, 5, 6 use standard patterns (skip research-phase).
 Veteran resource platform connecting veterans/caregivers to 90K+ organizations, with benefits screening questionnaire that matches users to programs they qualify for.
 
 **Where we are:**
-Phase 1 in progress. Plan 01 complete: Next.js 16 foundation with accessible layout shell and crisis banner. Plan 02 complete: Supabase authentication with email/password, Google OAuth infrastructure, RLS policies, and auth-aware UI. 2 of 4 Phase 1 plans complete.
+Phase 2 in progress. Phase 1 complete (4/4 plans): Next.js 16 foundation, accessible layout, crisis banner, Supabase auth. Phase 2 Plan 01 complete: Directory database schema with FTS, ETL pipeline with Zod validation, streaming CSV import ready for 85K+ organizations. 1 of 3 Phase 2 plans complete.
 
 **What's next:**
-Execute Plan 03 of Phase 1 (next plan in phase) or continue to subsequent phases if Phase 1 complete.
+Execute Plan 02 of Phase 2 (businesses ETL import) or continue to Plan 03 (directory UI).
 
 **Critical context:**
 - Crisis safety is non-negotiable (always-visible resources in Phase 1, smart detection in Phase 4)
 - Data quality is success/failure point (verification systems BEFORE import in Phase 2)
 - Screening is core value (Phase 3 is most complex, benefits from Phases 1-2 complete)
 - Research identified 4 pitfalls to avoid: data quality death spiral, crisis detection theater, false promise overmatching, black hole referral
+- **Migration must be applied manually** before data import can run (see scripts/README.md)
 
 ---
 
 *State initialized: 2026-02-15*
-*Last plan completed: 01-02 (Supabase Authentication) on 2026-02-16*
-*Next action: Execute 01-03-PLAN.md or next available plan*
+*Last plan completed: 02-01 (Directory Schema & ETL Pipeline) on 2026-02-16*
+*Next action: Execute 02-02-PLAN.md (Businesses ETL) or 02-03-PLAN.md (Directory UI)*
