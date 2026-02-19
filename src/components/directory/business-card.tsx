@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { MapPin } from "lucide-react";
 import type { BusinessSearchResult } from "@/lib/db/types";
 import { VerificationBadge } from "./verification-badge";
 
@@ -22,12 +23,12 @@ export function BusinessCard({ business }: BusinessCardProps) {
 					<div className="flex-1 min-w-0">
 						<Link
 							href={`/directory/businesses/${business.id}`}
-							className="text-lg font-semibold text-blue-600 hover:text-blue-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+							className="text-lg font-semibold text-primary hover:text-primary/80 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
 						>
 							{displayName}
 						</Link>
 						{hasDBA && (
-							<p className="text-sm text-gray-600 mt-1">DBA: {business.dba_name}</p>
+							<p className="text-sm text-muted-foreground mt-1">DBA: {business.dba_name}</p>
 						)}
 					</div>
 					{business.business_type && (
@@ -43,17 +44,25 @@ export function BusinessCard({ business }: BusinessCardProps) {
 			<CardContent className="space-y-3">
 				{/* Location */}
 				{(business.city || business.state || business.zip_code) && (
-					<div className="text-sm text-gray-700">
+					<div className="text-sm text-foreground/80">
 						<span className="font-medium">Location: </span>
 						{[business.city, business.state, business.zip_code]
 							.filter(Boolean)
 							.join(", ")}
+						{business.distance_miles != null && (
+							<span className="ml-2 inline-flex items-center gap-1 text-primary">
+								<MapPin className="h-3 w-3" />
+								{business.distance_miles < 1
+									? '< 1 mi away'
+									: `${business.distance_miles} mi away`}
+							</span>
+						)}
 					</div>
 				)}
 
 				{/* Industry */}
 				{business.naics_descriptions && (
-					<div className="text-sm text-gray-700">
+					<div className="text-sm text-foreground/80">
 						<span className="font-medium">Industry: </span>
 						<span className="line-clamp-2">{business.naics_descriptions}</span>
 					</div>
@@ -61,7 +70,7 @@ export function BusinessCard({ business }: BusinessCardProps) {
 
 				{/* Owner info */}
 				{(business.owner_name || business.service_branch) && (
-					<div className="text-sm text-gray-600">
+					<div className="text-sm text-muted-foreground">
 						{business.owner_name && <span>Owner: {business.owner_name}</span>}
 						{business.service_branch && (
 							<span>
@@ -77,7 +86,7 @@ export function BusinessCard({ business }: BusinessCardProps) {
 					{business.phone && (
 						<a
 							href={`tel:${business.phone}`}
-							className="text-blue-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+							className="text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
 						>
 							{business.phone}
 						</a>
@@ -85,7 +94,7 @@ export function BusinessCard({ business }: BusinessCardProps) {
 					{business.email && (
 						<a
 							href={`mailto:${business.email}`}
-							className="text-blue-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+							className="text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
 						>
 							Email
 						</a>
@@ -95,7 +104,7 @@ export function BusinessCard({ business }: BusinessCardProps) {
 							href={business.website}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="text-blue-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+							className="text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
 						>
 							Website
 						</a>

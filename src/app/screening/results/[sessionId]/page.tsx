@@ -5,7 +5,7 @@
  * Programs are grouped by confidence level with documents and next steps.
  */
 
-import { ChevronRight, FileText, MapPin } from "lucide-react";
+import { Briefcase, ChevronRight, FileText, MapPin } from "lucide-react";
 import Link from "next/link";
 import {
 	Accordion,
@@ -19,7 +19,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { documentationChecklists } from "@/content/documentation-checklists";
 import type { ProgramMatch, ScreeningResult } from "@/lib/db/screening-types";
-import { searchOrganizations } from "@/lib/db/queries";
+import { searchOrganizations, searchBusinesses } from "@/lib/db/queries";
 import { detectBenefitInteractions } from "@/lib/eligibility/interaction-detector";
 import { createClient } from "@/lib/supabase/server";
 import { InteractionWarningBanner } from "@/components/screening/interaction-warning";
@@ -42,6 +42,19 @@ const AREA_TO_CATEGORIES: Record<string, string[]> = {
 	legal: ["Legal"],
 	"financial-planning": ["Financial"],
 	"caregiver-support": ["Family Support"],
+};
+
+// Map screening areas of need to business search terms (NAICS-oriented)
+const AREA_TO_BUSINESS_SEARCH: Record<string, string[]> = {
+	healthcare: ["health", "medical", "clinic"],
+	housing: ["construction", "real estate", "property management"],
+	employment: ["staffing", "consulting", "professional services"],
+	legal: ["legal", "law"],
+	"financial-planning": ["financial", "accounting", "tax"],
+	"mental-health": ["counseling", "behavioral health"],
+	education: ["training", "education", "tutoring"],
+	"family-support": ["family services", "child care"],
+	"food-assistance": ["food", "catering", "restaurant"],
 };
 
 // ============================================================================
@@ -90,13 +103,12 @@ function getProgramDescription(programId: string): string | undefined {
  * Renders text with URLs auto-linked as clickable anchor tags.
  */
 function Linkify({ text }: { text: string }) {
-	const urlRegex = /(https?:\/\/[^\s,)]+)/g;
-	const parts = text.split(urlRegex);
+	const parts = text.split(/(https?:\/\/[^\s,)]+)/g);
 
 	return (
 		<>
 			{parts.map((part, i) =>
-				urlRegex.test(part) ? (
+				/^https?:\/\//.test(part) ? (
 					<a
 						key={`${part}-${i}`}
 						href={part}
@@ -177,7 +189,7 @@ function ProgramCard({ result }: { result: ScreeningResult }) {
 												)}
 											</div>
 											<p className="text-muted-foreground mt-0.5">
-												{doc.howToObtain}
+												<Linkify text={doc.howToObtain} />
 											</p>
 										</li>
 									))}
@@ -285,44 +297,176 @@ export default async function ScreeningResultsPage({
 	// Fetch local organizations based on screening answers
 	const answers = (session.answers ?? {}) as Record<string, unknown>;
 	const userState = (answers.state as string) || null;
+	const userZip = (answers.zipCode as string) || null;
 	const areasOfNeed = (answers.areasOfNeed as string[]) || [];
 
 	// Build search categories from areas of need
-	const categories = new Set<string>();
+	const categoryGroups: Array<{ areaLabel: string; categories: string[] }> = [];
+	const AREA_LABELS: Record<string, string> = {
+		healthcare: "Healthcare",
+		"disability-compensation": "Disability & Benefits",
+		"food-assistance": "Food Assistance",
+		housing: "Housing",
+		employment: "Employment",
+		education: "Education & Training",
+		"mental-health": "Mental Health",
+		community: "Community & Companionship",
+		fitness: "Fitness & Recreation",
+		networking: "Networking & Careers",
+		"family-support": "Family Support",
+		legal: "Legal Help",
+		"financial-planning": "Financial Planning",
+		"caregiver-support": "Caregiver Support",
+	};
+
 	for (const area of areasOfNeed) {
 		const mapped = AREA_TO_CATEGORIES[area];
 		if (mapped) {
-			for (const cat of mapped) {
-				categories.add(cat);
-			}
+			categoryGroups.push({
+				areaLabel: AREA_LABELS[area] || area,
+				categories: mapped,
+			});
 		}
 	}
 
-	// Fetch a few relevant organizations for each category (up to 6 total)
-	let localOrgs: Array<{
+	// Fetch local organizations by category, grouped by area of need
+	interface LocalOrg {
 		id: string;
 		name: string;
 		city: string | null;
 		state: string | null;
-	}> = [];
+		serviceCategories: string | null;
+		phone: string | null;
+		website: string | null;
+	}
+
+	interface OrgGroup {
+		areaLabel: string;
+		orgs: LocalOrg[];
+	}
+
+	const orgGroups: OrgGroup[] = [];
 
 	if (userState) {
+		const seenOrgIds = new Set<string>();
+
 		try {
-			const { results: orgResults } = await searchOrganizations({
-				state: userState,
-				pageSize: 8,
+			// Query per category group so results are relevant to each need area
+			const groupPromises = categoryGroups.map(async (group) => {
+				const orgs: LocalOrg[] = [];
+				for (const category of group.categories) {
+					const { results: orgResults } = await searchOrganizations({
+						state: userState,
+						serviceCategory: category,
+						location: userZip || undefined,
+						pageSize: 4,
+					});
+
+					for (const o of orgResults) {
+						if (!seenOrgIds.has(o.id)) {
+							seenOrgIds.add(o.id);
+							orgs.push({
+								id: o.id,
+								name: o.org_name,
+								city: o.city,
+								state: o.state,
+								serviceCategories: o.service_categories,
+								phone: o.phone,
+								website: o.website,
+							});
+						}
+					}
+				}
+				return { areaLabel: group.areaLabel, orgs: orgs.slice(0, 4) };
 			});
 
-			localOrgs = orgResults.map((o) => ({
-				id: o.id,
-				name: o.org_name,
-				city: o.city,
-				state: o.state,
-			}));
+			const results = await Promise.all(groupPromises);
+			for (const group of results) {
+				if (group.orgs.length > 0) {
+					orgGroups.push(group);
+				}
+			}
 		} catch {
 			// Non-critical: if directory query fails, just skip this section
 		}
 	}
+
+	const totalLocalOrgs = orgGroups.reduce((sum, g) => sum + g.orgs.length, 0);
+
+	// Fetch veteran-owned businesses based on areas of need
+	interface LocalBiz {
+		id: string;
+		name: string;
+		city: string | null;
+		state: string | null;
+		businessType: string | null;
+		phone: string | null;
+		website: string | null;
+	}
+
+	interface BizGroup {
+		areaLabel: string;
+		businesses: LocalBiz[];
+	}
+
+	const bizGroups: BizGroup[] = [];
+
+	if (userState) {
+		const seenBizIds = new Set<string>();
+
+		try {
+			const bizGroupPromises = areasOfNeed
+				.filter((area) => AREA_TO_BUSINESS_SEARCH[area])
+				.map(async (area) => {
+					const searchTerms = AREA_TO_BUSINESS_SEARCH[area];
+					const businesses: LocalBiz[] = [];
+
+					for (const term of searchTerms) {
+						if (businesses.length >= 4) break;
+						const { results: bizResults } = await searchBusinesses({
+							query: term,
+							state: userState,
+							location: userZip || undefined,
+							pageSize: 4,
+						});
+
+						for (const b of bizResults) {
+							if (!seenBizIds.has(b.id) && businesses.length < 4) {
+								seenBizIds.add(b.id);
+								businesses.push({
+									id: b.id,
+									name: b.legal_business_name,
+									city: b.city,
+									state: b.state,
+									businessType: b.business_type,
+									phone: b.phone,
+									website: b.website,
+								});
+							}
+						}
+					}
+
+					return {
+						areaLabel: AREA_LABELS[area] || area,
+						businesses,
+					};
+				});
+
+			const bizResults = await Promise.all(bizGroupPromises);
+			for (const group of bizResults) {
+				if (group.businesses.length > 0) {
+					bizGroups.push(group);
+				}
+			}
+		} catch {
+			// Non-critical: if business query fails, just skip this section
+		}
+	}
+
+	const totalLocalBiz = bizGroups.reduce(
+		(sum, g) => sum + g.businesses.length,
+		0,
+	);
 
 	// Build ProgramMatch[] from screening results for interaction detection
 	const programMatches: ProgramMatch[] = screeningResults.map((r) => ({
@@ -355,7 +499,7 @@ export default async function ScreeningResultsPage({
 				Based on your answers, here are the programs you may qualify for.
 			</p>
 
-			{screeningResults.length === 0 ? (
+			{screeningResults.length === 0 && totalLocalOrgs === 0 && totalLocalBiz === 0 ? (
 				<Card className="p-6 text-center">
 					<p className="text-muted-foreground mb-4">
 						We did not find any program matches based on your answers. This does
@@ -397,8 +541,8 @@ export default async function ScreeningResultsPage({
 						</>
 					)}
 
-					{/* Local Resources */}
-					{localOrgs.length > 0 && (
+					{/* Local Resources — grouped by area of need */}
+					{totalLocalOrgs > 0 && (
 						<>
 							<Separator className="my-8" />
 							<section className="mb-8">
@@ -408,34 +552,129 @@ export default async function ScreeningResultsPage({
 										Organizations Near You
 									</h3>
 									<p className="text-sm opacity-80">
-										Local organizations that can help with your needs.
+										Nonprofits, support groups, and community organizations that
+										match your needs{userZip ? ` near ${userZip}` : ""}.
 									</p>
 								</div>
-								<div className="grid gap-3">
-									{localOrgs.map((org) => (
-										<Link
-											key={org.id}
-											href={`/directory/${org.id}`}
-											className="block"
-										>
-											<Card className="hover:border-primary transition-colors">
-												<CardContent className="py-3 px-4">
-													<p className="font-medium text-sm">{org.name}</p>
-													{(org.city || org.state) && (
-														<p className="text-xs text-muted-foreground">
-															{[org.city, org.state]
-																.filter(Boolean)
-																.join(", ")}
-														</p>
-													)}
-												</CardContent>
-											</Card>
-										</Link>
-									))}
-								</div>
+
+								{orgGroups.map((group) => (
+									<div key={group.areaLabel} className="mb-6">
+										<h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+											{group.areaLabel}
+										</h4>
+										<div className="grid gap-3">
+											{group.orgs.map((org) => (
+												<Link
+													key={org.id}
+													href={`/directory/${org.id}`}
+													className="block"
+												>
+													<Card className="hover:border-primary transition-colors">
+														<CardContent className="py-3 px-4">
+															<p className="font-medium text-sm">{org.name}</p>
+															{(org.city || org.state) && (
+																<p className="text-xs text-muted-foreground flex items-center gap-1">
+																	<MapPin className="h-3 w-3" />
+																	{[org.city, org.state]
+																		.filter(Boolean)
+																		.join(", ")}
+																</p>
+															)}
+															{org.phone && (
+																<p className="text-xs text-muted-foreground mt-0.5">
+																	{org.phone}
+																</p>
+															)}
+														</CardContent>
+													</Card>
+												</Link>
+											))}
+										</div>
+									</div>
+								))}
+
 								<Button variant="outline" asChild className="w-full mt-3">
 									<Link href={`/directory?state=${userState || ""}`}>
 										Browse All Organizations in Your Area
+									</Link>
+								</Button>
+							</section>
+						</>
+					)}
+
+					{/* Veteran-Owned Businesses Near You */}
+					{totalLocalBiz > 0 && (
+						<>
+							<Separator className="my-8" />
+							<section className="mb-8">
+								<div className="rounded-lg p-4 mb-4 bg-emerald-50 text-emerald-900 border border-emerald-200">
+									<h3 className="text-lg font-semibold flex items-center gap-2">
+										<Briefcase className="h-5 w-5" />
+										Veteran-Owned Businesses Near You
+									</h3>
+									<p className="text-sm opacity-80">
+										Support fellow veterans by connecting with veteran-owned
+										businesses that match your needs
+										{userZip ? ` near ${userZip}` : ""}.
+									</p>
+								</div>
+
+								{bizGroups.map((group) => (
+									<div key={group.areaLabel} className="mb-6">
+										<h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+											{group.areaLabel}
+										</h4>
+										<div className="grid gap-3">
+											{group.businesses.map((biz) => (
+												<Link
+													key={biz.id}
+													href={`/directory/businesses/${biz.id}`}
+													className="block"
+												>
+													<Card className="hover:border-primary transition-colors">
+														<CardContent className="py-3 px-4">
+															<p className="font-medium text-sm">
+																{biz.name}
+															</p>
+															<div className="flex items-center gap-2 mt-0.5">
+																{(biz.city || biz.state) && (
+																	<p className="text-xs text-muted-foreground flex items-center gap-1">
+																		<MapPin className="h-3 w-3" />
+																		{[biz.city, biz.state]
+																			.filter(Boolean)
+																			.join(", ")}
+																	</p>
+																)}
+																{biz.businessType && (
+																	<Badge
+																		variant="secondary"
+																		className="text-xs"
+																	>
+																		{biz.businessType ===
+																		"Service Disabled Veteran Owned Small Business"
+																			? "SDVOSB"
+																			: "VOSB"}
+																	</Badge>
+																)}
+															</div>
+															{biz.phone && (
+																<p className="text-xs text-muted-foreground mt-0.5">
+																	{biz.phone}
+																</p>
+															)}
+														</CardContent>
+													</Card>
+												</Link>
+											))}
+										</div>
+									</div>
+								))}
+
+								<Button variant="outline" asChild className="w-full mt-3">
+									<Link
+										href={`/directory/businesses?state=${userState || ""}`}
+									>
+										Browse All Veteran-Owned Businesses
 									</Link>
 								</Button>
 							</section>

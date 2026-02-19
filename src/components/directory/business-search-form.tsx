@@ -45,6 +45,12 @@ export function BusinessSearchForm({ states, businessTypes }: BusinessSearchForm
     serialize: (value) => value || '',
   });
 
+  const [sort, setSort] = useQueryState('sort', {
+    defaultValue: '',
+    parse: (value) => value || '',
+    serialize: (value) => value || '',
+  });
+
   const [, setPage] = useQueryState('page', {
     defaultValue: '1',
     parse: (value) => value || '1',
@@ -97,10 +103,11 @@ export function BusinessSearchForm({ states, businessTypes }: BusinessSearchForm
     setLocation(null);
     setState(null);
     setBusinessType(null);
+    setSort(null);
     setPage('1');
   };
 
-  const hasActiveFilters = Boolean(query || state || businessType || location);
+  const hasActiveFilters = Boolean(query || state || businessType || location || sort);
 
   return (
     <div className="bg-white rounded-lg border p-6 space-y-6">

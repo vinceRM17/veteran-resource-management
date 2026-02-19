@@ -117,8 +117,10 @@ export default async function DirectoryPage(props: DirectoryPageProps) {
       {/* Search form */}
       <SearchForm states={states} serviceCategories={serviceCategories} />
 
-      {/* Sort control (outside Suspense so it persists across re-renders) */}
-      <SortDropdown />
+      {/* Sort control (own Suspense so it persists across result re-renders) */}
+      <Suspense fallback={null}>
+        <SortDropdown />
+      </Suspense>
 
       {/* Results with suspense boundary */}
       <Suspense fallback={<LoadingResults />}>

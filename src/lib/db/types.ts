@@ -160,6 +160,7 @@ export interface BusinessSearchResult {
   owner_name: string | null;
   service_branch: string | null;
   last_verified_date: string;
+  distance_miles: number | null;
   rank: number;
   total_count: number;
 }

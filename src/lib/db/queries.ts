@@ -47,7 +47,7 @@ export async function resolveLocationCoordinates(
   let query = supabase
     .from('zip_coordinates')
     .select('latitude, longitude')
-    .ilike('city', trimmed);
+    .ilike('city', trimmed + '%');
 
   if (stateFilter) {
     query = query.eq('state', stateFilter.toUpperCase());
@@ -96,11 +96,11 @@ export async function searchOrganizations(params: SearchOrganizationsParams): Pr
   const pageSize = params.pageSize || 20;
   const sortBy = params.sortBy || 'relevance';
 
-  // Resolve coordinates when sorting by distance
+  // Resolve coordinates whenever location is provided (for distance badges + distance sort)
   let userLat: number | null = null;
   let userLng: number | null = null;
 
-  if (sortBy === 'distance' && params.location) {
+  if (params.location) {
     const coords = await resolveLocationCoordinates(params.location, params.state);
     if (coords) {
       userLat = coords.lat;
@@ -214,6 +214,7 @@ export interface SearchBusinessesParams {
   state?: string;
   businessType?: string;
   location?: string;
+  sortBy?: SortOption;
   page?: number;
   pageSize?: number;
 }
@@ -235,12 +236,28 @@ export async function searchBusinesses(params: SearchBusinessesParams): Promise<
 
   const page = params.page || 1;
   const pageSize = params.pageSize || 20;
+  const sortBy = params.sortBy || 'relevance';
+
+  // Resolve coordinates whenever location is provided
+  let userLat: number | null = null;
+  let userLng: number | null = null;
+
+  if (params.location) {
+    const coords = await resolveLocationCoordinates(params.location, params.state);
+    if (coords) {
+      userLat = coords.lat;
+      userLng = coords.lng;
+    }
+  }
 
   const { data, error } = await supabase.rpc('search_businesses', {
     query_text: params.query || null,
     filter_state: params.state || null,
     filter_business_type: params.businessType || null,
     filter_location: params.location || null,
+    sort_by: sortBy,
+    user_lat: userLat,
+    user_lng: userLng,
     page_number: page,
     page_size: pageSize,
   });

@@ -4,11 +4,13 @@ import Link from "next/link";
 import { BusinessSearchForm } from "@/components/directory/business-search-form";
 import { BusinessCard } from "@/components/directory/business-card";
 import { PaginationControls } from "@/components/directory/pagination-controls";
+import { SortDropdown } from "@/components/directory/sort-dropdown";
 import {
 	searchBusinesses,
 	getDistinctStates,
 	getDistinctBusinessTypes,
 } from "@/lib/db/queries";
+import type { SortOption } from "@/lib/db/types";
 
 export const metadata: Metadata = {
 	title: "Veteran-Owned Business Directory | Veteran Resource Management",
@@ -21,6 +23,7 @@ interface SearchParams {
 	state?: string;
 	type?: string;
 	location?: string;
+	sort?: string;
 	page?: string;
 }
 
@@ -34,6 +37,9 @@ async function BusinessSearchResults({ searchParams }: BusinessSearchPageProps) 
 	const state = params.state;
 	const businessType = params.type;
 	const location = params.location;
+	const sortBy = (['relevance', 'distance', 'name'].includes(params.sort || '')
+		? params.sort as SortOption
+		: undefined);
 	const page = Number(params.page) || 1;
 
 	const [searchResult, states, businessTypes] = await Promise.all([
@@ -42,6 +48,7 @@ async function BusinessSearchResults({ searchParams }: BusinessSearchPageProps) 
 			state,
 			businessType,
 			location,
+			sortBy,
 			page,
 			pageSize: 20,
 		}),
@@ -136,6 +143,11 @@ export default async function BusinessSearchPage(
 					name, industry, or location.
 				</p>
 			</div>
+
+			{/* Sort control (own Suspense so it persists across result re-renders) */}
+			<Suspense fallback={null}>
+				<SortDropdown />
+			</Suspense>
 
 			<div className="space-y-6">
 				<Suspense
