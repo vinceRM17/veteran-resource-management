@@ -1,9 +1,9 @@
 # Project State: Veteran Resource Management
 
-**Last Updated:** 2026-02-16
-**Current Phase:** 06-self-service-tools
-**Current Plan:** 02 (Plan 2 of 2 complete)
-**Status:** Phase Complete
+**Last Updated:** 2026-02-18
+**Current Phase:** 07-peer-connection-benefits-interaction-warnings
+**Current Plan:** 01 (Plan 1 of N complete)
+**Status:** IN PROGRESS
 
 ## Project Reference
 
@@ -11,27 +11,27 @@
 A veteran in crisis or need can put in their information and immediately feel connected — to programs they qualify for, to people who can help, and to peers who understand what they're going through. Isolation is the enemy; connection is the mission.
 
 **Current Focus:**
-Phase 6 - Self-Service Tools
+Phase 7 - Peer Connection + Benefits Interaction Warnings
 
 ---
 
 ## Current Position
 
-**Active Phase:** 06-self-service-tools
+**Active Phase:** 07-peer-connection-benefits-interaction-warnings
 
-**Active Plan:** 06-02 (complete)
+**Active Plan:** 07-01 (complete)
 
 **Status:** IN PROGRESS
 
 **Progress:**
-[█████████░] 100%
+[█████████░] 86%
 Phase 1: Foundation + Crisis Safety         [████] 4/4 plans complete (100%) ✓
 Phase 2: Resource Directory + Data Pipeline [████] 4/4 plans complete (100%) ✓
 Phase 3: Core Screening + Eligibility       [████] 4/4 plans complete (100%) — needs migration + testing
 Phase 4: Smart Crisis Detection             [████] 3/3 plans complete (100%) ✓
 Phase 5: User Accounts + Dashboard          [████] 4/4 plans complete (100%) ✓
 Phase 6: Self-Service Tools                 [████] 2/2 plans complete (100%) ✓
-Phase 7: Peer Connection + Benefits Warnings [ Not Started ]
+Phase 7: Peer Connection + Benefits Warnings [1 plan complete, in progress]
 
 Overall: 6/7 phases complete (86%)
 ```
@@ -59,10 +59,11 @@ Overall: 6/7 phases complete (86%)
 | 05 | 04 | 4 min | 1 | 2 | Complete | 2026-02-16 |
 | 06 | 01 | 8 min | 2 | 5 | Complete | 2026-02-16 |
 | 06 | 02 | 2 min | 2 | 5 | Complete | 2026-02-16 |
+| 07 | 01 | 2 min | 2 | 5 | Complete | 2026-02-18 |
 
-**Velocity:** 17 plans completed
+**Velocity:** 18 plans completed
 
-**Plan Success Rate:** 100% (17/17)
+**Plan Success Rate:** 100% (18/18)
 
 **Blocker Rate:** 0% (0 blockers encountered)
 
@@ -71,6 +72,7 @@ Overall: 6/7 phases complete (86%)
 ---
 | Phase 04 P01 | 2 | 2 tasks | 5 files |
 | Phase 04 P03 | 2 | 2 tasks | 3 files |
+| Phase 07 P01 | 2 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -127,6 +129,9 @@ Overall: 6/7 phases complete (86%)
 | 2026-02-16 | Transition checklist progress via action_items with program_name prefix | Reuse action_items table with "transition-{milestone-slug}" prefix instead of new table | Leverages existing infrastructure, keeps all progress tracking in one place |
 | 2026-02-16 | ChecklistItemRow optimistic UI pattern | Client-side useState for immediate feedback before server confirmation | Matches ActionItemsList pattern, responsive UX with error reversion |
 | 2026-02-16 | Progress bar visibility conditional on auth + progress | Only show when authenticated AND at least one item checked | Avoids empty/confusing display for guests or users who haven't started |
+| 2026-02-18 | NTEE code wildcard patterns as TEXT[] in search_peer_connections RPC, matched via unnest() + EXISTS + LIKE | Allows multi-pattern filtering (e.g., W30%, P20%) in a single RPC call | Flexible category filtering without multiple queries |
+| 2026-02-18 | filter_branch and filter_era as pass-through in search_peer_connections RPC | Organizations table has no branch/era columns yet; parameters reserved for API stability | Future enhancement can add columns without changing function signature |
+| 2026-02-18 | 4-tier verification badge hierarchy for peer connections | VA Accredited > Verified 501c3 Nonprofit > IRS-registered > Directory listing | Veterans see most trustworthy organizations first |
 
 ### Active TODOs
 
@@ -155,10 +160,10 @@ Phases 1, 5, 6 use standard patterns (skip research-phase).
 Veteran resource platform connecting veterans/caregivers to 90K+ organizations, with benefits screening questionnaire that matches users to programs they qualify for.
 
 **Where we are:**
-Phase 6 COMPLETE (2/2 plans done). Self-service tools section fully implemented: mental health exercises (4 topics, 16 exercises), transition checklists (3 milestones, 23 items), progress tracking via action_items table. Tools link in main navigation. All self-service content accessible from /tools.
+Phase 7 IN PROGRESS (1 plan done). Peer connection data layer established: search_peer_connections RPC function with NTEE code filtering, peer-types.ts with 4-tier verification badge system, searchPeerConnections() server query function, /peer-connection landing page with three category cards (support groups, events, opportunities).
 
 **What's next:**
-1. Phase 7: Peer Connection + Benefits Warnings (final phase)
+1. Phase 7 remaining plans: peer connection sub-pages and benefits interaction warnings UI
 
 **Critical context:**
 - Crisis safety is non-negotiable (always-visible resources in Phase 1, smart detection in Phase 4)
@@ -196,9 +201,12 @@ Phase 6 COMPLETE (2/2 plans done). Self-service tools section fully implemented:
 - **ChecklistItemRow component:** Optimistic UI checkbox toggle for authenticated users
 - **Tools navigation link:** Added to header between Screening and auth section
 - **Phase 6 complete:** Self-service tools fully implemented and accessible
+- **Phase 7 plan 01 complete:** search_peer_connections RPC function (migration 00008), peer-types.ts with NTEE_CODE_MAP and getVerificationSource(), searchPeerConnections() server query, /peer-connection landing page with three category cards
+- **Migration 00008 must be applied** before search_peer_connections RPC returns real data
+- **/peer-connection page live:** three cards linking to /peer-connection/support-groups, /peer-connection/events, /peer-connection/opportunities
 
 ---
 
 *State initialized: 2026-02-15*
-*Last plan completed: 06-02 (Transition Checklists + Progress Tracking) on 2026-02-16*
-*Next action: Begin Phase 7 planning (Peer Connection + Benefits Warnings)*
+*Last plan completed: 07-01 (Peer Connection DB Layer + Landing Page) on 2026-02-18*
+*Next action: Continue Phase 7 (peer connection sub-pages and benefits interaction warnings UI)*
