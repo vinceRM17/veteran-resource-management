@@ -214,7 +214,6 @@ export default function ReviewPage() {
 		setShowCrisisIntercept(false);
 		if (pendingSessionId) {
 			setIsNavigating(true);
-			reset();
 			router.push(`/screening/results/${pendingSessionId}`);
 		}
 	}
@@ -237,9 +236,10 @@ export default function ReviewPage() {
 			setShowCrisisIntercept(true);
 			setIsSubmitting(false);
 		} else if (result.sessionId) {
-			// No crisis: proceed normally
+			// No crisis: proceed normally — don't reset() here because it clears
+			// the review page data before navigation completes, causing a blank flash.
+			// The store is cleared when the user starts a new screening.
 			setIsNavigating(true);
-			reset();
 			router.push(`/screening/results/${result.sessionId}`);
 		}
 	}

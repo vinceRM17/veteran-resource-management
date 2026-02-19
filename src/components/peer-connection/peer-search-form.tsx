@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { X } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 
 // Zod validation for location field
 // Accepts: city names (letters, spaces, hyphens) or ZIP codes (5 digits or ZIP+4 format)
@@ -84,6 +84,24 @@ export function PeerSearchForm() {
     debouncedSetLocation(value);
   };
 
+  const handleSearch = () => {
+    debouncedSetLocation.flush();
+    if (!locationInput) {
+      setLocationError(null);
+      setLocation(null);
+      setPage('1');
+      return;
+    }
+    const result = locationSchema.safeParse(locationInput);
+    if (result.success) {
+      setLocationError(null);
+      setLocation(locationInput);
+      setPage('1');
+    } else {
+      setLocationError(result.error.issues[0]?.message || 'Invalid location');
+    }
+  };
+
   const handleFilterChange =
     (setter: (value: string | null) => void) => (value: string) => {
       setter(value === 'all' ? null : value);
@@ -103,22 +121,29 @@ export function PeerSearchForm() {
 
   return (
     <div className="bg-white rounded-lg border p-6 space-y-6">
-      {/* Location input */}
+      {/* Location input with search button */}
       <div className="space-y-2">
         <Label htmlFor="location" className="text-base font-medium">
           Location
         </Label>
-        <Input
-          id="location"
-          type="text"
-          placeholder="City name or ZIP code"
-          value={locationInput}
-          onChange={(e) => handleLocationChange(e.target.value)}
-          aria-label="Filter by city name or ZIP code"
-          aria-describedby={locationError ? 'location-error' : undefined}
-          aria-invalid={locationError ? true : undefined}
-          className={locationError ? 'border-red-500 focus-visible:ring-red-500' : ''}
-        />
+        <div className="flex gap-2">
+          <Input
+            id="location"
+            type="text"
+            placeholder="City name or ZIP code"
+            value={locationInput}
+            onChange={(e) => handleLocationChange(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(); }}
+            aria-label="Filter by city name or ZIP code"
+            aria-describedby={locationError ? 'location-error' : undefined}
+            aria-invalid={locationError ? true : undefined}
+            className={locationError ? 'border-red-500 focus-visible:ring-red-500' : ''}
+          />
+          <Button onClick={handleSearch} className="gap-2 shrink-0">
+            <Search className="h-4 w-4" />
+            Search
+          </Button>
+        </div>
         {locationError && (
           <p id="location-error" className="text-xs text-red-600" role="alert">
             {locationError}
