@@ -1,4 +1,5 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 export const metadata: Metadata = {
   title: 'Peer Connections — Veteran Resource Management',
@@ -12,8 +13,8 @@ export default function PeerConnectionLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      {children}
-    </div>
+    <NuqsAdapter>
+      <div className="max-w-6xl mx-auto px-4 py-8">{children}</div>
+    </NuqsAdapter>
   );
 }
