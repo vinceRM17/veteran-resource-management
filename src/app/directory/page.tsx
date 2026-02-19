@@ -47,7 +47,7 @@ async function DirectoryResults({ searchParams }: DirectoryPageProps) {
 
   return (
     <div className="space-y-6">
-      {/* Results count + sort */}
+      {/* Results count */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
           {totalCount === 0 ? (
@@ -59,7 +59,6 @@ async function DirectoryResults({ searchParams }: DirectoryPageProps) {
             </>
           )}
         </p>
-        <SortDropdown />
       </div>
 
       {/* Results or empty state */}
@@ -117,6 +116,9 @@ export default async function DirectoryPage(props: DirectoryPageProps) {
     <div className="space-y-8">
       {/* Search form */}
       <SearchForm states={states} serviceCategories={serviceCategories} />
+
+      {/* Sort control (outside Suspense so it persists across re-renders) */}
+      <SortDropdown />
 
       {/* Results with suspense boundary */}
       <Suspense fallback={<LoadingResults />}>

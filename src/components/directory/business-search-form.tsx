@@ -187,9 +187,19 @@ export function BusinessSearchForm({ states, businessTypes }: BusinessSearchForm
         </div>
       </div>
 
-      {/* Clear filters button */}
-      {hasActiveFilters && (
-        <div className="flex justify-end">
+      {/* Action buttons */}
+      <div className="flex justify-between">
+        <Button
+          onClick={() => {
+            debouncedSetQuery.flush();
+            debouncedSetLocation.flush();
+          }}
+          className="gap-2"
+        >
+          <Search className="h-4 w-4" />
+          Search
+        </Button>
+        {hasActiveFilters && (
           <Button
             variant="outline"
             size="sm"
@@ -199,8 +209,8 @@ export function BusinessSearchForm({ states, businessTypes }: BusinessSearchForm
             <X className="h-4 w-4" />
             Clear all filters
           </Button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
