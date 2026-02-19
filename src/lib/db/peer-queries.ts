@@ -55,7 +55,7 @@ export async function searchPeerConnections(
 
   if (error) {
     console.error('Error searching peer connections:', error);
-    throw error;
+    return { results: [], totalCount: 0, page, pageSize, totalPages: 0 };
   }
 
   const results = (data || []) as PeerConnectionSearchResult[];

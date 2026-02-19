@@ -51,7 +51,7 @@ export async function searchOrganizations(params: SearchOrganizationsParams): Pr
 
   if (error) {
     console.error('Error searching organizations:', error);
-    throw error;
+    return { results: [], totalCount: 0, page, pageSize, totalPages: 0 };
   }
 
   const results = (data || []) as OrganizationSearchResult[];
@@ -80,12 +80,8 @@ export async function getOrganizationById(id: string): Promise<Organization | nu
     .single();
 
   if (error) {
-    if (error.code === 'PGRST116') {
-      // Not found
-      return null;
-    }
     console.error('Error fetching organization:', error);
-    throw error;
+    return null;
   }
 
   return data as Organization;
@@ -178,7 +174,7 @@ export async function searchBusinesses(params: SearchBusinessesParams): Promise<
 
   if (error) {
     console.error('Error searching businesses:', error);
-    throw error;
+    return { results: [], totalCount: 0, page, pageSize, totalPages: 0 };
   }
 
   const results = (data || []) as BusinessSearchResult[];
@@ -207,12 +203,8 @@ export async function getBusinessById(id: string): Promise<Business | null> {
     .single();
 
   if (error) {
-    if (error.code === 'PGRST116') {
-      // Not found
-      return null;
-    }
     console.error('Error fetching business:', error);
-    throw error;
+    return null;
   }
 
   return data as Business;
