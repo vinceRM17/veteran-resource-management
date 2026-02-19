@@ -3,7 +3,9 @@ import { searchOrganizations, getDistinctStates, getServiceCategories } from '@/
 import { SearchForm } from '@/components/directory/search-form';
 import { OrgCard } from '@/components/directory/org-card';
 import { PaginationControls } from '@/components/directory/pagination-controls';
+import { SortDropdown } from '@/components/directory/sort-dropdown';
 import { Loader2 } from 'lucide-react';
+import type { SortOption } from '@/lib/db/types';
 
 interface DirectoryPageProps {
   searchParams: Promise<{
@@ -12,6 +14,7 @@ interface DirectoryPageProps {
     category?: string;
     va?: string;
     location?: string;
+    sort?: string;
     page?: string;
   }>;
 }
@@ -26,6 +29,9 @@ async function DirectoryResults({ searchParams }: DirectoryPageProps) {
   const vaAccredited =
     params.va === 'true' ? true : params.va === 'false' ? false : undefined;
   const location = params.location || undefined;
+  const sortBy = (['relevance', 'distance', 'name'].includes(params.sort || '')
+    ? params.sort as SortOption
+    : undefined);
   const page = params.page ? Number.parseInt(params.page, 10) : 1;
 
   // Fetch search results
@@ -35,12 +41,13 @@ async function DirectoryResults({ searchParams }: DirectoryPageProps) {
     serviceCategory,
     vaAccredited,
     location,
+    sortBy,
     page,
   });
 
   return (
     <div className="space-y-6">
-      {/* Results count */}
+      {/* Results count + sort */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
           {totalCount === 0 ? (
@@ -52,16 +59,17 @@ async function DirectoryResults({ searchParams }: DirectoryPageProps) {
             </>
           )}
         </p>
+        <SortDropdown />
       </div>
 
       {/* Results or empty state */}
       {results.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 rounded-lg border border-dashed">
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No organizations found</h3>
-          <p className="text-sm text-gray-600 mb-4">
+        <div className="text-center py-12 bg-muted rounded-lg border border-dashed">
+          <h3 className="text-lg font-medium mb-2">No organizations found</h3>
+          <p className="text-sm text-muted-foreground mb-4">
             Try adjusting your search or broadening your filters
           </p>
-          <ul className="text-sm text-gray-500 space-y-1">
+          <ul className="text-sm text-muted-foreground space-y-1">
             <li>• Remove some filters to see more results</li>
             <li>• Try different keywords</li>
             <li>• Check your spelling</li>

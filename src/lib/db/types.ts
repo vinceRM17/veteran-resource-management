@@ -140,7 +140,10 @@ export interface OrganizationSearchResult {
   website: string | null;
   rank: number;
   total_count: number;
+  distance_miles: number | null;
 }
+
+export type SortOption = 'relevance' | 'distance' | 'name';
 
 export interface BusinessSearchResult {
   id: string;

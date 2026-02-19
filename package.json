@@ -16,7 +16,8 @@
 		"import:businesses": "npx tsx scripts/import-businesses.ts",
 		"import:all": "npm run import:orgs && npm run import:businesses",
 		"seed:rules": "npx tsx scripts/seed-eligibility-rules.ts",
-		"check:readability": "npx tsx scripts/check-readability.ts"
+		"check:readability": "npx tsx scripts/check-readability.ts",
+		"seed:zips": "npx tsx scripts/seed-zip-coordinates.ts"
 	},
 	"dependencies": {
 		"@radix-ui/react-accordion": "^1.2.12",

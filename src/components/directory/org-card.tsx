@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { VerificationBadge } from './verification-badge';
-import { Phone, Mail, ExternalLink, Award } from 'lucide-react';
+import { Phone, Mail, ExternalLink, Award, MapPin } from 'lucide-react';
 import type { OrganizationSearchResult } from '@/lib/db/types';
 
 interface OrgCardProps {
@@ -29,12 +29,22 @@ export function OrgCard({ org }: OrgCardProps) {
             <CardTitle className="text-xl mb-2">
               <Link
                 href={`/directory/${org.id}`}
-                className="hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded"
+                className="hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring rounded"
               >
                 {org.org_name}
               </Link>
             </CardTitle>
-            <CardDescription>{location}</CardDescription>
+            <CardDescription>
+              {location}
+              {org.distance_miles != null && (
+                <span className="ml-2 inline-flex items-center gap-1 text-primary">
+                  <MapPin className="h-3 w-3" />
+                  {org.distance_miles < 1
+                    ? '< 1 mi away'
+                    : `${org.distance_miles} mi away`}
+                </span>
+              )}
+            </CardDescription>
           </div>
           <div className="flex flex-col gap-2 items-end">
             <VerificationBadge lastVerifiedDate={org.last_verified_date} />
@@ -75,7 +85,7 @@ export function OrgCard({ org }: OrgCardProps) {
 
         {/* VA Accredited badge */}
         {org.va_accredited && (
-          <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">
+          <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
             <Award className="h-3 w-3 mr-1" />
             VA Accredited
           </Badge>
@@ -86,7 +96,7 @@ export function OrgCard({ org }: OrgCardProps) {
           {org.phone && (
             <a
               href={`tel:${org.phone}`}
-              className="flex items-center gap-1 text-blue-600 hover:underline"
+              className="flex items-center gap-1 text-primary hover:underline"
               aria-label={`Call ${org.org_name}`}
             >
               <Phone className="h-4 w-4" />
@@ -96,7 +106,7 @@ export function OrgCard({ org }: OrgCardProps) {
           {org.email && (
             <a
               href={`mailto:${org.email}`}
-              className="flex items-center gap-1 text-blue-600 hover:underline"
+              className="flex items-center gap-1 text-primary hover:underline"
               aria-label={`Email ${org.org_name}`}
             >
               <Mail className="h-4 w-4" />
@@ -108,7 +118,7 @@ export function OrgCard({ org }: OrgCardProps) {
               href={org.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-blue-600 hover:underline"
+              className="flex items-center gap-1 text-primary hover:underline"
               aria-label={`Visit ${org.org_name} website (opens in new tab)`}
             >
               <ExternalLink className="h-4 w-4" />

@@ -4,7 +4,63 @@
  */
 
 import { createClient } from '@/lib/supabase/server';
-import type { Organization, Business, OrganizationSearchResult, BusinessSearchResult } from '@/lib/db/types';
+import type { Organization, Business, OrganizationSearchResult, BusinessSearchResult, SortOption } from '@/lib/db/types';
+
+// ============================================================================
+// LOCATION RESOLUTION
+// ============================================================================
+
+interface Coordinates {
+  lat: number;
+  lng: number;
+}
+
+/**
+ * Resolve a user-entered location string to lat/lng coordinates
+ * via the zip_coordinates table. Supports 5-digit zip codes and city names.
+ */
+export async function resolveLocationCoordinates(
+  location: string,
+  stateFilter?: string
+): Promise<Coordinates | null> {
+  const trimmed = location.trim();
+  if (!trimmed) return null;
+
+  const supabase = await createClient();
+
+  // 5-digit zip code → exact lookup
+  if (/^\d{5}$/.test(trimmed)) {
+    const { data } = await supabase
+      .from('zip_coordinates')
+      .select('latitude, longitude')
+      .eq('zip_code', trimmed)
+      .limit(1)
+      .single();
+
+    if (data) {
+      return { lat: Number(data.latitude), lng: Number(data.longitude) };
+    }
+    return null;
+  }
+
+  // City name lookup — scope by state if filtered
+  let query = supabase
+    .from('zip_coordinates')
+    .select('latitude, longitude')
+    .ilike('city', trimmed);
+
+  if (stateFilter) {
+    query = query.eq('state', stateFilter.toUpperCase());
+  }
+
+  const { data } = await query.limit(1).single();
+
+  if (data) {
+    return { lat: Number(data.latitude), lng: Number(data.longitude) };
+  }
+
+  return null;
+}
 
 // ============================================================================
 // ORGANIZATION QUERIES
@@ -16,6 +72,7 @@ export interface SearchOrganizationsParams {
   serviceCategory?: string;
   vaAccredited?: boolean;
   location?: string;
+  sortBy?: SortOption;
   page?: number;
   pageSize?: number;
 }
@@ -29,14 +86,27 @@ export interface SearchOrganizationsResult {
 }
 
 /**
- * Search organizations using full-text search with filters and pagination
- * Calls the search_organizations RPC function defined in migration 00002
+ * Search organizations using full-text search with filters, sorting, and pagination
+ * Calls the search_organizations RPC function defined in migration 00002 (updated in 00009)
  */
 export async function searchOrganizations(params: SearchOrganizationsParams): Promise<SearchOrganizationsResult> {
   const supabase = await createClient();
 
   const page = params.page || 1;
   const pageSize = params.pageSize || 20;
+  const sortBy = params.sortBy || 'relevance';
+
+  // Resolve coordinates when sorting by distance
+  let userLat: number | null = null;
+  let userLng: number | null = null;
+
+  if (sortBy === 'distance' && params.location) {
+    const coords = await resolveLocationCoordinates(params.location, params.state);
+    if (coords) {
+      userLat = coords.lat;
+      userLng = coords.lng;
+    }
+  }
 
   const { data, error } = await supabase.rpc('search_organizations', {
     query_text: params.query || null,
@@ -45,6 +115,9 @@ export async function searchOrganizations(params: SearchOrganizationsParams): Pr
     filter_va_accredited: params.vaAccredited ?? null,
     filter_confidence_grade: null,
     filter_location: params.location || null,
+    sort_by: sortBy,
+    user_lat: userLat,
+    user_lng: userLng,
     page_number: page,
     page_size: pageSize,
   });

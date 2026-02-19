@@ -51,6 +51,12 @@ export function SearchForm({ states, serviceCategories }: SearchFormProps) {
     serialize: (value) => value || '',
   });
 
+  const [sort, setSort] = useQueryState('sort', {
+    defaultValue: '',
+    parse: (value) => value || '',
+    serialize: (value) => value || '',
+  });
+
   const [, setPage] = useQueryState('page', {
     defaultValue: '1',
     parse: (value) => value || '1',
@@ -104,13 +110,14 @@ export function SearchForm({ states, serviceCategories }: SearchFormProps) {
     setState(null);
     setCategory(null);
     setVaAccredited(null);
+    setSort(null);
     setPage('1');
   };
 
-  const hasActiveFilters = Boolean(query || state || category || vaAccredited || location);
+  const hasActiveFilters = Boolean(query || state || category || vaAccredited || location || sort);
 
   return (
-    <div className="bg-white rounded-lg border p-6 space-y-6">
+    <div className="bg-card rounded-lg border p-6 space-y-6">
       {/* Search input */}
       <div className="space-y-2">
         <Label htmlFor="search" className="text-base font-medium">
