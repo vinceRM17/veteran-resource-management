@@ -1,42 +1,34 @@
 # Project State: Veteran Resource Management
 
 **Last Updated:** 2026-02-18
-**Current Phase:** 07-peer-connection-benefits-interaction-warnings
-**Current Plan:** 02 complete (Plans 01, 02, 03 done)
-**Status:** IN PROGRESS
+**Current Phase:** v1.0 milestone complete
+**Status:** SHIPPED
 
 ## Project Reference
 
-**Core Value:**
-A veteran in crisis or need can put in their information and immediately feel connected — to programs they qualify for, to people who can help, and to peers who understand what they're going through. Isolation is the enemy; connection is the mission.
+See: .planning/PROJECT.md (updated 2026-02-18)
 
-**Current Focus:**
-Phase 7 - Peer Connection + Benefits Interaction Warnings
+**Core Value:** A veteran in crisis or need can put in their information and immediately feel connected — to programs they qualify for, to people who can help, and to peers who understand what they're going through. Isolation is the enemy; connection is the mission.
 
----
-
-## Current Position
-
-**Active Phase:** 07-peer-connection-benefits-interaction-warnings
-
-**Active Plan:** 07-02 (complete)
-
-**Status:** IN PROGRESS
-
-**Progress:**
-[██████████] 95%
-Phase 1: Foundation + Crisis Safety         [████] 4/4 plans complete (100%) ✓
-Phase 2: Resource Directory + Data Pipeline [████] 4/4 plans complete (100%) ✓
-Phase 3: Core Screening + Eligibility       [████] 4/4 plans complete (100%) — needs migration + testing
-Phase 4: Smart Crisis Detection             [████] 3/3 plans complete (100%) ✓
-Phase 5: User Accounts + Dashboard          [████] 4/4 plans complete (100%) ✓
-Phase 6: Self-Service Tools                 [████] 2/2 plans complete (100%) ✓
-Phase 7: Peer Connection + Benefits Warnings [3 plans complete — 01, 02, 03 all done]
-
-Overall: 21/22 plans complete (95%)
-```
+**Current Focus:** Planning next milestone
 
 ---
+
+## Milestone Summary
+
+**v1.0 MVP — SHIPPED 2026-02-18**
+
+| Phase | Plans | Status |
+|-------|-------|--------|
+| 1. Foundation + Crisis Safety | 2/2 | ✓ Complete |
+| 2. Resource Directory + Data Pipeline | 4/4 | ✓ Complete |
+| 3. Core Screening + Eligibility Engine | 4/4 | ✓ Complete |
+| 4. Smart Crisis Detection | 3/3 | ✓ Complete |
+| 5. User Accounts + Dashboard | 4/4 | ✓ Complete |
+| 6. Self-Service Tools | 2/2 | ✓ Complete |
+| 7. Peer Connection + Benefits Interaction | 3/3 | ✓ Complete |
+
+**Total:** 7 phases, 22 plans, 45 requirements — ALL SHIPPED
 
 ## Performance Metrics
 
@@ -59,168 +51,37 @@ Overall: 21/22 plans complete (95%)
 | 05 | 04 | 4 min | 1 | 2 | Complete | 2026-02-16 |
 | 06 | 01 | 8 min | 2 | 5 | Complete | 2026-02-16 |
 | 06 | 02 | 2 min | 2 | 5 | Complete | 2026-02-16 |
-| 07 | 01 | 2 min | 2 | 5 | Complete | 2026-02-18 |
-| 07 | 02 | 5 min | 2 | 7 | Complete | 2026-02-18 |
-| 07 | 03 | 3 min | 2 | 6 | Complete | 2026-02-18 |
+| 07 | 01 | 5 min | 2 | 5 | Complete | 2026-02-18 |
+| 07 | 02 | 7 min | 2 | 7 | Complete | 2026-02-18 |
+| 07 | 03 | 5 min | 2 | 6 | Complete | 2026-02-18 |
 
-**Velocity:** 20 plans completed
-
-**Plan Success Rate:** 100% (20/20)
-
-**Blocker Rate:** 0% (0 blockers encountered)
-
+**Velocity:** 22 plans completed
+**Plan Success Rate:** 100% (22/22)
+**Blocker Rate:** 0%
 **Average Plan Duration:** 5.5 minutes
 
 ---
-| Phase 04 P01 | 2 | 2 tasks | 5 files |
-| Phase 04 P03 | 2 | 2 tasks | 3 files |
-| Phase 07 P01 | 2 | 2 tasks | 5 files |
-| Phase 07 P02 | 5 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
-### Key Decisions
+### Pre-deployment Requirements
 
-| Date | Decision | Rationale | Impact |
-|------|----------|-----------|--------|
-| 2026-02-15 | 7-phase roadmap structure derived from requirements | Requirements naturally cluster into foundation (1), data (2), core value (3-4), engagement (5-6), advanced (7) | Phases deliver incrementally verifiable capabilities |
-| 2026-02-15 | Crisis resources in Phase 1, smart detection in Phase 4 | Always-visible crisis banner is safety requirement; smart detection requires screening flow to monitor | Non-negotiable safety baseline, then enhanced detection |
-| 2026-02-15 | Directory before screening | Screening results link to directory; need populated data for end-to-end testing | Phase 2 must complete before Phase 3 |
-| 2026-02-15 | Accounts deferred to Phase 5 | Guest mode screening is core value; accounts are retention feature | No forced account creation at launch |
-| 2026-02-16 | Tailwind CSS 4 requires @tailwindcss/postcss plugin | Tailwind v4 separated PostCSS plugin from core package | Updated PostCSS config and CSS syntax (@import instead of @tailwind) |
-| 2026-02-16 | CrisisBanner uses <aside> instead of div with role="banner" | Biome linter enforces semantic HTML over ARIA roles on generic elements | Improved accessibility with proper semantic elements |
-| 2026-02-16 | System fonts only (no external font loading) | Minimize initial bundle size and improve Core Web Vitals | Faster page loads, better performance baseline |
-| 2026-02-16 | Three Supabase client variants (browser, server, middleware) | @supabase/ssr pattern required for Next.js 15 App Router | Proper SSR support with session refresh on every request |
-| 2026-02-16 | Middleware uses getUser() instead of getSession() | getUser() validates with Supabase auth server; getSession() only reads cookies (can be tampered) | More secure session validation |
-| 2026-02-16 | RLS policies use auth.uid() not auth.jwt() | auth.uid() is standard Supabase pattern, more secure and simpler | Consistent with Supabase best practices |
-| 2026-02-16 | Guest mode screening with NULL user_id | Core value: screening without account creation | Screening sessions table allows anonymous users |
-| 2026-02-16 | Manual migration application via Supabase SQL Editor | Supabase CLI not installed; Management API requires additional auth; manual is documented best practice | One-time manual step with clear instructions in scripts/README.md |
-| 2026-02-16 | Service role client for ETL bypasses RLS | Bulk import needs to bypass Row Level Security for performance | ETL scripts use SUPABASE_SERVICE_ROLE_KEY instead of anon key |
-| 2026-02-16 | 10% error rate threshold for CSV import | CSV data has expected quality variations; 10% balances normal issues vs systemic problems | Import fails if > 10% validation errors, indicating data quality issue |
-| 2026-02-16 | Use better-sqlite3 for synchronous SQLite reading | Simple iteration pattern for 5,567 rows, no streaming complexity needed | Cleaner code than async SQLite libraries, entire dataset read into memory |
-| 2026-02-16 | Batch size of 500 for business imports | Smaller dataset than organizations (5.5K vs 85K) | Faster import, better progress logging granularity |
-| 2026-02-16 | Use dotenv for .env.local loading in scripts | tsx doesn't auto-load Next.js env files | Scripts work standalone without Next.js environment |
-| 2026-02-16 | nuqs for URL state management | Bookmarkable search URLs are core requirement; nuqs provides type-safe URL state with Next.js App Router support | All search filters (query, state, category, VA, page) persist in URL and work with browser back/forward |
-| 2026-02-16 | 300ms debounce for search input | Balance between immediate feedback and reducing unnecessary server requests | Smooth typing experience, less database load |
-| 2026-02-16 | Server Components for directory pages | Fetch data server-side for better SEO and initial page load performance | Search results pre-rendered, faster perceived performance |
-| 2026-02-16 | Separate Zod schemas per conditional variant | Zod 4 .extend() causes type inference issues when overriding optional with required | Cleaner type safety, no runtime schema mutation |
-| 2026-02-16 | Pure functions for conditional logic (no React deps) | Enables easy unit testing without component rendering | shouldShowField() and clearDependentFields() fully testable |
-| 2026-02-16 | 15 rules with dual high/medium confidence tiers | Binary yes/no matching is too rigid for benefits screening | Nuanced "Likely Eligible" vs "Possibly Eligible" recommendations |
-| 2026-02-16 | json-rules-engine v7 with built-in TypeScript types | No separate @types package needed; rules stored as JSON in database | Non-developers can update eligibility criteria without code changes |
-| 2026-02-16 | Cast DB conditions type to json-rules-engine TopLevelCondition | DB schema has both all/any optional; engine expects discriminated union with exactly one | Safe cast bridges two valid representations of same data |
-| 2026-02-16 | allowUndefinedFacts: true on eligibility engine | Incomplete screening answers should not crash evaluation | Missing facts simply don't match rules, returning no results for those rules |
-| 2026-02-16 | Confidence labels: Likely/Possibly/Worth Exploring | Clear language matching 6th-grade reading level target | Users understand what confidence levels mean without jargon |
-| 2026-02-16 | Local form state synced to Zustand store on Next click | Avoids re-rendering entire store on every keystroke | Better form performance, cleaner separation of local vs persisted state |
-| 2026-02-16 | Intra-step conditionals use local state instead of ConditionalField | ConditionalField reads from store which doesn't have values until Next click | Disability rating field shows immediately when disability answer changes |
-| 2026-02-16 | Semantic fieldset elements instead of div role=group | Biome a11y linter enforces semantic HTML over ARIA roles on generic elements | Proper accessibility with native HTML semantics |
-| 2026-02-16 | Phrase matching for crisis keywords (not word matching) | Prevents false positives like "kill time" triggering "kill myself" detection | More accurate crisis detection with fewer false alarms |
-| 2026-02-16 | Store SHA-256 hash instead of raw text in crisis logs | Avoid storing PHI, maintain HIPAA compliance | Cannot review original text, but preserves privacy |
-| 2026-02-16 | Allow anonymous crisis log insertion | Crisis events must be captured even from anonymous users; logs contain no PHI | Any connection can insert crisis logs for safety |
-| 2026-02-16 | Admin auth protection deferred to Phase 5 | User roles and permissions don't exist yet | Admin routes accessible to any authenticated user until Phase 5 |
-| 2026-02-16 | Real-time dashboard updates via Supabase Realtime INSERT and UPDATE subscriptions | Monitoring team needs immediate visibility into new detections and review status changes | Dashboard shows live updates without page refresh |
-| 2026-02-16 | False positive tracking enables keyword refinement | Tracking which keywords trigger false alarms allows future optimization | is_false_positive flag enables data-driven keyword list improvements |
-| 2026-02-16 | Admin RLS uses EXISTS subquery on profiles.role | Explicit policy clarity over function call indirection | Self-contained, transparent security policies |
-| 2026-02-16 | Session claiming with double-check pattern | SELECT validates then UPDATE with IS NULL guard prevents race conditions | Safe concurrent session claiming |
-| 2026-02-16 | Action items from screening next_steps | One action item per step preserves granular tracking | Users can check off individual next steps on their dashboard |
-| 2026-02-16 | Parallel fetch for dashboard data via Promise.all | 3 independent queries (screenings, bookmarks, action items) can run concurrently | Faster dashboard page load |
-| 2026-02-16 | SaveResultsCTA 3-state pattern (guest/logged-in/already-claimed) | Single component handles all user states on results page | Clean UX flow from guest to authenticated user |
-| 2026-02-16 | Optimistic UI for bookmark toggle and action item checkbox | useTransition provides instant visual feedback before server confirms | Responsive UX, reverts on error for data integrity |
-| 2026-02-16 | Auth-aware BookmarkButton with inline login prompt | Shows "Log in to save resources" message instead of requiring toast library | Lightweight UX, no new dependencies |
-| 2026-02-16 | Action items grouped by program_name with progress bar | Visual progress tracking motivates completion of benefit application steps | Users see clear path forward for each program |
-| 2026-02-16 | Admin role check in layout.tsx (server-side) | No client-side role bypass possible; profiles table queried on every admin page load | Secure RBAC without exposing role logic to client |
-| 2026-02-16 | Non-admin users redirected to /dashboard (not 403) | Smoother UX for users who accidentally navigate to admin routes | No confusing error pages for regular users |
-| 2026-02-16 | Transition checklist progress via action_items with program_name prefix | Reuse action_items table with "transition-{milestone-slug}" prefix instead of new table | Leverages existing infrastructure, keeps all progress tracking in one place |
-| 2026-02-16 | ChecklistItemRow optimistic UI pattern | Client-side useState for immediate feedback before server confirmation | Matches ActionItemsList pattern, responsive UX with error reversion |
-| 2026-02-16 | Progress bar visibility conditional on auth + progress | Only show when authenticated AND at least one item checked | Avoids empty/confusing display for guests or users who haven't started |
-| 2026-02-18 | NTEE code wildcard patterns as TEXT[] in search_peer_connections RPC, matched via unnest() + EXISTS + LIKE | Allows multi-pattern filtering (e.g., W30%, P20%) in a single RPC call | Flexible category filtering without multiple queries |
-| 2026-02-18 | filter_branch and filter_era as pass-through in search_peer_connections RPC | Organizations table has no branch/era columns yet; parameters reserved for API stability | Future enhancement can add columns without changing function signature |
-| 2026-02-18 | 4-tier verification badge hierarchy for peer connections | VA Accredited > Verified 501c3 Nonprofit > IRS-registered > Directory listing | Veterans see most trustworthy organizations first |
-| 2026-02-18 | Re-computation approach for interaction detection (no new DB migration) | detectBenefitInteractions is fast in-memory; avoids migration for MVP | Server-side recomputation on every results page load |
-| 2026-02-18 | PeerSearchForm wrapped in Suspense boundary on each peer-connection page | Next.js 16 requires client components using useSearchParams to be inside Suspense during static generation | Required for npm run build to pass |
-| 2026-02-18 | NuqsAdapter added to peer-connection layout.tsx | Was omitted in Plan 01; nuqs throws adapter error without it | Required for URL state management across all peer-connection pages |
+These manual steps must be completed before the platform is functional:
 
-### Active TODOs
+1. Apply all 8 Supabase migrations (00001-00008) via SQL Editor
+2. Run `npm run seed:rules` to populate eligibility rules
+3. Run ETL scripts to import organization and business data
+4. Set environment variables (SUPABASE_URL, keys, etc.)
 
-None yet (awaiting phase planning).
+### Known Technical Debt
 
-### Known Blockers
-
-None yet (awaiting phase planning).
-
-### Research Flags
-
-From research/SUMMARY.md, these phases need deeper research during planning:
-
-- **Phase 2:** ETL pipeline for 85K+ records (batch processing, validation, error handling)
-- **Phase 3:** Kentucky benefits programs (eligibility rules, income thresholds, documentation requirements)
-- **Phase 4:** Crisis detection patterns (clinical validation, false positive/negative rates, partnership with 988/VA)
-- **Phase 7:** Kentucky benefits interaction rules (SNAP + Medicaid, SSI + SSDI conflicts)
-
-Phases 1, 5, 6 use standard patterns (skip research-phase).
-
----
-
-## Session Continuity
-
-**What we're building:**
-Veteran resource platform connecting veterans/caregivers to 90K+ organizations, with benefits screening questionnaire that matches users to programs they qualify for.
-
-**Where we are:**
-Phase 7 IN PROGRESS (3 plans done). Plans 01+03 complete. Peer connection data layer established. Benefit interaction detection fully implemented: 5 rules, unit-tested with TDD (11 tests), InteractionWarningBanner on results page.
-
-**What's next:**
-1. Phase 7 remaining plans: peer connection sub-pages and benefits interaction warnings UI
-
-**Critical context:**
-- Crisis safety is non-negotiable (always-visible resources in Phase 1, smart detection in Phase 4)
-- Data quality is success/failure point (verification systems BEFORE import in Phase 2)
-- Screening is core value (Phase 3 is most complex, benefits from Phases 1-2 complete)
-- Research identified 4 pitfalls to avoid: data quality death spiral, crisis detection theater, false promise overmatching, black hole referral
-- **Migration must be applied manually** before data import can run (see scripts/README.md)
-- Eligibility engine ready: evaluateEligibility() takes answers + rules, returns ranked ProgramMatch[]
-- **End-to-end flow wired:** form submission → eligibility evaluation → results display → PDF download
-- **Migrations 00004 + 00005 must be applied** before screening works end-to-end
-- **Run `npm run seed:rules`** after migrations to populate eligibility rules
-- **Crisis detection foundation ready:** 27 ASQ-derived keywords, phrase-matching detector, audit logger
-- **Migration 00006 must be applied** before crisis detection can log to database
-- **Crisis detection complete:** Free-text field in screening, real-time detection, monitoring dashboard with human review
-- **Phase 4 complete:** Smart crisis detection fully implemented and ready for 24/7 monitoring team
-- **Migration 00007 must be applied** before bookmarks, action items, or session claiming work
-- **Phase 5 database foundation ready:** bookmarks, action_items tables with RLS, is_admin() helper
-- **Session claiming ready:** claimGuestSession() server action for guest-to-user flow
-- **Auth flow updated:** SignupForm supports redirectTo and sessionId props for post-signup redirect
-- **Dashboard page ready:** /dashboard with screening history, quick stats, auth-guarded layout
-- **SaveResultsCTA on results page:** Guest/logged-in/already-claimed states for session claiming
-- **Header updated:** Dashboard link shows for authenticated users only
-- **Dashboard sub-pages needed:** /dashboard/saved and /dashboard/actions (stub links exist)
-- **Bookmark system complete:** BookmarkButton on org/business detail pages, saved resources list at /dashboard/bookmarks
-- **Action items tracking complete:** /dashboard/action-items with progress bar, checkbox toggle, per-program grouping
-- **Dashboard sub-nav pattern:** Consistent Overview / Saved Resources / Action Items navigation
-- **Dashboard nav links corrected:** Overview, /dashboard/bookmarks, /dashboard/action-items
-- **Admin RBAC enforced:** layout.tsx checks profiles.role === 'admin', redirects non-admins to /dashboard
-- **Phase 5 complete:** Auth + dashboard + bookmarks + action items + admin protection all wired
-- **Self-service tools content data:** 16 mental health exercises across 4 topics, 23 transition checklist items across 3 milestones
-- **/tools landing page:** Feature cards linking to exercises and transition sections
-- **Exercise pages:** /tools/exercises browse, /tools/exercises/[topic] with accordion UI
-- **Transition checklist pages:** /tools/transition overview, /tools/transition/[milestone] detail pages
-- **Checklist progress tracking:** action_items table with program_name = "transition-{slug}" prefix
-- **ChecklistItemRow component:** Optimistic UI checkbox toggle for authenticated users
-- **Tools navigation link:** Added to header between Screening and auth section
-- **Phase 6 complete:** Self-service tools fully implemented and accessible
-- **Phase 7 plan 01 complete:** search_peer_connections RPC function (migration 00008), peer-types.ts with NTEE_CODE_MAP and getVerificationSource(), searchPeerConnections() server query, /peer-connection landing page with three category cards
-- **Migration 00008 must be applied** before search_peer_connections RPC returns real data
-- **/peer-connection page live:** three cards linking to /peer-connection/support-groups, /peer-connection/events, /peer-connection/opportunities
-- **Benefit interaction detection complete:** detectBenefitInteractions() with 5 rules, InteractionWarningBanner component on results page
-- **Interaction warnings placed** after program results sections, before local organizations section
-- **11 unit tests pass** for interaction detector (TDD RED/GREEN cycle complete)
-- **Phase 7 plan 02 complete:** PeerConnectionCard with 4-tier verification badges, PeerSearchForm with nuqs URL state and Zod validation, three search pages (/support-groups, /events, /opportunities), "Peer Connections" link in header
-- **Peer connection search pages live:** All three pages use Server Components with Suspense boundaries, searchPeerConnections() query, and PaginationControls
-- **NuqsAdapter required in peer-connection layout.tsx** — nuqs URL state management depends on this adapter being present
-- **PeerSearchForm wrapped in Suspense** — Next.js 16 build requires client components using useSearchParams to be inside Suspense
-- **Phase 7 complete:** All plans (01, 02, 03) done — peer connection sub-pages, verification badges, benefit interaction warnings all implemented
+- Manual migration application (automate for production)
+- Missing 04-02-SUMMARY.md (Phase 4 verified complete, cosmetic gap)
+- Interaction rules need SME validation before production launch
+- Crisis keywords list should be reviewed by clinical expert
 
 ---
 
 *State initialized: 2026-02-15*
-*Last plan completed: 07-02 (Peer Connection Search Pages) on 2026-02-18*
-*Next action: Phase 7 fully complete. Review remaining work or begin new phase.*
+*v1.0 milestone shipped: 2026-02-18*
+*Next action: /gsd:new-milestone for v1.1 planning*
