@@ -18,8 +18,9 @@ import { createInterface } from 'readline';
 import { join } from 'path';
 import { execSync } from 'child_process';
 
-// Load env
-import 'dotenv/config';
+// Load env from .env.local (Next.js convention)
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -29,7 +30,7 @@ if (!supabaseUrl || !supabaseKey) {
   process.exit(1);
 }
 
-const DATA_DIR = join(import.meta.dirname, '..', 'data');
+const DATA_DIR = join(process.cwd(), 'data');
 const ZIP_PATH = join(DATA_DIR, 'US.zip');
 const TXT_PATH = join(DATA_DIR, 'US.txt');
 
