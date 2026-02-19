@@ -44,19 +44,53 @@ export async function resolveLocationCoordinates(
   }
 
   // City name lookup — scope by state if filtered
-  let query = supabase
-    .from('zip_coordinates')
-    .select('latitude, longitude')
-    .ilike('city', trimmed + '%');
-
   if (stateFilter) {
-    query = query.eq('state', stateFilter.toUpperCase());
+    const { data } = await supabase
+      .from('zip_coordinates')
+      .select('latitude, longitude')
+      .ilike('city', trimmed + '%')
+      .eq('state', stateFilter.toUpperCase())
+      .limit(1)
+      .single();
+
+    if (data) {
+      return { lat: Number(data.latitude), lng: Number(data.longitude) };
+    }
+    return null;
   }
 
-  const { data } = await query.limit(1).single();
+  // No state filter: fetch multiple rows and pick the largest matching city
+  // (most zip codes = largest city, e.g. Louisville KY over Louisville CO)
+  const { data } = await supabase
+    .from('zip_coordinates')
+    .select('latitude, longitude, state')
+    .ilike('city', trimmed + '%')
+    .limit(100);
 
-  if (data) {
-    return { lat: Number(data.latitude), lng: Number(data.longitude) };
+  if (!data || data.length === 0) return null;
+
+  if (data.length === 1) {
+    return { lat: Number(data[0].latitude), lng: Number(data[0].longitude) };
+  }
+
+  // Count zip codes per state to find the largest city
+  const stateCounts = new Map<string, number>();
+  for (const row of data) {
+    stateCounts.set(row.state, (stateCounts.get(row.state) || 0) + 1);
+  }
+
+  let bestState = data[0].state;
+  let bestCount = 0;
+  for (const [state, count] of stateCounts) {
+    if (count > bestCount) {
+      bestState = state;
+      bestCount = count;
+    }
+  }
+
+  const bestRow = data.find((r) => r.state === bestState);
+  if (bestRow) {
+    return { lat: Number(bestRow.latitude), lng: Number(bestRow.longitude) };
   }
 
   return null;
