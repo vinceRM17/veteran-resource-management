@@ -104,16 +104,28 @@ export default function ReviewPage() {
 
 	const step2Items = [
 		{ label: "State", value: getLabel("state", answers.state, 2) },
-		{
-			label: "Age range",
-			value: getLabel("ageRange", answers.ageRange, 2),
-		},
 	];
 
-	if (shouldShowField("serviceEra", answers) && answers.serviceEra) {
+	if (answers.zipCode) {
 		step2Items.push({
-			label: "Service era",
-			value: getLabel("serviceEra", answers.serviceEra, 2),
+			label: "Zip code",
+			value: answers.zipCode as string,
+		});
+	}
+
+	step2Items.push({
+		label: "Age range",
+		value: getLabel("ageRange", answers.ageRange, 2),
+	});
+
+	if (
+		shouldShowField("serviceYears", answers) &&
+		answers.serviceStartYear &&
+		answers.serviceEndYear
+	) {
+		step2Items.push({
+			label: "Years of service",
+			value: `${answers.serviceStartYear} – ${answers.serviceEndYear}`,
 		});
 	}
 

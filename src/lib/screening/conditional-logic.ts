@@ -19,7 +19,7 @@ const visibilityRules: Record<
 	(answers: Record<string, unknown>) => boolean
 > = {
 	// Step 2 conditionals
-	serviceEra: (a) => a.role === "veteran",
+	serviceYears: (a) => a.role === "veteran",
 	isCaregiver: (a) => a.role === "caregiver",
 
 	// Step 3 conditionals
@@ -75,7 +75,8 @@ const dependencyMap: Record<string, DependencyRule[]> = {
 		{
 			// When role changes TO caregiver, clear veteran-specific fields
 			clear: [
-				"serviceEra",
+				"serviceStartYear",
+				"serviceEndYear",
 				"hasServiceConnectedDisability",
 				"disabilityRating",
 			],

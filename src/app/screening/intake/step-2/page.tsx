@@ -35,8 +35,10 @@ export default function Step2Page() {
 	// Local form state
 	const [formState, setFormState] = useState<Record<string, string>>({
 		state: (answers.state as string) || "KY",
+		zipCode: (answers.zipCode as string) || "",
 		ageRange: (answers.ageRange as string) || "",
-		serviceEra: (answers.serviceEra as string) || "",
+		serviceStartYear: (answers.serviceStartYear as string) || "",
+		serviceEndYear: (answers.serviceEndYear as string) || "",
 		isCaregiver: (answers.isCaregiver as string) || "",
 	});
 	const [errors, setErrors] = useState<Record<string, string>>({});
@@ -53,14 +55,20 @@ export default function Step2Page() {
 	useEffect(() => {
 		setFormState((prev) => ({
 			state: (answers.state as string) || prev.state || "KY",
+			zipCode: (answers.zipCode as string) || prev.zipCode || "",
 			ageRange: (answers.ageRange as string) || prev.ageRange || "",
-			serviceEra: (answers.serviceEra as string) || prev.serviceEra || "",
+			serviceStartYear:
+				(answers.serviceStartYear as string) || prev.serviceStartYear || "",
+			serviceEndYear:
+				(answers.serviceEndYear as string) || prev.serviceEndYear || "",
 			isCaregiver: (answers.isCaregiver as string) || prev.isCaregiver || "",
 		}));
 	}, [
 		answers.state,
+		answers.zipCode,
 		answers.ageRange,
-		answers.serviceEra,
+		answers.serviceStartYear,
+		answers.serviceEndYear,
 		answers.isCaregiver,
 	]);
 
@@ -102,9 +110,10 @@ export default function Step2Page() {
 	}
 
 	const stateQuestion = step2Def.questions[0];
-	const ageQuestion = step2Def.questions[1];
-	const serviceEraQuestion = step2Def.questions[2];
-	const isCaregiverQuestion = step2Def.questions[3];
+	const zipCodeQuestion = step2Def.questions[1];
+	const ageQuestion = step2Def.questions[2];
+	const serviceYearsQuestion = step2Def.questions[3];
+	const isCaregiverQuestion = step2Def.questions[4];
 
 	return (
 		<div>
@@ -135,6 +144,27 @@ export default function Step2Page() {
 				</Select>
 			</QuestionCard>
 
+			{/* Zip code */}
+			<QuestionCard
+				label={zipCodeQuestion.label}
+				helpText={zipCodeQuestion.helpText}
+				required={zipCodeQuestion.required}
+				error={errors.zipCode}
+			>
+				<input
+					id="zipCode"
+					type="text"
+					inputMode="numeric"
+					maxLength={5}
+					placeholder="e.g. 40202"
+					value={formState.zipCode}
+					onChange={(e) =>
+						updateField("zipCode", e.target.value.replace(/\D/g, ""))
+					}
+					className="flex h-10 w-full max-w-[10rem] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+				/>
+			</QuestionCard>
+
 			{/* Age range */}
 			<QuestionCard
 				label={ageQuestion.label}
@@ -155,26 +185,59 @@ export default function Step2Page() {
 				</RadioGroup>
 			</QuestionCard>
 
-			{/* Service era - veterans only */}
-			<ConditionalField fieldId="serviceEra">
+			{/* Service years - veterans only */}
+			<ConditionalField fieldId="serviceYears">
 				<QuestionCard
-					label={serviceEraQuestion.label}
-					helpText={serviceEraQuestion.helpText}
-					required={serviceEraQuestion.required}
-					error={errors.serviceEra}
+					label={serviceYearsQuestion.label}
+					helpText={serviceYearsQuestion.helpText}
+					required={serviceYearsQuestion.required}
+					error={errors.serviceStartYear || errors.serviceEndYear}
 				>
-					<RadioGroup
-						value={formState.serviceEra}
-						onValueChange={(v) => updateField("serviceEra", v)}
-						aria-required="true"
-					>
-						{serviceEraQuestion.options.map((opt) => (
-							<div key={opt.value} className="flex items-center gap-2">
-								<RadioGroupItem value={opt.value} id={`era-${opt.value}`} />
-								<Label htmlFor={`era-${opt.value}`}>{opt.label}</Label>
-							</div>
-						))}
-					</RadioGroup>
+					<div className="flex items-center gap-3">
+						<div className="flex-1">
+							<Label htmlFor="serviceStartYear">Start year</Label>
+							<input
+								id="serviceStartYear"
+								type="text"
+								inputMode="numeric"
+								maxLength={4}
+								placeholder="e.g. 1990"
+								value={formState.serviceStartYear}
+								onChange={(e) =>
+									updateField("serviceStartYear", e.target.value.replace(/\D/g, ""))
+								}
+								aria-required="true"
+								className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+							/>
+							{errors.serviceStartYear && (
+								<p className="text-sm text-destructive mt-1">
+									{errors.serviceStartYear}
+								</p>
+							)}
+						</div>
+						<span className="mt-6 text-muted-foreground">to</span>
+						<div className="flex-1">
+							<Label htmlFor="serviceEndYear">End year</Label>
+							<input
+								id="serviceEndYear"
+								type="text"
+								inputMode="numeric"
+								maxLength={4}
+								placeholder="e.g. 1994"
+								value={formState.serviceEndYear}
+								onChange={(e) =>
+									updateField("serviceEndYear", e.target.value.replace(/\D/g, ""))
+								}
+								aria-required="true"
+								className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+							/>
+							{errors.serviceEndYear && (
+								<p className="text-sm text-destructive mt-1">
+									{errors.serviceEndYear}
+								</p>
+							)}
+						</div>
+					</div>
 				</QuestionCard>
 			</ConditionalField>
 

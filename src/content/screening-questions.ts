@@ -13,7 +13,9 @@ export type QuestionType =
 	| "select"
 	| "checkbox-group"
 	| "multi-select"
-	| "textarea";
+	| "textarea"
+	| "year-range"
+	| "text";
 
 export interface QuestionOption {
 	value: string;
@@ -99,6 +101,15 @@ const step2: StepDefinition = {
 			helpText: "Many programs are only for people in certain states.",
 		},
 		{
+			id: "zipCode",
+			label: "What is your zip code?",
+			type: "text",
+			options: [],
+			required: false,
+			helpText:
+				"This helps us find organizations and support groups near you. You can skip this if you prefer.",
+		},
+		{
 			id: "ageRange",
 			label: "What is your age range?",
 			type: "radio",
@@ -111,17 +122,12 @@ const step2: StepDefinition = {
 			required: true,
 		},
 		{
-			id: "serviceEra",
+			id: "serviceYears",
 			label: "When did you serve?",
-			type: "radio",
-			options: [
-				{ value: "vietnam", label: "Vietnam era (1964-1975)" },
-				{ value: "gulf-war", label: "Gulf War (1990-2001)" },
-				{ value: "post-911", label: "After September 11, 2001" },
-				{ value: "other", label: "Other time period" },
-			],
+			type: "year-range",
+			options: [],
 			required: true,
-			helpText: "Some VA programs depend on when you served.",
+			helpText: "Enter the year you started and the year you ended your service.",
 			conditionalOn: {
 				fieldId: "role",
 				value: "veteran",

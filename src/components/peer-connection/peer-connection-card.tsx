@@ -35,7 +35,7 @@ export function PeerConnectionCard({ org }: PeerConnectionCardProps) {
             <CardTitle className="text-xl mb-2">
               <Link
                 href={`/directory/${org.id}`}
-                className="hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded"
+                className="hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring rounded"
               >
                 {org.org_name}
               </Link>
@@ -79,7 +79,7 @@ export function PeerConnectionCard({ org }: PeerConnectionCardProps) {
           {org.phone && (
             <a
               href={`tel:${org.phone}`}
-              className="flex items-center gap-1 text-blue-600 hover:underline"
+              className="flex items-center gap-1 text-primary hover:underline"
               aria-label={`Call ${org.org_name}`}
             >
               <Phone className="h-4 w-4" />
@@ -89,7 +89,7 @@ export function PeerConnectionCard({ org }: PeerConnectionCardProps) {
           {org.email && (
             <a
               href={`mailto:${org.email}`}
-              className="flex items-center gap-1 text-blue-600 hover:underline"
+              className="flex items-center gap-1 text-primary hover:underline"
               aria-label={`Email ${org.org_name}`}
             >
               <Mail className="h-4 w-4" />
@@ -101,7 +101,7 @@ export function PeerConnectionCard({ org }: PeerConnectionCardProps) {
               href={org.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-blue-600 hover:underline"
+              className="flex items-center gap-1 text-primary hover:underline"
               aria-label={`Visit ${org.org_name} website (opens in new tab)`}
             >
               <ExternalLink className="h-4 w-4" />

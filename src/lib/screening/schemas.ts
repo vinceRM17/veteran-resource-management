@@ -23,12 +23,31 @@ export type Step1Data = z.infer<typeof step1Schema>;
 // STEP 2: Location & Demographics
 // ============================================================================
 
+const serviceYearSchema = z
+	.string()
+	.regex(/^\d{4}$/, "Please enter a 4-digit year.")
+	.refine(
+		(v) => {
+			const n = Number.parseInt(v, 10);
+			return n >= 1900 && n <= new Date().getFullYear();
+		},
+		{ message: "Please enter a valid year." },
+	);
+
+const zipCodeSchema = z
+	.string()
+	.regex(/^\d{5}$/, "Please enter a 5-digit zip code.")
+	.optional()
+	.or(z.literal(""));
+
 const step2Base = z.object({
 	state: z.string().min(1, "Please pick your state."),
+	zipCode: zipCodeSchema,
 	ageRange: z.enum(["18-34", "35-49", "50-64", "65+"], {
 		message: "Please pick your age range.",
 	}),
-	serviceEra: z.enum(["vietnam", "gulf-war", "post-911", "other"]).optional(),
+	serviceStartYear: serviceYearSchema.optional(),
+	serviceEndYear: serviceYearSchema.optional(),
 	isCaregiver: z.enum(["yes", "no"]).optional(),
 });
 
@@ -36,25 +55,37 @@ export const step2Schema = step2Base;
 
 export type Step2Data = z.infer<typeof step2Base>;
 
-/** Step 2 schema for veterans -- requires serviceEra */
-const step2VeteranSchema = z.object({
-	state: z.string().min(1, "Please pick your state."),
-	ageRange: z.enum(["18-34", "35-49", "50-64", "65+"], {
-		message: "Please pick your age range.",
-	}),
-	serviceEra: z.enum(["vietnam", "gulf-war", "post-911", "other"], {
-		message: "Please tell us when you served.",
-	}),
-	isCaregiver: z.enum(["yes", "no"]).optional(),
-});
+/** Step 2 schema for veterans -- requires service years */
+const step2VeteranSchema = z
+	.object({
+		state: z.string().min(1, "Please pick your state."),
+		zipCode: zipCodeSchema,
+		ageRange: z.enum(["18-34", "35-49", "50-64", "65+"], {
+			message: "Please pick your age range.",
+		}),
+		serviceStartYear: serviceYearSchema,
+		serviceEndYear: serviceYearSchema,
+		isCaregiver: z.enum(["yes", "no"]).optional(),
+	})
+	.refine(
+		(data) =>
+			Number.parseInt(data.serviceEndYear, 10) >=
+			Number.parseInt(data.serviceStartYear, 10),
+		{
+			message: "End year must be the same as or after the start year.",
+			path: ["serviceEndYear"],
+		},
+	);
 
 /** Step 2 schema for caregivers -- requires isCaregiver */
 const step2CaregiverSchema = z.object({
 	state: z.string().min(1, "Please pick your state."),
+	zipCode: zipCodeSchema,
 	ageRange: z.enum(["18-34", "35-49", "50-64", "65+"], {
 		message: "Please pick your age range.",
 	}),
-	serviceEra: z.enum(["vietnam", "gulf-war", "post-911", "other"]).optional(),
+	serviceStartYear: serviceYearSchema.optional(),
+	serviceEndYear: serviceYearSchema.optional(),
 	isCaregiver: z.enum(["yes", "no"], {
 		message: "Please answer this question.",
 	}),

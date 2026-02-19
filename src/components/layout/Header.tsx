@@ -9,12 +9,12 @@ export async function Header() {
 	} = await supabase.auth.getUser();
 
 	return (
-		<header className="border-b">
+		<header className="bg-[hsl(152_42%_18%)] text-white">
 			<div className="container mx-auto px-4 py-4">
 				<div className="flex items-center justify-between">
 					<Link
 						href="/"
-						className="text-xl font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+						className="text-xl font-bold font-[family-name:var(--font-heading)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(152_42%_18%)] rounded"
 					>
 						Veteran Resource Management
 					</Link>
@@ -23,7 +23,7 @@ export async function Header() {
 							<li>
 								<Link
 									href="/"
-									className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+									className="text-white/80 hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded transition-colors"
 								>
 									Home
 								</Link>
@@ -31,7 +31,7 @@ export async function Header() {
 							<li>
 								<Link
 									href="/directory"
-									className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+									className="text-white/80 hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded transition-colors"
 								>
 									Directory
 								</Link>
@@ -39,7 +39,7 @@ export async function Header() {
 							<li>
 								<Link
 									href="/directory/businesses"
-									className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+									className="text-white/80 hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded transition-colors"
 								>
 									Businesses
 								</Link>
@@ -47,7 +47,7 @@ export async function Header() {
 							<li>
 								<Link
 									href="/resources/documents"
-									className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+									className="text-white/80 hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded transition-colors"
 								>
 									Documents
 								</Link>
@@ -55,7 +55,7 @@ export async function Header() {
 							<li>
 								<Link
 									href="/screening"
-									className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+									className="text-white/80 hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded transition-colors"
 								>
 									Screening
 								</Link>
@@ -63,7 +63,7 @@ export async function Header() {
 							<li>
 								<Link
 									href="/tools"
-									className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+									className="text-white/80 hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded transition-colors"
 								>
 									Tools
 								</Link>
@@ -71,7 +71,7 @@ export async function Header() {
 							<li>
 								<Link
 									href="/peer-connection"
-									className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+									className="text-white/80 hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded transition-colors"
 								>
 									Peer Connections
 								</Link>
@@ -81,12 +81,12 @@ export async function Header() {
 									<li>
 										<Link
 											href="/dashboard"
-											className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+											className="text-white/80 hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded transition-colors"
 										>
 											Dashboard
 										</Link>
 									</li>
-									<li className="text-sm text-gray-600">{user.email}</li>
+									<li className="text-sm text-white/60">{user.email}</li>
 									<li>
 										<LogoutButton />
 									</li>
@@ -96,7 +96,7 @@ export async function Header() {
 									<li>
 										<Link
 											href="/login"
-											className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+											className="text-white/80 hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded transition-colors"
 										>
 											Log in
 										</Link>
@@ -104,7 +104,7 @@ export async function Header() {
 									<li>
 										<Link
 											href="/signup"
-											className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+											className="inline-block px-4 py-2 bg-[hsl(40_82%_55%)] text-[hsl(30_15%_12%)] font-medium rounded-md hover:bg-[hsl(40_82%_60%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(152_42%_18%)] transition-colors"
 										>
 											Sign up
 										</Link>

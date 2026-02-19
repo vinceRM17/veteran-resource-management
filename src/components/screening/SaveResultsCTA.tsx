@@ -85,15 +85,15 @@ export function SaveResultsCTA({
 	// Logged in but not claimed
 	if (isLoggedIn) {
 		return (
-			<Card className="my-8 border-blue-200 bg-blue-50">
+			<Card className="my-8 border-primary/20 bg-primary/5">
 				<CardContent className="pt-6">
 					<div className="flex items-center gap-3">
-						<Save className="h-6 w-6 text-blue-600 shrink-0" />
+						<Save className="h-6 w-6 text-primary shrink-0" />
 						<div className="flex-1">
-							<p className="font-medium text-blue-800">
+							<p className="font-medium text-primary">
 								Save these results to your account
 							</p>
-							<p className="text-sm text-blue-700">
+							<p className="text-sm text-primary/80">
 								Track your action items and revisit your results anytime.
 							</p>
 						</div>
@@ -115,7 +115,7 @@ export function SaveResultsCTA({
 
 	// Not logged in
 	return (
-		<Card className="my-8 border-blue-200 bg-gradient-to-r from-blue-50 to-green-50">
+		<Card className="my-8 border-primary/20 bg-gradient-to-r from-primary/5 to-accent">
 			<CardContent className="pt-6">
 				<div className="space-y-3">
 					<h3 className="text-lg font-semibold">Save Your Results</h3>

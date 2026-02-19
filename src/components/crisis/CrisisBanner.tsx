@@ -6,7 +6,8 @@ export function CrisisBanner() {
 	return (
 		<aside
 			aria-label="Crisis resources"
-			className="sticky top-0 z-50 bg-red-900 text-white py-2 px-4"
+			className="sticky top-0 z-50 py-2 px-4"
+			style={{ backgroundColor: "var(--crisis-bg)", color: "var(--crisis-text)" }}
 		>
 			<div className="container mx-auto">
 				<span className="sr-only">
@@ -16,7 +17,7 @@ export function CrisisBanner() {
 					<a
 						href="tel:988"
 						aria-label="Call 988 Suicide and Crisis Lifeline"
-						className="flex items-center gap-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-red-900 rounded px-2 py-1"
+						className="flex items-center gap-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--crisis-bg)] rounded px-2 py-1"
 					>
 						<Phone className="h-4 w-4" aria-hidden="true" />
 						<span className="text-sm md:text-base">
@@ -29,7 +30,7 @@ export function CrisisBanner() {
 					<a
 						href="sms:741741&body=HELLO"
 						aria-label="Text HOME to 741741 Crisis Text Line"
-						className="flex items-center gap-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-red-900 rounded px-2 py-1"
+						className="flex items-center gap-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--crisis-bg)] rounded px-2 py-1"
 					>
 						<MessageCircle className="h-4 w-4" aria-hidden="true" />
 						<span className="text-sm md:text-base">
@@ -40,7 +41,7 @@ export function CrisisBanner() {
 					<a
 						href="tel:18002738255"
 						aria-label="Call Veterans Crisis Line at 1-800-273-8255"
-						className="flex items-center gap-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-red-900 rounded px-2 py-1"
+						className="flex items-center gap-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--crisis-bg)] rounded px-2 py-1"
 					>
 						<Phone className="h-4 w-4" aria-hidden="true" />
 						<span className="text-sm md:text-base">
