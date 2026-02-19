@@ -18,9 +18,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { documentationChecklists } from "@/content/documentation-checklists";
-import type { ScreeningResult } from "@/lib/db/screening-types";
+import type { ProgramMatch, ScreeningResult } from "@/lib/db/screening-types";
 import { searchOrganizations } from "@/lib/db/queries";
+import { detectBenefitInteractions } from "@/lib/eligibility/interaction-detector";
 import { createClient } from "@/lib/supabase/server";
+import { InteractionWarningBanner } from "@/components/screening/interaction-warning";
 import { SaveResultsCTA } from "@/components/screening/SaveResultsCTA";
 import { PDFDownloadButton } from "./pdf-download";
 
@@ -322,6 +324,20 @@ export default async function ScreeningResultsPage({
 		}
 	}
 
+	// Build ProgramMatch[] from screening results for interaction detection
+	const programMatches: ProgramMatch[] = screeningResults.map((r) => ({
+		programId: r.program_id,
+		programName: r.program_name,
+		confidence: r.confidence,
+		confidenceLabel: r.confidence_label,
+		requiredDocs: r.required_docs,
+		nextSteps: r.next_steps,
+		description: getProgramDescription(r.program_id) ?? "",
+	}));
+
+	// Detect benefit interactions after eligibility evaluation
+	const interactions = await detectBenefitInteractions(programMatches, answers);
+
 	// Prepare data for PDF component
 	const pdfResults = screeningResults.map((r) => ({
 		programName: r.program_name,
@@ -372,6 +388,14 @@ export default async function ScreeningResultsPage({
 						results={grouped.low}
 						colorClass="bg-gray-50 text-gray-700 border border-gray-200"
 					/>
+
+					{/* Benefit Interaction Warnings */}
+					{interactions.length > 0 && (
+						<>
+							<Separator className="my-8" />
+							<InteractionWarningBanner interactions={interactions} />
+						</>
+					)}
 
 					{/* Local Resources */}
 					{localOrgs.length > 0 && (
