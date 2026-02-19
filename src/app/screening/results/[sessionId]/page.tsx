@@ -423,10 +423,11 @@ export default async function ScreeningResultsPage({
 
 					for (const term of searchTerms) {
 						if (businesses.length >= 4) break;
-						const { results: bizResults } = await searchBusinesses({
+						// Don't pass zip as location — most businesses lack zip codes,
+					// so the filter would eliminate nearly all results. State is sufficient.
+					const { results: bizResults } = await searchBusinesses({
 							query: term,
 							state: userState,
-							location: userZip || undefined,
 							pageSize: 4,
 						});
 
